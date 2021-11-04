@@ -1,0 +1,15 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/**",
+      "projects/*"
+    ]
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^8.3.4"
+  }
+}
