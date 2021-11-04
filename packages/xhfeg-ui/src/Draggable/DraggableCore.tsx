@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {matchesSelector, offsetXYFromParent, addDomEvent, removeDomEvent} from 'src/utils/domFns'
+import {matchesSelector, offsetXYFromParent, addDomEvent, removeDomEvent} from '../utils/domFns'
 
 export interface DraggableData {
   node: HTMLElement

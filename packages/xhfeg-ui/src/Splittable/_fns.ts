@@ -1,4 +1,4 @@
-import React from 'react'
+import {ReactElement, Children} from 'react'
 
 export type SplitType = 'vertical' | 'horizontal'
 
@@ -39,6 +39,6 @@ export function convert(str: string, size: number) {
   return toPx(value, unit, size)
 }
 
-export function removeNullChildren(children: React.ReactElement[]) {
-  return React.Children.toArray(children).filter(c => c)
+export function removeNullChildren(children: ReactElement[]) {
+  return Children.toArray(children).filter(c => c)
 }
