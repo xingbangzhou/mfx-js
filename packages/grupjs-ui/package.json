@@ -1,0 +1,11 @@
+{
+  "name": "@grupjs/ui",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "react-component",
+    "grup-ui"
+  ]
+}
