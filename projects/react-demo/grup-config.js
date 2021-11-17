@@ -1,8 +1,10 @@
 const path = require('path')
 const rootPath = path.resolve('./')
+const packagePath = path.join(rootPath, 'package.json')
+const {name} = require(packagePath)
 
 module.exports = ({env, config}) => {
-  const devPort = 3001
+  const devPort = 5002
 
   config.devServer.port(devPort)
 
@@ -18,8 +20,23 @@ module.exports = ({env, config}) => {
   })
 
   config.module
+    .rule('svg')
+    .test(/\.svg$/)
+    .use('url')
+    .loader('file-loader')
+    .options({
+      name: 'static/asset/[contenthash].[ext]',
+      esModule: false,
+    })
+  //屏蔽 图片base 64
+  config.module
+    .rule('image')
+    .test(/\.(a?png|jpe?g|gif|webp|bmp|avif)$/i)
+    .type('asset/resource')
+
+  config.module
     .rule('worker')
-    .test(/\.worker\.[j]s$/)
+    .test(/\.worker\.js$/)
     .use('worker-loader')
     .loader('worker-loader')
     .tap(options => {
@@ -37,4 +54,14 @@ module.exports = ({env, config}) => {
     .set('assert', 'assert')
     .set('stream', 'stream-browserify')
     .set('@assets', path.resolve(rootPath, 'src', 'assets'))
+
+  config.plugin('html').tap(args => {
+    args[0] = {
+      ...args[0],
+      ...{
+        title: name
+      },
+    }
+    return args
+  })
 }

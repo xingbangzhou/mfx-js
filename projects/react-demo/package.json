@@ -1,11 +1,12 @@
 {
-  "name": "homepage",
+  "name": "react-demo",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
     "dev": "grup dev --env dev --hot",
-    "build": "grup build --env dev"
+    "build": "grup build --env prod",
+    "start": "grup serve"
   },
   "dependencies": {
     "assert": "^2.0.0",

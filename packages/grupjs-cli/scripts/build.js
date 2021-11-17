@@ -51,6 +51,7 @@ module.exports = async args => {
       }) + '\n'
     )
     // 生成 serve 模式下需要文件
+    const cachePaths = getCachePaths()
     fs.writeJson(cachePaths.buildConfig, { devServer: config.devServer }, err => {
       if (err) console.error(err)
     })
