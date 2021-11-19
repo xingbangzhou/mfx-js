@@ -14,7 +14,7 @@
     "noErrorTruncation": false,
     "allowJs": true,
     "paths": {
-      "@xhfeg/ui": [""]
+      "@grupjs/ui": ["./packages/grupjs-ui/src"]
     },
   },
   "exclude": ["**/.*/", "**/build", "**/node_modules", "docs/export"]

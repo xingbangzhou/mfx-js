@@ -19,15 +19,6 @@ module.exports = ({env, config}) => {
     return args
   })
 
-  config.module
-    .rule('svg')
-    .test(/\.svg$/)
-    .use('url')
-    .loader('file-loader')
-    .options({
-      name: 'static/asset/[contenthash].[ext]',
-      esModule: false,
-    })
   //屏蔽 图片base 64
   config.module
     .rule('image')

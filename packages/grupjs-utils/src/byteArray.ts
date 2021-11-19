@@ -48,6 +48,7 @@ export default class ByteArray {
     this._dv = new DataView(this._bytes)
     this._position = this._offset
   }
+
   /**
    *  @param length 扩充的容器长度,单位 byte
    *  扩充容器
@@ -339,6 +340,16 @@ export default class ByteArray {
     this._position += length
     return new Uint8Array(this._bytes, this._position - length, length)
   }
+
+  readBuffer(length: number) {
+    if (this._bytesLength - this._position < length) {
+      throw Error(' Error : Unable to read the data of length . [readBuffer byteLength=' + length + ']')
+    }
+
+    this._position += length
+
+    return this.slice(this._position - length, this._position)
+  }
   /**
    *  读取一个String字符串
    */
@@ -388,12 +399,16 @@ export default class ByteArray {
   /**
    * 返回字节长度
    */
-  byteLength() {
+  get byteLength() {
     return this._bytesLength
   }
 
-  getPosition() {
-    return this._position - this._offset
+  get position() {
+    return this._position
+  }
+
+  pos(value: number) {
+    this._position = value
   }
 
   print() {

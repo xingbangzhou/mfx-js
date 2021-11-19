@@ -1,3 +1,41 @@
+/**
+ * @expample
+ * class Item extends PackTemplate {
+ *   result = 0
+ *   content = ''
+ *   packList(): PackTuple[] {
+ *     return [
+ *       ['result', PackType.Uint64],
+ *       ['content', PackType.String]
+ *     ]
+ *   }
+ * }
+ *
+ * class Sample extends PackTemplate {
+ *   result = 0
+ *   content = ''
+ *   item = new Item()
+ *   list = []
+ *   extends = {}
+ *
+ *   packList(): PackTuple[] {
+ *     return [
+ *       ['result', PackType.Uint64],
+ *       ['content', PackType.String],
+ *       ['item', Item],
+ *       ['list', [PackType.Array, PackType.String],
+ *       ['extends', [PackType.Record, PackType.String, PackType.String],
+ *     ]
+ *   }
+ * }
+ *
+ * Array 的类型格式是 [PackType.Array, PackValue]
+ * Record 的类型格式是 [PackType.Record, BuildinType, PackValue]
+ * 其中PackType.Array和PackType.Record这两种类型可以深度嵌套，比如
+ * [PackType.Array, [[PackType.Record, PackType.String, PackType.String]]] => Array<Map<string,string>>
+ * [PackType.Record, PackType.String, [PackType.Array, PackType.String]] => Map<string, Array<string>>
+ */
+
 import {ByteBuffer} from './byteArray'
 import Pack from './pack'
 import Unpack from './unpack'
@@ -59,10 +97,12 @@ function getBuildinFn(pkType: BuildinType, op?: boolean): Function | undefined {
   }
 }
 
-export type PackArray = [PackType.Array, BuildinType | PackArray | PackRecord | typeof PackTemplate]
-export type PackRecord = [PackType.Record, BuildinType, BuildinType | PackArray | PackRecord | typeof PackTemplate]
+type PackValue = BuildinType | PackArray | PackRecord | typeof PackTemplate
 
-export type PackTuple = [string | number, BuildinType | PackArray | PackRecord | typeof PackTemplate]
+type PackArray = [PackType.Array, PackValue]
+type PackRecord = [PackType.Record, BuildinType, PackValue]
+
+export type PackTuple = [string | number, PackValue]
 
 export abstract class PackTemplate {
   protected abstract packList(): PackTuple[]
@@ -144,7 +184,8 @@ export abstract class PackTemplate {
 
     const fn = getBuildinFn(type as BuildinType)
     if (fn) {
-      return fn.call(up)
+      const result = fn.call(up)
+      return result
     }
 
     throw `unpack type is error: ${type}`

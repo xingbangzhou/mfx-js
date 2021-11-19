@@ -1,7 +1,7 @@
 import ByteArray, {ByteBuffer} from './byteArray'
 
 export default class Unpack {
-  private arrayBuffer: ByteArray
+  arrayBuffer: ByteArray
 
   constructor(buffer: ByteBuffer) {
     this.arrayBuffer = new ByteArray(buffer)
@@ -90,16 +90,17 @@ export default class Unpack {
   readBuffer() {
     const readLength = this.readUShort()
     if (readLength === 0) {
-      return new Uint8Array(0)
+      return new ArrayBuffer(0)
     }
-    return this.readBytes(readLength)
+    return this.arrayBuffer.readBuffer(readLength)
   }
+
   readBuffer32() {
     const readLength = this.readUint32()
     if (readLength === 0) {
-      return new Uint8Array(0)
+      return new ArrayBuffer(0)
     }
-    return this.readBytes(readLength)
+    return this.arrayBuffer.readBuffer(readLength)
   }
   /**
    *  读取一个UTF-8格式的字符串

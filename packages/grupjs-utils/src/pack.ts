@@ -1,12 +1,12 @@
 import ByteArray from './byteArray'
 
 export default class Pack {
-  private arrayBuffer = new ByteArray()
+  arrayBuffer = new ByteArray()
 
   constructor() {}
 
   size() {
-    return this.arrayBuffer.byteLength()
+    return this.arrayBuffer.byteLength
   }
 
   buffer() {

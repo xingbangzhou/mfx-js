@@ -13,7 +13,6 @@ module.exports = async args => {
   const compiler = webpack(config)
   config.devServer = {allowedHosts: 'all', ...config.devServer}
   const server = new WebpackDevServer(config.devServer, compiler)
-
   const {https, host, port, publicPath} = config.devServer
   const protocol = https ? 'https' : 'http'
   const realHost = host || '0.0.0.0'
