@@ -5,39 +5,40 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier/@typescript-eslint',
-    'plugin:prettier/recommended',
+    'plugin:prettier/recommended'
   ], //使用推荐的React代码检测规范
   plugins: ['@typescript-eslint'],
   env: {
     browser: true,
-    node: true,
+    es6: true,
+    node: true
   },
   settings: {
     //自动发现React的版本，从而进行规范react代码
     react: {
       pragma: 'React',
-      version: 'detect',
-    },
+      version: 'detect'
+    }
   },
   parserOptions: {
     //指定ESLint可以解析JSX语法
     ecmaVersion: 2020,
     sourceType: 'module',
     ecmaFeatures: {
-      jsx: true,
-    },
+      jsx: true
+    }
   },
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-var-requires': 0,
-    'react/react-in-jsx-scope': 0,
-    '@typescript-eslint/explicit-function-return-type': 0,
-    '@typescript-eslint/no-empty-function': 0,
-    '@typescript-eslint/no-explicit-any': 0,
-    '@typescript-eslint/no-unused-vars': 0,
-    '@typescript-eslint/no-use-before-define': 0,
-    '@typescript-eslint/class-name-casing': 0,
-    '@typescript-eslint/triple-slash-reference': 0,
+    '@typescript-eslint/no-var-requires': 'off',
+    'react/react-in-jsx-scope': 'off', // 支持 "runtime": "automatic"
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    // '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-use-before-define': 'off',
+    '@typescript-eslint/class-name-casing': 'off',
+    '@typescript-eslint/triple-slash-reference': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     'react-hooks/rules-of-hooks': 'warn',
     'react-hooks/exhaustive-deps': 'off',
@@ -54,9 +55,9 @@ module.exports = {
         insertPragma: false,
         tabWidth: 2,
         useTabs: false,
-        endOfLine: 'auto',
-      },
-    ],
+        endOfLine: 'auto'
+      }
+    ]
   },
   overrides: [
     {
@@ -70,11 +71,11 @@ module.exports = {
           'error',
           {
             types: {
-              Function: false,
-            },
-          },
-        ],
-      },
-    },
-  ],
+              Function: false
+            }
+          }
+        ]
+      }
+    }
+  ]
 }
