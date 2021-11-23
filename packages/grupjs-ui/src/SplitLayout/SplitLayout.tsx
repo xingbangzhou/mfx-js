@@ -27,12 +27,11 @@ interface SplitLayoutState {
 }
 
 function getPanePropSize(props: SplitLayoutProps) {
-  return removeNullChildren(props.children).map(child => {
+  return removeNullChildren(props.children).map((child: any) => {
     const value = child['props']['size'] || child['props']['initialSize']
     if (value === undefined) {
       return DEFAULT_PANE_SIZE
     }
-
     return String(value)
   })
 }
@@ -253,7 +252,7 @@ export default class SplitLayout extends React.Component<SplitLayoutProps, Split
     const notNullChildren = removeNullChildren(children)
     const sizes = this.getSizes()
 
-    const elements = notNullChildren.reduce((acc: React.ReactNode[], child, idx) => {
+    const elements = notNullChildren.reduce((acc: React.ReactNode[], child: any, idx) => {
       const isPane = child['type'] === SplitPane
       const paneProps = {
         index: idx,

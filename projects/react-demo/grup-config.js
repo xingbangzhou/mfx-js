@@ -45,6 +45,7 @@ module.exports = ({env, config}) => {
     .set('assert', 'assert')
     .set('stream', 'stream-browserify')
     .set('@assets', path.resolve(rootPath, 'src', 'assets'))
+    .set('@grupjs/ui', path.resolve(__dirname, '../../packages/grupjs-ui/src'))
 
   config.plugin('html').tap(args => {
     args[0] = {

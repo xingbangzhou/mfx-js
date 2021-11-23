@@ -41,10 +41,9 @@ export default function SplitPane(props: SplitPaneProps) {
       const style: React.CSSProperties = {
         display: 'flex',
         outline: 'none',
+        [styleProp.minSize]: minSize,
+        [styleProp.maxSize]: maxSize,
       }
-
-      style[styleProp.minSize] = minSize
-      style[styleProp.maxSize] = maxSize
 
       switch (getUnit(value)) {
         case 'ratio':
@@ -53,7 +52,7 @@ export default function SplitPane(props: SplitPaneProps) {
         case '%':
         case 'px':
           style.flexGrow = 0
-          style[styleProp.size] = value
+          Object.assign(style, {[styleProp.size]: value})
           break
       }
 

@@ -63,7 +63,6 @@ module.exports = {
     {
       files: ['*.tsx', '*.ts'],
       rules: {
-        'no-unused-vars': 'off',
         'react/prop-types': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/camelcase': ['off'],
