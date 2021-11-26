@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = function (api) {
-  const useESModules = api.env(['legacy', 'modern', 'stable'])
+  const useESModules = api.env(['legacy', 'modern', 'stable', 'rollup'])
 
   const presets = [
     [
@@ -45,6 +45,5 @@ module.exports = function (api) {
     presets,
     plugins,
     ignore: [/@babel[\\|/]runtime/], // Fix a Windows issue.
-
   }
 }

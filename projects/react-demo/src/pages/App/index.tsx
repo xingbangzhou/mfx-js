@@ -1,7 +1,7 @@
 import './index.scss'
 import LeftBar from './LeftBar'
 import TitleBar from './TitleBar'
-import {SplitLayout, SplitPane} from '@grupjs/ui'
+import {SplitLayout, SplitPane} from '@grupjs/rui'
 import MainArea from './MainArea'
 
 export default function App() {

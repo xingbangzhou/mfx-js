@@ -4,7 +4,7 @@
     "target": "es5",
     "lib": ["es2020", "dom"],
     "jsx": "preserve",
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noEmit": true,
@@ -14,9 +14,10 @@
     "noErrorTruncation": false,
     "allowJs": true,
     "paths": {
-      "@grupjs/ui": ["./packages/grupjs-ui/src"],
-      "@grupjs/ui/*": ["./packages/grupjs-ui/src/*"]
+      "@grupjs/rui": ["./packages/grupjs-rui/src"],
+      "@grupjs/rui/*": ["./packages/grupjs-rui/src/*"]
     },
+    "types": ["node", "react"]
   },
-  "exclude": ["**/.*/", "**/build", "**/node_modules", "docs/export"]
+  "exclude": ["**/.*/", "**/dist", "**/node_modules", "docs/export"]
 }

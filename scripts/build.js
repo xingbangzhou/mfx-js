@@ -13,9 +13,9 @@ const validBundles = [
 ]
 
 async function run(argv) {
-  const { boundle, largeFiles, outDir: relativeOutDir, verbose } = argv
+  const { bundle, largeFiles, outDir: relativeOutDir, verbose } = argv
 
-  if (validBundles.indexOf(boundle) === -1) {
+  if (validBundles.indexOf(bundle) === -1) {
     throw new TypeError(
       `Unrecognized bundle '${bundle}'. Did you mean one of "${validBundles.join('", "')}"?`,
     )

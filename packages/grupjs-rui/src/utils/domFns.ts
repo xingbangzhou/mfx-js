@@ -90,8 +90,7 @@ export function addDomEvent(el: Node, event: string, handler: Function, inputOpt
   } else if ((el as any).attachEvent) {
     ;(el as any).attachEvent('on' + event, handler)
   } else {
-    // $FlowIgnore: Doesn't think elements are indexable
-    el['on' + event] = handler
+    ;(el as any)[`on${event}`] = handler
   }
 }
 
@@ -108,8 +107,7 @@ export function removeDomEvent(
   } else if ((el as any).detachEvent) {
     ;(el as any).detachEvent('on' + event, handler)
   } else {
-    // $FlowIgnore: Doesn't think elements are indexable
-    el['on' + event] = null
+    ;(el as any)[`on${event}`] = null
   }
 }
 

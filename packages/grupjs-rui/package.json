@@ -1,0 +1,36 @@
+{
+  "name": "@grupjs/rui",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "react-component",
+    "grupjs"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xingbangzhou/grupjs.git",
+    "directory": "packages/grupjs-rui"
+  },
+  "scripts": {
+    "build": "yarn run clean && yarn run build:rollup && yarn run build:types",
+    "build:rollup": "cross-env BABEL_ENV=stable rollup -c scripts/rollup.config.js",
+    "clean": "rimraf dist tsconfig.tsbuildinfo",
+    "build:types": "tsc -p tsconfig.json",
+    "release": "yarn build && npm publish --access public"
+  },
+  "peerDependencies": {
+    "@types/react": "^17.0.34",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "dependencies": {
+    "prop-types": "^15.7.2",
+    "react-is": "^17.0.2"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  }
+}

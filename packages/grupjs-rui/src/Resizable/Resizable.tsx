@@ -165,7 +165,7 @@ export default class Resizable extends React.Component<ResizableProps> {
     } = this.props
     return React.cloneElement(children, {
       ...p,
-      className: `${className ? `${className} ` : ''}react-resizable`,
+      className: `react-resizable ${className}`,
       children: [
         ...children.props.children,
         ...(resizeHandles as ResizeHandleAxis[]).map(handleAxis => {
