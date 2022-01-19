@@ -287,9 +287,9 @@ export default class SplitLayout extends React.Component<SplitLayoutProps, Split
 
     return (
       <div
-        className={`split-layout split-layout-${split === 'vertical' ? 'r' : 'c'} ${className ? ' ' + className : ''}`}
+        className={`splittable splittable-${split === 'vertical' ? 'r' : 'c'} ${className ? ' ' + className : ''}`}
         id={id}
-        data-type="SplitLayout"
+        data-type="Splittable"
         data-split={split}
         ref={el => {
           this.splitLayout = el

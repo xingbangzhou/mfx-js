@@ -1,5 +1,5 @@
 {
-  "name": "@grupjs/rui",
+  "name": "@grupjs/ui",
   "version": "1.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,7 +12,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/xingbangzhou/grupjs.git",
-    "directory": "packages/grupjs-rui"
+    "directory": "packages/grupjs-ui"
   },
   "scripts": {
     "build": "yarn run clean && yarn run build:rollup && yarn run build:types",

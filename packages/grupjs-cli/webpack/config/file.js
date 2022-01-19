@@ -21,11 +21,6 @@ module.exports = (env, config) => {
         fonts: {
           test: /\.(|otf|ttf|eot|woff|woff2)$/i,
           type: 'asset/resource'
-        },
-        //解决 svga 解析失败问题
-        svga: {
-          test: /\.(svga)$/i,
-          type: 'asset/resource'
         }
       }
     }

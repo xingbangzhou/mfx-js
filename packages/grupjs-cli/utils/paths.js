@@ -43,7 +43,7 @@ const getCachePaths = () => ({
 })
 
 const getRemotePaths = async () => {
-  let grupConfigPath = resolveApp('grup-config.js')
+  let grupConfigPath = resolveApp('grupjs-config.js')
   let appPackagePath = resolveApp('package.json')
   const [isRemoteConfig, isRemotePackage] = await Promise.all([
     fs.exists(grupConfigPath),

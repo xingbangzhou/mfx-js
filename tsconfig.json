@@ -14,8 +14,8 @@
     "noErrorTruncation": false,
     "allowJs": true,
     "paths": {
-      "@grupjs/rui": ["./packages/grupjs-rui/src"],
-      "@grupjs/rui/*": ["./packages/grupjs-rui/src/*"]
+      "@grupjs/ui": ["./packages/grupjs-ui/src"],
+      "@grupjs/ui/*": ["./packages/grupjs-ui/src/*"]
     },
     "types": ["node", "react"]
   },

@@ -2,8 +2,6 @@ const { resolveApp, getPaths, getCachePaths } = require("../../utils/paths")
 const { version } = require('../../package.json')
 const runtime = require('../../utils/runtime')
 
-const gitVersion = 'noGit' // cmdSync('git rev-parse --abbrev-ref HEAD') || 'noGit'
-
 module.exports = () => {
   const {env, config, args, grupConfigPath} = runtime.parameters
   const {entry, srcDir, dist} = getPaths()
@@ -15,7 +13,7 @@ module.exports = () => {
   const cachePaths = getCachePaths()
   const common = {
     cache: {
-      version: `${version}-${gitVersion}${args.hot ? '-hot' : ''}${args.grupEnv ? '-' + args.grupEnv : ''}`,
+      version: `${version}-${args.grupEnv}`,
       type: 'filesystem',
       cacheDirectory: cachePaths.webpack, //默认路径是 node_modules/.cache/webpack
       // 缓存依赖，当缓存依赖修改时，缓存失效
@@ -32,7 +30,7 @@ module.exports = () => {
       index: entry
     },
     watchOptions: {
-      ignored: ['**/.git/**', '**/node_modules/**', '**/dist/**']
+      ignored: ['**/.git/**', '**/node_modules/**']
     },
     output: {
       path: dist,
@@ -71,8 +69,7 @@ module.exports = () => {
         '.json',
         '.wasm',
         '.vue',
-        '.svg',
-        '.svga'
+        '.svg'
       ]
     },
     infrastructureLogging: {

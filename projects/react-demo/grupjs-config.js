@@ -4,20 +4,20 @@ const packagePath = path.join(rootPath, 'package.json')
 const {name} = require(packagePath)
 
 module.exports = ({env, config}) => {
-  const devPort = 5002
+  const devPort = 5001
 
   config.devServer.port(devPort)
 
-  config.plugin('env').tap(args => {
-    args[0] = {
-      ...args[0],
-      ...{
-        HOST_ENV: '',
-        NODE_DEBUG: '',
-      },
-    }
-    return args
-  })
+  // config.plugin('env').tap(args => {
+  //   args[0] = {
+  //     ...args[0],
+  //     ...{
+  //       HOST_ENV: '',
+  //       NODE_DEBUG: '',
+  //     },
+  //   }
+  //   return args
+  // })
 
   //屏蔽 图片base 64
   config.module
@@ -45,7 +45,7 @@ module.exports = ({env, config}) => {
     .set('assert', 'assert')
     .set('stream', 'stream-browserify')
     .set('@assets', path.resolve(rootPath, 'src', 'assets'))
-    .set('@grupjs/rui', path.resolve(__dirname, '../../packages/grupjs-rui/src'))
+    .set('@grupjs/ui', path.resolve(__dirname, '../../packages/grupjs-ui/src'))
 
   config.plugin('html').tap(args => {
     args[0] = {

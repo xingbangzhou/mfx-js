@@ -5,7 +5,7 @@ const withReact = require('../framework/react')
 
 class RuntimeCompile {
   parameters = {}
-  op = {} // grup-config.js 函数参数
+  op = {} // grupjs-config.js 函数参数
   appPackageJson = {}
   grupConfigJson = {}
 
