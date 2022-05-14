@@ -1,13 +1,10 @@
-module.exports = (env, config, { hot }) => {
-  const isDev = env === 'development'
+const { cliEnv } = require('.')
 
-  const modules = {
+const setup = function () {
+  const { wpConfig } = cliEnv
+
+  wpConfig.merge({
     module: {
-      generator: {
-        'asset/resource': {
-          publicPath: '/'
-        }
-      },
       rule: {
         mjs: {
           test: /\.m?js/,
@@ -24,31 +21,29 @@ module.exports = (env, config, { hot }) => {
               options: {
                 presets: [
                   [
-                    '@babel/preset-env',
+                    require.resolve('@babel/preset-env'),
                     {
                       useBuiltIns: 'entry',
-                      debug: false,
                       corejs: 3,
                       exclude: ['transform-typeof-symbol'],
                       loose: true
                     }
                   ],
-                  '@babel/preset-typescript'
+                  require.resolve('@babel/preset-typescript')
                 ],
                 plugins: [
                   [
-                    '@babel/plugin-transform-runtime',
+                    require.resolve('@babel/plugin-transform-runtime'),
                     {
                       corejs: false,
                       helpers: true,
                       version: require('@babel/runtime/package.json').version,
                       regenerator: true,
-                      useESModules: false,
-                      absoluteRuntime: false
+                      useESModules: false
                     }
                   ],
-                  ['@babel/plugin-proposal-decorators', {legacy: true}],
-                  ['@babel/plugin-proposal-class-properties', {loose: true}]
+                  [require.resolve('@babel/plugin-proposal-decorators'), {legacy: true}],
+                  [require.resolve('@babel/plugin-proposal-class-properties'), {loose: true}]
                 ]
               }
             }
@@ -56,7 +51,9 @@ module.exports = (env, config, { hot }) => {
         }
       }
     }
-  }
+  })
+}
 
-  config.merge(modules)
+module.exports = {
+  setup
 }

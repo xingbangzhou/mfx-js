@@ -1,3 +1,7 @@
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const { cliEnv } = require('.')
+
 const cssRegex = /\.css$/
 const cssModuleRegex = /\.module\.css$/
 const sassRegex = /\.(scss|sass)$/
@@ -5,14 +9,12 @@ const sassModuleRegex = /\.module\.(scss|sass)$/
 const lessRegex = /\.less$/
 const lessModuleRegex = /\.module\.less$/
 
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-
-module.exports = (env, config, args) => {
+const setup = function () {
+  const {env, wpConfig } = cliEnv
   const isDev = env === 'development'
   const localIdentName = isDev ? '[path][name]-[local]-[hash:base64:5]' : '_[hash:base64:7]'
 
-  const getStyleLoader = (modules = false, preProcessor = {}) => {
+  const getLoaders = (modules = false, preProcessor = {}) => {
     return {
       style: {
         loader: isDev ? require.resolve('style-loader') : MiniCssExtractPlugin.loader,
@@ -36,31 +38,31 @@ module.exports = (env, config, args) => {
     }
   }
 
-  const styles = {
+  wpConfig.merge({
     module: {
       rule: {
         css: {
           test: cssRegex,
           exclude: cssModuleRegex,
           use: {
-            ...getStyleLoader()
+            ...getLoaders()
           }
         },
         cssModule: {
           test: cssModuleRegex,
           use: {
-            ...getStyleLoader(true)
+            ...getLoaders(true)
           }
         },
         sassModule: {
           test: sassModuleRegex,
           use: {
-            ...getStyleLoader(true, {
+            ...getLoaders(true, {
               sass: {
                 loader: require.resolve('sass-loader'),
                 options: {
                   implementation: require('sass'),
-                  sourceMap: env === 'development'
+                  sourceMap: isDev
                 }
               }
             })
@@ -70,12 +72,12 @@ module.exports = (env, config, args) => {
           test: sassRegex,
           exclude: sassModuleRegex,
           use: {
-            ...getStyleLoader(false, {
+            ...getLoaders(false, {
               sass: {
                 loader: require.resolve('sass-loader'),
                 options: {
                   implementation: require('sass'),
-                  sourceMap: env === 'development'
+                  sourceMap: isDev
                 }
               }
             })
@@ -85,7 +87,7 @@ module.exports = (env, config, args) => {
           test: lessRegex,
           exclude: lessModuleRegex,
           use: {
-            ...getStyleLoader(false, {
+            ...getLoaders(false, {
               less: {
                 loader: require.resolve('less-loader'),
                 options: {
@@ -98,7 +100,7 @@ module.exports = (env, config, args) => {
         lessModule: {
           test: lessModuleRegex,
           use: {
-            ...getStyleLoader(true, {
+            ...getLoaders(true, {
               less: {
                 loader: require.resolve('less-loader')
               }
@@ -107,10 +109,10 @@ module.exports = (env, config, args) => {
         }
       }
     }
-  }
+  })
 
   if (!isDev) {
-    config.optimization.minimizer('CssMinimizerPlugin').use(CssMinimizerPlugin, [
+    wpConfig.optimization.minimizer('CssMinimizerPlugin').use(CssMinimizerPlugin, [
       {
         parallel: true,
         minimizerOptions: {
@@ -123,7 +125,7 @@ module.exports = (env, config, args) => {
         }
       }
     ])
-    config.plugin('MiniCssExtractPlugin').use(MiniCssExtractPlugin, [
+    wpConfig.plugin('MiniCssExtractPlugin').use(MiniCssExtractPlugin, [
       {
         ignoreOrder: true,
         filename: 'static/css/[name].[contenthash:8].css',
@@ -131,6 +133,8 @@ module.exports = (env, config, args) => {
       }
     ])
   }
+}
 
-  config.merge(styles)
+module.exports = {
+  setup
 }

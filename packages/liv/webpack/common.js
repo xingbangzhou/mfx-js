@@ -1,42 +1,40 @@
-const { resolveApp, getPaths, getCachePaths } = require("../../utils/paths")
+const { cliEnv } = require('.')
 const { version } = require('../../package.json')
-const runtime = require('../../utils/runtime')
 
-module.exports = () => {
-  const {env, config, args, grupConfigPath} = runtime.parameters
-  const {entry, srcDir, dist} = getPaths()
+const setup = async () => {
+  const { env, options, wpConfig, srcDir, distDir, entry, cacheFiles, configFile } = cliEnv
+  const { livEnv } = options
+
   const isDev = env === 'development'
   const buildDependenciesConfigs = [__filename]
-  if (grupConfigPath) {
-    buildDependenciesConfigs.push(grupConfigPath)
+  if (configFile) {
+    buildDependenciesConfigs.push(configFile)
   }
-  const cachePaths = getCachePaths()
-  const common = {
+  // 基础配置
+  wpConfig.merge({
     cache: {
-      version: `${version}-${args.grupEnv}`,
+      version: `${version}-${livEnv}`,
       type: 'filesystem',
-      cacheDirectory: cachePaths.webpack, //默认路径是 node_modules/.cache/webpack
+      cacheDirectory: cacheFiles.webpack, //默认路径是 node_modules/.cache/webpack
       // 缓存依赖，当缓存依赖修改时，缓存失效
       buildDependencies: {
         // 将你的配置添加依赖，更改配置时，使得缓存失效
-        config: buildDependenciesConfigs,
-      },
+        config: buildDependenciesConfigs
+      }
     },
     optimization: {
       chunkIds: 'named',
-      minimize: !isDev
+      minimize: !isDev,
+      emitOnErrors: true
     },
     entry: {
       index: entry
     },
-    watchOptions: {
-      ignored: ['**/.git/**', '**/node_modules/**']
-    },
     output: {
-      path: dist,
+      path: distDir,
+      publicPath: 'auto',
       filename: 'static/js/[name].[contenthash:8].js',
       assetModuleFilename: 'static/asset/[name].[contenthash:8][ext][query]',
-      publicPath: 'auto',
       environment: {
         arrowFunction: false,
         bigIntLiteral: false,
@@ -72,21 +70,21 @@ module.exports = () => {
         '.svg'
       ]
     },
-    infrastructureLogging: {
-      level: args.progress ? 'info' : 'warn'
-    },
     stats: {
-      colors: true,
-      preset: 'minimal',
-      moduleTrace: true,
-      errorDetails: true
+      preset: 'errors-warnings'
+    },
+    experiments: {
+      backCompat: true,
+      topLevelAwait: true
     }
-  }
-  config.merge(common)
+  })
+  // 扩展配置
+  require('./css').setup()
+  require('./file').setup()
+  require('./module').setup()
+  require('./plugin').setup()
+}
 
-  require('./style')(env, config, args)
-  require('./file')(env, config, args)
-  require('./module')(env, config, args)
-  require('./plugin')(env, config, args)
-  require('./experiments')(env, config, args)
+module.exports = {
+  setup
 }
