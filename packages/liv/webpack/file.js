@@ -1,7 +1,7 @@
-const { cliEnv } = require('.')
+const { wpEnv } = require('./wpEnv')
 
 const setup = function () {
-  const { wpConfig } = cliEnv
+  const { wpConfig } = wpEnv
 
   wpConfig.merge({
     module: {
@@ -25,7 +25,7 @@ const setup = function () {
           }
         },
         image: {
-          test: /\.(png|jpe?g|gif|webp|ico)$/i,
+          test: /\.(a?png|jpe?g|gif|webp|ico|bmp|avif)$/i,
           type: 'asset/resource'
         },
         fonts: {

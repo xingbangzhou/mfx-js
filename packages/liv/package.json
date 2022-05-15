@@ -1,5 +1,5 @@
 {
-  "name": "@liv/cli",
+  "name": "@livjs/cli",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "typescript"
   ],
   "bin": {
-    "liv": "./bin/cli.js"
+    "liv": "./bin/liv.js"
   },
   "engines": {
     "node": ">=12"
@@ -25,17 +25,13 @@
     "@babel/runtime": "^7.16.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.0-rc.5",
     "@svgr/webpack": "^5.5.0",
-    "address": "^1.1.2",
     "babel-loader": "^8.2.3",
     "chalk": "^4.1.2",
     "clean-webpack-plugin": "^3.0.0",
     "commander": "^8.1.0",
     "compression": "^1.7.4",
-    "copy-webpack-plugin": "^9.0.1",
-    "cors": "^2.8.5",
     "css-loader": "^6.2.0",
     "css-minimizer-webpack-plugin": "^3.0.2",
-    "default-gateway": "^6.0.3",
     "eslint-webpack-plugin": "^3.1.0",
     "express": "^4.17.1",
     "file-loader": "^6.2.0",
@@ -55,6 +51,7 @@
     "url-loader": "^4.1.1",
     "webpack": "5.64.0",
     "webpack-chain": "^6.5.1",
-    "webpack-dev-server": "4.4.0"
+    "webpack-dev-server": "4.4.0",
+    "webpackbar": "^5.0.0-3"
   }
 }

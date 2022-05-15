@@ -1,7 +1,7 @@
-const { cliEnv } = require('.')
+const { wpEnv } = require('./wpEnv')
 
-const setup = function () {
-  const { env, options, wpConfig } = cliEnv
+const setup = () => {
+  const { env, options, wpConfig } = wpEnv
   const { hot } = options
   const isDev = env === 'development'
 
@@ -10,7 +10,11 @@ const setup = function () {
     .use('babel')
     .tap(o => {
       // react
-      o.presets.push(require('@babel/preset-react').default)
+      o.presets.push([
+        require.resolve('@babel/preset-react'), {
+          "runtime": "automatic"
+        }
+      ])
       // fast refresh
       isDev && hot && o.plugins.unshift(require.resolve('react-refresh/babel'))
       return o

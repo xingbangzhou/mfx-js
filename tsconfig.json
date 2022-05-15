@@ -13,10 +13,6 @@
     "allowSyntheticDefaultImports": true,
     "noErrorTruncation": false,
     "allowJs": true,
-    "paths": {
-      "@grupjs/ui": ["./packages/grupjs-ui/src"],
-      "@grupjs/ui/*": ["./packages/grupjs-ui/src/*"]
-    },
     "types": ["node", "react"]
   },
   "exclude": ["**/.*/", "**/dist", "**/node_modules", "docs/export"]

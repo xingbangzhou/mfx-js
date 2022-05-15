@@ -1,10 +1,19 @@
 const webpack = require('webpack')
 const chalk = require('chalk')
+const fs = require('fs-extra')
+const {loadWPConfig} = require('../webpack')
+const {getCacheFiles} = require('../webpack/wpEnv')
+
+function buildServeConfig(path, config) {
+  fs.writeJson(path, config, err => {
+    if (err) return console.error(err)
+  })
+}
 
 module.exports = async options => {
-  const { webpackConfig: wpConfig } = await loadWPConfig('production', options)
+  const config = await loadWPConfig('production', options)
 
-  webpack(wpConfig, (err, status) => {
+  webpack(config, (err, status) => {
     if (err) {
       console.error(err.stack || err)
       if (err.details) {
@@ -41,5 +50,11 @@ module.exports = async options => {
         assets: true
       })
     )
+
+    // 生成 serve 模式下需要文件
+    const cacheFiles = getCacheFiles()
+    fs.writeJson(cacheFiles.buildConfig, { devServer: config.devServer }, err => {
+      if (err) console.error(err)
+    })
   })
 }

@@ -6,14 +6,14 @@ const webpackbar = require('webpackbar')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const fs = require('fs')
-
-const { resolveApp, cliEnv } = require('.')
+const { resolveApp, wpEnv, getCacheFiles } = require('./wpEnv')
 
 const setup = function () {
-  const { env, options, wpConfig } = cliEnv
+  const { env, options, wpConfig } = wpEnv
   const isDev = env === 'development'
-  const { appDir, srcDir, favicon, template, cacheFiles } = cliEnv
+  const { appDir, srcDir, favicon, template } = wpEnv
   const { livEnv, progress } = options
+  const cacheFiles = getCacheFiles()
 
   const plugin = {
     env: {
@@ -30,7 +30,7 @@ const setup = function () {
       plugin: HtmlWebpackPlugin,
       args: [
         {
-          title: 'EMP',
+          title: 'LIV',
           template: template,
           favicon: favicon,
           files: {
@@ -99,9 +99,7 @@ const setup = function () {
         {
           extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
           context: appDir,
-          // overrideConfigFile: resolveApp('.eslintrc.js'),
           files: ['src/**/*.{ts,tsx,js,jsx}'],
-          // eslintPath: require.resolve('eslint'),
           cache: true,
           cacheLocation: cacheFiles.eslint,
           fix: true,

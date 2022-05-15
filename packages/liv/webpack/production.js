@@ -1,8 +1,8 @@
 const TerserPlugin = require('terser-webpack-plugin')
-const { cliEnv } = require('.')
+const { wpEnv } = require('./wpEnv')
 
 const setup = function () {
-  const { wpConfig } = cliEnv
+  const { wpConfig } = wpEnv
 
   wpConfig.merge({
     mode: 'production',

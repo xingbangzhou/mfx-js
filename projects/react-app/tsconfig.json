@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig",
+  "include": ["src/"],
+  "compilerOptions": {
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"]
+    },
+    "suppressImplicitAnyIndexErrors": true
+  }
+}

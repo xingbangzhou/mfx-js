@@ -1,6 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-const { cliEnv } = require('.')
+const { wpEnv } = require('./wpEnv')
 
 const cssRegex = /\.css$/
 const cssModuleRegex = /\.module\.css$/
@@ -10,7 +10,7 @@ const lessRegex = /\.less$/
 const lessModuleRegex = /\.module\.less$/
 
 const setup = function () {
-  const {env, wpConfig } = cliEnv
+  const {env, wpConfig } = wpEnv
   const isDev = env === 'development'
   const localIdentName = isDev ? '[path][name]-[local]-[hash:base64:5]' : '_[hash:base64:7]'
 

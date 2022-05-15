@@ -1,0 +1,14 @@
+#root, .app {
+  width: 100%;
+  height: 100%;
+
+  .content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+    .mainArea {
+      flex: 1 1 0;
+    }
+  }
+}

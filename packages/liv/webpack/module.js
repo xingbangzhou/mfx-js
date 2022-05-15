@@ -1,7 +1,7 @@
-const { cliEnv } = require('.')
+const { wpEnv } = require('./wpEnv')
 
 const setup = function () {
-  const { wpConfig } = cliEnv
+  const { wpConfig } = wpEnv
 
   wpConfig.merge({
     module: {

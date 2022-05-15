@@ -28,4 +28,12 @@ commander
     require('../cli/build')({livEnv, progress})
   })
 
+commander
+  .command('serve')
+  .description('正式环境调试')
+  .action(() => {
+    const livEnv = 'prod'
+    require('../cli/serve')({livEnv})
+  })
+
 commander.parse(process.argv)

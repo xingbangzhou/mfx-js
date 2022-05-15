@@ -1,14 +1,15 @@
-const { cliEnv } = require('.')
-const { version } = require('../../package.json')
+const { resolveApp, wpEnv, getCacheFiles } = require('./wpEnv')
+const { version } = require('../package.json')
 
 const setup = async () => {
-  const { env, options, wpConfig, srcDir, distDir, entry, cacheFiles, configFile } = cliEnv
+  const { env, options, wpConfig, srcDir, distDir, entry, remoteConfigFile } = wpEnv
   const { livEnv } = options
+  const cacheFiles = getCacheFiles()
 
   const isDev = env === 'development'
   const buildDependenciesConfigs = [__filename]
-  if (configFile) {
-    buildDependenciesConfigs.push(configFile)
+  if (remoteConfigFile) {
+    buildDependenciesConfigs.push(remoteConfigFile)
   }
   // 基础配置
   wpConfig.merge({
@@ -70,12 +71,11 @@ const setup = async () => {
         '.svg'
       ]
     },
-    stats: {
-      preset: 'errors-warnings'
-    },
     experiments: {
       backCompat: true,
-      topLevelAwait: true
+      topLevelAwait: true,
+      asyncWebAssembly: true,
+      syncWebAssembly: true
     }
   })
   // 扩展配置

@@ -1,31 +1,19 @@
-const { cliEnv } = require('.')
+const { wpEnv } = require('./wpEnv')
 
 const setup = function () {
-  const { wpConfig, options, public } = cliEnv
+  const { wpConfig, options, public } = wpEnv
   const { hot } = options
 
   wpConfig.merge({
     mode: 'development',
-    devtool: 'inline-source-map',
-    devServer: {
-      port: 8000,
-      firewall: false,
-      historyApiFallback: true,
-      hot: hot === true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-        'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
-      },
-      static: [
-        {
-          directory: public,
-          publicPath: '/'
-        }
-      ],
-      overlay: !hot
-    }
+    optimization: {
+      usedExports: true,
+    },
+    devtool: 'eval'
   })
+
+  const devServer = require('./devServer')(hot, public)
+  wpConfig.merge(devServer)
 }
 
 module.exports = {
