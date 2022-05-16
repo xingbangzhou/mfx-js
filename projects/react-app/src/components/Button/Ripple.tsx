@@ -21,7 +21,7 @@ const Ripple = memo(function Ripple(props: RippleProps) {
   const onMouseDown = useCallback((ev: MouseEvent) => {
     timerId.current && window.clearTimeout(timerId.current)
     timerId.current = undefined
-    const ripple = nodeRef.current
+    const ripple = nodeRef.current?.firstChild as HTMLSpanElement | undefined
     if (!ripple) return
     const parentElement = ripple.parentElement!
     const size = parentElement.offsetWidth
@@ -35,12 +35,12 @@ const Ripple = memo(function Ripple(props: RippleProps) {
       height: size * 2 + 'px',
     })
     ripple.classList.remove(styles.active)
-    ripple.classList.remove(styles.start)
 
     timerId.current = window.setTimeout(() => {
-      ripple.classList.add('start')
+      ripple.classList.add(styles.start)
       timerId.current = window.setTimeout(() => {
-        ripple.classList.add('active')
+        timerId.current = undefined
+        ripple.classList.add(styles.active)
       })
     })
   }, [])
@@ -49,20 +49,24 @@ const Ripple = memo(function Ripple(props: RippleProps) {
     timerId.current && window.clearTimeout(timerId.current)
     timerId.current = window.setTimeout(() => {
       timerId.current = undefined
-      nodeRef.current?.classList.remove(styles.active)
-      nodeRef.current?.classList.remove(styles.start)
-    })
+      const ripple = nodeRef.current?.firstChild as HTMLSpanElement | undefined
+      ripple?.classList.remove(styles.active, styles.start)
+    }, 800)
   }, [])
 
-  const onRef = useCallback((el: HTMLSpanElement | null) => {
+  const onRef = useCallback((element: HTMLSpanElement | null) => {
     clear()
-    nodeRef.current = el || undefined
+    nodeRef.current = element || undefined
     const parentElement = nodeRef.current?.parentElement
     parentElement?.addEventListener('mousedown', onMouseDown)
     parentElement?.addEventListener('mouseup', onMouseUp)
   }, [])
 
-  return <span ref={onRef} style={{backgroundColor: color}} />
+  return (
+    <span ref={onRef} className={styles.ripple}>
+      <span style={{backgroundColor: color}} />
+    </span>
+  )
 })
 
 export default Ripple

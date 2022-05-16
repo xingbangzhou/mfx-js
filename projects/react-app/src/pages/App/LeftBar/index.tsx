@@ -2,11 +2,12 @@ import {memo, useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {DraggableCore, DraggableData} from 'src/components/Layouts'
 import styles from './index.module.scss'
 
-const MINWIDTH = 273
-const MAXWIDTH = 420
+const MINWIDTH = 240
+const MAXWIDTH = 240
 
 const LeftBar = memo(function LeftBar() {
   const [width, setWidth] = useState(MINWIDTH)
+  // const [maximize, setMaximize]
 
   const rootRef = useRef<HTMLDivElement>(null)
   const slackWidth = useRef(0)

@@ -4,7 +4,7 @@ const rootPath = path.resolve('./')
 const { name } = require(path.join(rootPath, 'package.json'))
 
 module.exports = (wpConfig, options, env) => {
-  const devPort = 5001
+  const devPort = 5002
   wpConfig.devServer.port(devPort)
 
   wpConfig.module

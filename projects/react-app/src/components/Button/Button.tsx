@@ -5,15 +5,15 @@ import Ripple from './Ripple'
 export interface ButtonProps {
   className?: string
   style?: React.CSSProperties
-  children?: React.ReactNode
+  title?: string
 }
 
 const Button = React.memo(function Button(props: ButtonProps) {
-  const {className, style, children} = props
+  const {className, style, title} = props
 
   return (
     <button className={`${styles.buttonWrap} ${className}`} style={style}>
-      {children}
+      {title}
       <Ripple />
     </button>
   )
