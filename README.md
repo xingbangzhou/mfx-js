@@ -1,3 +1,5 @@
-# XHFEG
+# LIVJS
+Technology: javascript, typescript, react, webpack.
 
-learn js、ts、react and webpack cli.
+## Liv
+cli
