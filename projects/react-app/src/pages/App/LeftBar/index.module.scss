@@ -1,3 +1,5 @@
+$imgs: '~assets/imgs/app/';
+
 .leftBar {
   position: relative;
   height: 100%;
@@ -12,5 +14,20 @@
     // cursor: ew-resize;
     user-select: none;
     z-index: 10;
+  }
+
+  .shrink {
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    width: 12px;
+    height: 138px;
+    margin-top: -69px;
+    cursor: pointer;
+    background: url($imgs + 'lf-shrink.png') no-repeat;
+
+    &.expand {
+      background: url($imgs + 'lf-expand.png') no-repeat;
+    }
   }
 }
