@@ -1,7 +1,7 @@
-const { wpEnv } = require('./wpEnv')
+const {configure} = require('./configure')
 
 const setup = () => {
-  const { env, options, wpConfig } = wpEnv
+  const { env, options, wpConfig } = configure
   const { hot } = options
   const isDev = env === 'development'
 

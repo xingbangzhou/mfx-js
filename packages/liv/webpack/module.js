@@ -1,7 +1,7 @@
-const { wpEnv } = require('./wpEnv')
+const {configure} = require('./configure')
 
 const setup = function () {
-  const { wpConfig } = wpEnv
+  const { wpConfig } = configure
 
   wpConfig.merge({
     module: {

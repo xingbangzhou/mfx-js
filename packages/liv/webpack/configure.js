@@ -27,33 +27,33 @@ const cacheFiles = {
 
 const getCacheFiles = () => cacheFiles
 
-const wpEnv = {}
+const configure = {}
 
-const initEnv = async (wpConfig, env, options) => {
-  wpEnv.wpConfig = wpConfig
-  wpEnv.env = env
-  wpEnv.options = options
-  wpEnv.srcDir = resolveApp('src')
-  wpEnv.distDir = resolveApp('dist')
-  wpEnv.entry = await getEntryFile()
-  wpEnv.public = resolveApp('public')
-  const favicon =  path.join(wpEnv.public, 'favicon.ico')
-  const template = path.join(wpEnv.public, 'index.html')
-  wpEnv.favicon = fs.existsSync(favicon) ? favicon : path.join(__dirname, '../template/public/favicon.ico')
-  wpEnv.template = fs.existsSync(template) ? template : path.join(__dirname, '../template/public/index.html')
+const setup = async (wpConfig, env, options) => {
+  configure.wpConfig = wpConfig
+  configure.env = env
+  configure.options = options
+  configure.srcDir = resolveApp('src')
+  configure.distDir = resolveApp('dist')
+  configure.entry = await getEntryFile()
+  configure.public = resolveApp('public')
+  const favicon =  path.join(configure.public, 'favicon.ico')
+  const template = path.join(configure.public, 'index.html')
+  configure.favicon = fs.existsSync(favicon) ? favicon : path.join(__dirname, '../template/public/favicon.ico')
+  configure.template = fs.existsSync(template) ? template : path.join(__dirname, '../template/public/index.html')
   let remoteConfig = resolveApp(CONFIGNAME)
   let appPackage = resolveApp('package.json')
   const [isRemoteConfig, isRemotePackage] = await Promise.all([
     fs.exists(remoteConfig),
     fs.exists(appPackage)
   ])
-  wpEnv.remoteConfigFile = isRemoteConfig ? remoteConfig : undefined
-  wpEnv.appPackageFile = isRemotePackage ? appPackage : undefined
+  configure.remoteConfigFile = isRemoteConfig ? remoteConfig : undefined
+  configure.appPackageFile = isRemotePackage ? appPackage : undefined
 }
 
 module.exports = {
-  wpEnv,
+  configure,
+  setup,
   resolveApp,
-  initEnv,
   getCacheFiles
 }

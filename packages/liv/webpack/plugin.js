@@ -5,14 +5,14 @@ const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPl
 const webpackbar = require('webpackbar')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
+const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer')
 const fs = require('fs')
-const { resolveApp, wpEnv, getCacheFiles } = require('./wpEnv')
+const { configure, resolveApp, getCacheFiles } = require('./configure')
 
 const setup = function () {
-  const { env, options, wpConfig } = wpEnv
+  const { env, options, wpConfig, appDir, srcDir, favicon, template } = configure
   const isDev = env === 'development'
-  const { appDir, srcDir, favicon, template } = wpEnv
-  const { livEnv, progress } = options
+  const { livEnv, analyze, progress } = options
   const cacheFiles = getCacheFiles()
 
   const plugin = {
@@ -60,7 +60,7 @@ const setup = function () {
     }
   }
 
-  // progress
+  // Progress
   if (progress) {
     plugin.progress = {
       plugin: webpackbar,
@@ -105,6 +105,18 @@ const setup = function () {
           fix: true,
           threads: true,
           lintDirtyModulesOnly: false
+        }
+      ]
+    }
+  }
+  // Analyze
+  if (analyze) {
+    plugin.analyzer = {
+      plugin: BundleAnalyzerPlugin,
+      args: [
+        {
+          reportFilename: 'report.html',
+          openAnalyzer: true,
         }
       ]
     }

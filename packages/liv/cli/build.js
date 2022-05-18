@@ -2,7 +2,7 @@ const webpack = require('webpack')
 const chalk = require('chalk')
 const fs = require('fs-extra')
 const {loadWPConfig} = require('../webpack')
-const {getCacheFiles} = require('../webpack/wpEnv')
+const {getCacheFiles} = require('../webpack/configure')
 
 function buildServeConfig(path, config) {
   fs.writeJson(path, config, err => {

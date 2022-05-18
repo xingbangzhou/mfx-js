@@ -1,8 +1,8 @@
-const { resolveApp, wpEnv, getCacheFiles } = require('./wpEnv')
+const { configure, resolveApp, getCacheFiles } = require('./configure')
 const { version } = require('../package.json')
 
 const setup = async () => {
-  const { env, options, wpConfig, srcDir, distDir, entry, remoteConfigFile } = wpEnv
+  const { env, options, wpConfig, srcDir, distDir, entry, remoteConfigFile } = configure
   const { livEnv } = options
   const cacheFiles = getCacheFiles()
 

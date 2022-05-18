@@ -5,7 +5,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "liv dev --env dev --hot",
-    "build": "liv build --env prod",
+    "build": "liv build",
+    "build:dev": "liv build --env dev",
+    "build:analyze": "liv build --analyze",
     "serve": "liv serve"
   },
   "dependencies": {

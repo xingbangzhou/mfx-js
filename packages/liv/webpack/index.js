@@ -1,15 +1,15 @@
 const fs = require('fs-extra')
 const WPConfig = require('webpack-chain')
-const { wpEnv, initEnv } = require('./wpEnv')
+const { configure, setup } = require('./configure')
 
 const loadWPConfig = async (env, options) => {
   const wpConfig = new WPConfig()
   //
-  await initEnv(wpConfig, env, options)
+  await setup(wpConfig, env, options)
   await require('./common').setup()
   await require(`./${env}`).setup()
   //
-  const { remoteConfigFile, appPackageFile } = wpEnv
+  const { remoteConfigFile, appPackageFile } = configure
   const appPackageJson = appPackageFile ? await fs.readJson(appPackageFile) : {dependencies: {}, devDependencies: {}}
   let remoteConfigFn = undefined
   if (remoteConfigFile) {

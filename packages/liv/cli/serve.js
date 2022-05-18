@@ -3,7 +3,7 @@ const https = require('https')
 const path = require('path')
 const express = require('express')
 const compression = require('compression')
-const {resolveApp, getCacheFiles} = require('../webpack/wpEnv')
+const {resolveApp, getCacheFiles} = require('../webpack/configure')
 
 let config = {}
 config = require('../webpack/devServer')(false)
