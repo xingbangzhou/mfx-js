@@ -6,7 +6,7 @@ const compression = require('compression')
 const {resolveApp, getCacheFiles} = require('../webpack/configure')
 
 let config = {}
-config = require('../webpack/devServer')(false)
+config = require('../webpack/devServer')(false, true)
 const cacheFiles = getCacheFiles()
 if (fs.existsSync(cacheFiles.buildConfig)) {
   const buildConfig = require(cacheFiles.buildConfig)

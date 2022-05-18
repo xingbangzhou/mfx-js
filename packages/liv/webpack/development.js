@@ -2,7 +2,7 @@ const {configure} = require('./configure')
 
 const setup = function () {
   const { wpConfig, options, public } = configure
-  const { hot } = options
+  const { hot, open } = options
 
   wpConfig.merge({
     mode: 'development',
@@ -12,7 +12,7 @@ const setup = function () {
     devtool: 'eval'
   })
 
-  const devServer = require('./devServer')(hot, public)
+  const devServer = require('./devServer')(hot, open, public)
   wpConfig.merge(devServer)
 }
 

@@ -8,7 +8,7 @@ const SHRINKWIDTH = 50
 
 const LeftBar = memo(function LeftBar() {
   const [width, setWidth] = useState(MINWIDTH)
-  const [shrinked, setShrinked] = useState(false)
+  const [shrinked, setShrinked] = useState(true)
 
   const rootRef = useRef<HTMLDivElement>(null)
   const slackWidth = useRef(0)
@@ -30,9 +30,7 @@ const LeftBar = memo(function LeftBar() {
     (ev: MouseEvent, {deltaX}: DraggableData) => {
       let newWidth = width + deltaX
       newWidth = runConstraints(newWidth)
-      if (newWidth !== width) {
-        setWidth(newWidth)
-      }
+      setWidth(newWidth)
     },
     [width],
   )
@@ -63,7 +61,7 @@ const LeftBar = memo(function LeftBar() {
         maxWidth: `calc(100% - ${realWidth}px)`,
       })
     }
-  }, [width, SHRINKWIDTH])
+  }, [width, shrinked])
 
   const rootStyle = useMemo(() => {
     return {

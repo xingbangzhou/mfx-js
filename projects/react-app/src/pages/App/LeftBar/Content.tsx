@@ -1,7 +1,12 @@
 import {memo} from 'react'
+import TreeView from 'src/components/TreeView'
 
 const Content = memo(function Content() {
-  return <div></div>
+  return (
+    <div>
+      <TreeView />
+    </div>
+  )
 })
 
 export default Content

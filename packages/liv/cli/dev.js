@@ -10,17 +10,14 @@ module.exports = async options => {
   const compiler = webpack(config)
   const server = new WebpackDevServer(config.devServer, compiler)
   const host = config.devServer.host || 'localhost'
-  server.listen(config.devServer.port, host, err => {
-    if (err) {
-      console.error(err)
-      return
-    }
-    if (open === true) {
-      let url = host
-      if (config.devServer.port != 80) url += ':' + config.devServer.port
-      const protocol = config.devServer.https ? 'https' : 'http'
-      openBrowser(`${protocol}://${url}`)
-      console.log(`Starting server on ${protocol}://${host}:${config.devServer.port}`)
-    }
+  // config.devServer.port, host,
+  server.startCallback(() => {
+    // if (open === true) {
+    //   let url = host
+    //   if (config.devServer.port != 80) url += ':' + config.devServer.port
+    //   const protocol = config.devServer.https ? 'https' : 'http'
+    //   openBrowser(`${protocol}://${url}`)
+    //   console.log(`Starting server on ${protocol}://${host}:${config.devServer.port}`)
+    // }
   })
 }
