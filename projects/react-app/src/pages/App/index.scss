@@ -1,6 +1,9 @@
+$imgs: '~assets/imgs/app/';
+
 #root, .app {
   width: 100%;
   height: 100%;
+  cursor: url($imgs + 'cursor.png'), auto;
 
   .content {
     width: 100%;
