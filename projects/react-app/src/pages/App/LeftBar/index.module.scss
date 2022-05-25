@@ -4,6 +4,7 @@ $imgs: '~assets/imgs/app/';
   position: relative;
   height: 100%;
   background-color: #2f3035;
+  transition: width 500ms;
 
   .resizer {
     position: absolute;
