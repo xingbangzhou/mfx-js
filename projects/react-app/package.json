@@ -11,6 +11,7 @@
     "serve": "liv serve"
   },
   "dependencies": {
+    "@emotion/styled": "^11.8.1",
     "assert": "^2.0.0",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
@@ -20,9 +21,11 @@
     "stream-browserify": "^3.0.0"
   },
   "devDependencies": {
+    "@emotion/react": "^11.9.0",
     "@livjs/cli": "^1.0.0",
     "@types/react": "^17.0.34",
     "@types/react-dom": "^17.0.11",
+    "eslint-plugin-react-hooks": "^4.5.0",
     "worker-loader": "^3.0.8"
   }
 }

@@ -1,14 +1,15 @@
 import React, {memo, useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {DraggableCore, DraggableData} from 'src/components/Layouts'
+import Content from './Content'
 import styles from './index.module.scss'
 
-const MINWIDTH = 240
-const MAXWIDTH = 240
+const MINWIDTH = 280
+const MAXWIDTH = 280
 const SHRINKWIDTH = 50
 
 const LeftBar = memo(function LeftBar() {
   const [width, setWidth] = useState(MINWIDTH)
-  const [shrinked, setShrinked] = useState(true)
+  const [shrinked] = useState(false)
 
   const rootRef = useRef<HTMLDivElement>(null)
   const slackWidth = useRef(0)
@@ -69,24 +70,25 @@ const LeftBar = memo(function LeftBar() {
     }
   }, [width, shrinked])
 
-  const onShrink = useCallback(
-    (ev: React.MouseEvent<HTMLSpanElement>) => {
-      ev.stopPropagation()
-      setShrinked(!shrinked)
-    },
-    [shrinked],
-  )
+  // const onShrink = useCallback(
+  //   (ev: React.MouseEvent<HTMLSpanElement>) => {
+  //     ev.stopPropagation()
+  //     setShrinked(!shrinked)
+  //   },
+  //   [shrinked],
+  // )
 
-  const shrinkClass = useMemo(() => {
-    return `${styles.shrink} ${shrinked ? styles.expand : undefined}`
-  }, [shrinked])
+  // const shrinkClass = useMemo(() => {
+  //   return `${styles.shrink} ${shrinked ? styles.expand : undefined}`
+  // }, [shrinked])
 
   return (
     <div ref={rootRef} className={styles.leftBar} style={rootStyle}>
+      <Content />
       <DraggableCore onStop={onResizeStop} onStart={onResizeStart} onDrag={onResize}>
         <span className={styles.resizer} />
       </DraggableCore>
-      <span className={shrinkClass} onClick={onShrink} />
+      {/* <span className={shrinkClass} onClick={onShrink} /> */}
     </div>
   )
 })

@@ -1,24 +1,53 @@
-import {memo, ReactNode, useMemo} from 'react'
+import clsx from 'clsx'
+import {HTMLAttributes, memo, ReactNode, forwardRef, Ref, MouseEvent} from 'react'
+import useTreeItem from './useTreeItem'
 
-interface TreeItemContentProps {
+interface TreeItemContentProps extends HTMLAttributes<HTMLElement> {
   label?: ReactNode
+  itemId: string
+  icon?: ReactNode
+  expansionIcon?: ReactNode
+  displayIcon?: ReactNode
 }
 
-const TreeItemContent = memo(function TreeItemContent(props: TreeItemContentProps) {
-  const {label} = props
+const TreeItemContent = forwardRef(function TreeItemContent(props: TreeItemContentProps, ref?: Ref<HTMLDivElement>) {
+  const {className, label, itemId, icon: iconProp, expansionIcon, displayIcon, onClick, onMouseDown, ...other} = props
 
-  const style = useMemo(() => {
-    return {
-      padding: '0 8px',
-      width: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      cursor: 'pointer',
-      WebkitTapHighlightColor: 'transparent',
+  const {expanded, selected, handleExpansion, handleSelection, preventSelection} = useTreeItem(itemId)
+
+  const icon = iconProp || expansionIcon || displayIcon
+
+  const handleMouseDown = (event: MouseEvent<HTMLElement>) => {
+    preventSelection(event)
+
+    if (onMouseDown) {
+      onMouseDown(event)
     }
-  }, [])
+  }
 
-  return <div style={style}>{label}</div>
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
+    handleExpansion(event)
+    handleSelection(event)
+
+    if (onClick) {
+      onClick(event)
+    }
+  }
+
+  return (
+    <div
+      className={clsx(className, {
+        expanded: expanded,
+        selected: selected,
+      })}
+      onClick={handleClick}
+      onMouseDown={handleMouseDown}
+      ref={ref}
+      {...other}>
+      <div className={'iconContainer'}>{icon}</div>
+      <div className={'label'}>{label}</div>
+    </div>
+  )
 })
 
-export default TreeItemContent
+export default memo(TreeItemContent)

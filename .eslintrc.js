@@ -7,7 +7,7 @@ module.exports = {
     'prettier/@typescript-eslint',
     'plugin:prettier/recommended'
   ], //使用推荐的React代码检测规范
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'react-hooks'],
   env: {
     browser: true,
     es6: true,
