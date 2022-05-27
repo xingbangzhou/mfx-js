@@ -1,5 +1,4 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React, {createRef} from 'react'
 import DraggableCore, {
   DraggableCoreDefaultProps,
   DraggableCoreProps,
@@ -59,6 +58,8 @@ export default class Draggable extends React.Component<DraggableProps, Draggable
     return null
   }
 
+  contentRef = createRef<HTMLElement>()
+
   constructor(props: DraggableProps) {
     super(props)
     this.state = {
@@ -82,7 +83,7 @@ export default class Draggable extends React.Component<DraggableProps, Draggable
   }
 
   get node() {
-    return this.props.nodeRef?.current ?? (ReactDOM['findDOMNode'](this) as HTMLElement | undefined)
+    return this.props.nodeRef?.current ?? this.contentRef.current
   }
 
   onDragStart: DraggableEventHandler = (ev, coreData) => {
@@ -198,6 +199,7 @@ export default class Draggable extends React.Component<DraggableProps, Draggable
       <DraggableCore {...draggableCoreProps} onStart={this.onDragStart} onDrag={this.onDrag} onStop={this.onDragStop}>
         {React.cloneElement(React.Children.only(children), {
           style: {...children.props.style, ...style},
+          ref: this.contentRef,
         })}
       </DraggableCore>
     )

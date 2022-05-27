@@ -1,5 +1,5 @@
+import styled from '@emotion/styled'
 import {CSSProperties, memo, useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import styles from './index.module.scss'
 
 export interface LabelProps {
   className?: string
@@ -7,6 +7,15 @@ export interface LabelProps {
   text?: string
   auto?: boolean
 }
+
+const LabelWrapper = styled.div`
+  overflow: hidden;
+
+  p {
+    white-space: nowrap;
+    display: inline-block;
+  }
+`
 
 const Label = memo(function Label(props: LabelProps) {
   const {className, style, text, auto} = props
@@ -88,14 +97,9 @@ const Label = memo(function Label(props: LabelProps) {
   }, [x])
 
   return (
-    <div
-      ref={onRef}
-      className={`${styles.labelWrap} ${className}`}
-      style={style}
-      onMouseOver={onMouseOver}
-      onMouseOut={onMouseOut}>
+    <LabelWrapper ref={onRef} className={className} style={style} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
       <p style={textStyle}>{text}</p>
-    </div>
+    </LabelWrapper>
   )
 })
 

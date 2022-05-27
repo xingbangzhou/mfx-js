@@ -1,5 +1,4 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React, {createRef} from 'react'
 import {matchesSelector, offsetXYFromParent, addDomEvent, removeDomEvent} from 'src/utils/domFns'
 
 export interface DraggableData {
@@ -59,6 +58,8 @@ export default class DraggableCore extends React.Component<DraggableCoreProps, D
     lastY: NaN,
   }
 
+  contentRef = createRef<HTMLElement>()
+
   mounted = false
 
   componentDidMount() {
@@ -75,7 +76,7 @@ export default class DraggableCore extends React.Component<DraggableCoreProps, D
   }
 
   get node() {
-    return this.props.nodeRef?.current ?? (ReactDOM['findDOMNode'](this) as HTMLElement | undefined)
+    return this.props.nodeRef?.current ?? this.contentRef.current
   }
 
   private handleDragStart = (ev: MouseEvent) => {
@@ -121,7 +122,7 @@ export default class DraggableCore extends React.Component<DraggableCoreProps, D
         this.handleDragStop(new MouseEvent('mouseup'))
       } catch (err) {
         // Old browsers
-        const event = document.createEvent('MouseEvents') as any as MouseEvent
+        const event = document.createEvent('MouseEvents')
         // I see why this insanity was deprecated
         event.initMouseEvent('mouseup', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
         this.handleDragStop(event)
@@ -208,6 +209,7 @@ export default class DraggableCore extends React.Component<DraggableCoreProps, D
     return React.cloneElement(React.Children.only(this.props.children), {
       onMouseDown: this.onMouseDown,
       onMouseUp: this.onMouseUp,
+      ref: this.contentRef,
     })
   }
 }

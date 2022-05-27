@@ -1,12 +1,42 @@
-import React, {memo, useCallback, useRef} from 'react'
-import styles from './index.module.scss'
+import styled from '@emotion/styled'
+import {CSSProperties, memo, useCallback, useRef} from 'react'
+
+const RippleWrapper = styled.span`
+  position: absolute;
+  display: inline-block;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+`
+
+const RippleInner = styled.span`
+  position: absolute;
+  display: inline-block;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: scale(0);
+
+  &.start {
+    transform: scale(0.2);
+  }
+
+  &.active {
+    transform: scale(2);
+    transition: transform 800ms, opacity 800ms;
+    opacity: 0.2;
+  }
+`
 
 interface RippleProps {
+  className?: string
+  style?: CSSProperties
   color?: React.CSSProperties['backgroundColor']
 }
 
 const Ripple = memo(function Ripple(props: RippleProps) {
-  const {color = '#90909099'} = props
+  const {className, style, color = '#90909099'} = props
   const nodeRef = useRef<HTMLSpanElement>()
   const timerId = useRef<number>()
 
@@ -34,13 +64,13 @@ const Ripple = memo(function Ripple(props: RippleProps) {
       width: size * 2 + 'px',
       height: size * 2 + 'px',
     })
-    ripple.classList.remove(styles.active)
+    ripple.classList.remove('active')
 
     timerId.current = window.setTimeout(() => {
-      ripple.classList.add(styles.start)
+      ripple.classList.add('start')
       timerId.current = window.setTimeout(() => {
         timerId.current = undefined
-        ripple.classList.add(styles.active)
+        ripple.classList.add('active')
       })
     })
   }, [])
@@ -50,7 +80,7 @@ const Ripple = memo(function Ripple(props: RippleProps) {
     timerId.current = window.setTimeout(() => {
       timerId.current = undefined
       const ripple = nodeRef.current?.firstChild as HTMLSpanElement | undefined
-      ripple?.classList.remove(styles.active, styles.start)
+      ripple?.classList.remove('active', 'start')
     }, 800)
   }, [])
 
@@ -63,9 +93,9 @@ const Ripple = memo(function Ripple(props: RippleProps) {
   }, [])
 
   return (
-    <span ref={onRef} className={styles.ripple}>
-      <span style={{backgroundColor: color}} />
-    </span>
+    <RippleWrapper ref={onRef} className={className} style={style}>
+      <RippleInner style={{backgroundColor: color}} />
+    </RippleWrapper>
   )
 })
 

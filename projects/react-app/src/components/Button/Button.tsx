@@ -1,5 +1,5 @@
-import React from 'react'
-import styles from './index.module.scss'
+import styled from '@emotion/styled'
+import {forwardRef, memo, Ref} from 'react'
 import Ripple from './Ripple'
 
 export interface ButtonProps {
@@ -8,15 +8,36 @@ export interface ButtonProps {
   title?: string
 }
 
-const Button = React.memo(function Button(props: ButtonProps) {
+const ButtonWrapper = styled.button`
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  outline: unset;
+  border: unset;
+  margin: 0;
+  border-radius: 0;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+  text-decoration: none;
+  text-align: center;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  background-color: turquoise;
+`
+
+const Button = forwardRef(function Button(props: ButtonProps, ref?: Ref<HTMLButtonElement>) {
   const {className, style, title} = props
 
   return (
-    <button className={`${styles.buttonWrap} ${className}`} style={style}>
+    <ButtonWrapper ref={ref} className={className} style={style}>
       {title}
       <Ripple />
-    </button>
+    </ButtonWrapper>
   )
 })
 
-export default Button
+export default memo(Button)
