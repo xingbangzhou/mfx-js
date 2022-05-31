@@ -195,13 +195,14 @@ export default class Draggable extends React.Component<DraggableProps, Draggable
       transform: getTranslation(transformOpts, positionOffset),
     }
 
+    const Core = DraggableCore as any
     return (
-      <DraggableCore {...draggableCoreProps} onStart={this.onDragStart} onDrag={this.onDrag} onStop={this.onDragStop}>
+      <Core {...draggableCoreProps} onStart={this.onDragStart} onDrag={this.onDrag} onStop={this.onDragStop}>
         {React.cloneElement(React.Children.only(children), {
           style: {...children.props.style, ...style},
           ref: this.contentRef,
         })}
-      </DraggableCore>
+      </Core>
     )
   }
 }

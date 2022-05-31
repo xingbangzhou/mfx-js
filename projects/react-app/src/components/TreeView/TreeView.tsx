@@ -25,6 +25,7 @@ interface TreeViewProps {
   defaultSelected?: string
   selected?: string
   onItemSelect?: (event: SyntheticEvent, itemIds?: string | string[]) => void
+  isSelected?: (id: string, selected?: string) => boolean
 }
 
 const TreeViewRoot = styled.ul`
@@ -47,6 +48,7 @@ const TreeView = forwardRef(function TreeView(props: TreeViewProps, ref?: Ref<HT
     defaultSelected,
     selected: selectedProp,
     onItemSelect,
+    isSelected: isSelectedProp,
   } = props
 
   const treeId = useReactId(idProp)
@@ -78,7 +80,9 @@ const TreeView = forwardRef(function TreeView(props: TreeViewProps, ref?: Ref<HT
   const isExpandable = useCallback((id: string) => itemMap.current[id] && itemMap.current[id].expandable, [])
 
   const isSelected = useCallback(
-    (id: string) => (Array.isArray(selected) ? selected.indexOf(id) !== -1 : selected === id),
+    (id: string) =>
+      (Array.isArray(selected) ? selected.indexOf(id) !== -1 : selected === id) ||
+      (isSelectedProp ? isSelectedProp(id, selected) : false),
     [selected],
   )
 

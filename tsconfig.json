@@ -4,7 +4,7 @@
     "target": "es5",
     "lib": ["es2020", "dom"],
     "jsx": "preserve",
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noEmit": true,

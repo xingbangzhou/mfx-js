@@ -4,6 +4,7 @@ import {DescendantProvider, useDescendant} from './descendants'
 import TreeItemContent from './TreeItemContent'
 import TreeViewContext from './TreeViewContext'
 import styled from '@emotion/styled'
+import {Transition} from 'react-transition-group'
 
 interface TreeItemProps extends HTMLAttributes<HTMLElement> {
   itemId: string
@@ -118,9 +119,9 @@ const TreeItem = forwardRef(function TreeItem(props: TreeItemProps, ref?: Ref<HT
 
   if (expandable) {
     if (!expanded) {
-      expansionIcon = expandIcon || contextIcons.defaultExpandIcon
-    } else {
       expansionIcon = collapseIcon || contextIcons.defaultCollapseIcon
+    } else {
+      expansionIcon = expandIcon || contextIcons.defaultExpandIcon
     }
   }
 
@@ -161,9 +162,11 @@ const TreeItem = forwardRef(function TreeItem(props: TreeItemProps, ref?: Ref<HT
         displayIcon={displayIcon}
         {...other}
       />
-      {children && expanded && (
+      {children && (
         <DescendantProvider id={itemId}>
-          <TreeItemGroup>{children}</TreeItemGroup>
+          <Transition in={expanded} timeout={50} unmountOnExit>
+            <TreeItemGroup>{children}</TreeItemGroup>
+          </Transition>
         </DescendantProvider>
       )}
     </TreeItemRoot>
