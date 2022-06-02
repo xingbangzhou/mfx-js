@@ -4,7 +4,7 @@ import {DescendantProvider, useDescendant} from './descendants'
 import TreeItemContent from './TreeItemContent'
 import TreeViewContext from './TreeViewContext'
 import styled from '@emotion/styled'
-import {Transition} from 'react-transition-group'
+import Collapse from '../Collapse/Collapse'
 
 interface TreeItemProps extends HTMLAttributes<HTMLElement> {
   itemId: string
@@ -25,7 +25,7 @@ const TreeItemRoot = styled.li`
   outline: 0;
 `
 
-const TreeItemGroup = styled.ul`
+const TreeItemGroup = styled(Collapse)`
   margin: 0;
   padding: 0;
   margin-left: 16px;
@@ -164,9 +164,9 @@ const TreeItem = forwardRef(function TreeItem(props: TreeItemProps, ref?: Ref<HT
       />
       {children && (
         <DescendantProvider id={itemId}>
-          <Transition in={expanded} timeout={50} unmountOnExit>
-            <TreeItemGroup>{children}</TreeItemGroup>
-          </Transition>
+          <TreeItemGroup in={expanded} unmountOnExit>
+            {children}
+          </TreeItemGroup>
         </DescendantProvider>
       )}
     </TreeItemRoot>
