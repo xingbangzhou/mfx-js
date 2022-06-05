@@ -13,7 +13,7 @@ interface CollapseProps extends Omit<TransitionProps, 'timeout'> {
   timeout?: TransitionProps['timeout']
 }
 
-const CollapseRoot = styled.div(({ownerState}: any) => ({
+const CollapseRoot = styled.ul(({ownerState}: any) => ({
   height: 0,
   overflow: 'hidden',
   ...(ownerState.state === 'entered' && {
@@ -46,12 +46,21 @@ const Collapse = forwardRef(function Collapse(props: CollapseProps, ref?: Ref<HT
   const handleRef = useForkRef(ref, nodeRef)
 
   const wrapperRef = useRef<HTMLDivElement>(null)
+  const timerRef = useRef<number>()
   const sizeProp = 'height'
 
   const getWrapperSize = useCallback(() => (wrapperRef.current ? wrapperRef.current['clientHeight'] : 0), [])
 
+  const reset = useCallback(() => {
+    if (timerRef.current) {
+      window.clearTimeout(timerRef.current)
+      timerRef.current = undefined
+    }
+  }, [])
+
   const handleEntering = (node: HTMLElement, isAppearing: boolean) => {
     isAppearing
+    reset()
     const wrapperSize = getWrapperSize()
 
     const {duration: transitionDuration, easing: transitionTimingFunction} = getTransitionProps(
@@ -66,39 +75,36 @@ const Collapse = forwardRef(function Collapse(props: CollapseProps, ref?: Ref<HT
 
     node.style[sizeProp] = `${wrapperSize}px`
     node.style.transitionTimingFunction = transitionTimingFunction || ''
-
-    console.log('handleEntering', node.style, transitionDuration, transitionTimingFunction)
   }
 
   const handleEntered = (node: HTMLElement, isAppearing: boolean) => {
     isAppearing
+    reset()
     node.style[sizeProp] = 'auto'
-
-    console.log('handleEntered')
   }
 
   const handleExit = (node: HTMLElement) => {
-    getWrapperSize()
-    node.style[sizeProp] = `${getWrapperSize()}px`
-
-    console.log('handleExit', getWrapperSize())
+    reset()
+    const wrapperSize = getWrapperSize()
+    node.style[sizeProp] = `${wrapperSize}px`
   }
 
   const handleExiting = (node: HTMLElement) => {
-    const {duration: transitionDuration, easing: transitionTimingFunction} = getTransitionProps(
-      {style, timeout, easing},
-      {
-        mode: 'exit',
-      },
-    )
+    reset()
+    timerRef.current = window.setTimeout(() => {
+      const {duration: transitionDuration, easing: transitionTimingFunction} = getTransitionProps(
+        {style, timeout, easing},
+        {
+          mode: 'exit',
+        },
+      )
 
-    node.style.transitionDuration =
-      typeof transitionDuration === 'string' ? transitionDuration : `${transitionDuration}ms`
+      node.style.transitionDuration =
+        typeof transitionDuration === 'string' ? transitionDuration : `${transitionDuration}ms`
 
-    node.style[sizeProp] = '0px'
-    node.style.transitionTimingFunction = transitionTimingFunction || ''
-
-    // console.log('handleExiting', node.style, transitionDuration, transitionTimingFunction)
+      node.style[sizeProp] = '0px'
+      node.style.transitionTimingFunction = transitionTimingFunction || ''
+    })
   }
 
   return (
