@@ -36,7 +36,7 @@ interface RippleProps {
 }
 
 const Ripple = memo(function Ripple(props: RippleProps) {
-  const {className, style, color = '#90909099'} = props
+  const {className, style, color = '#FFFFFF99'} = props
   const nodeRef = useRef<HTMLSpanElement>()
   const timerId = useRef<number>()
 

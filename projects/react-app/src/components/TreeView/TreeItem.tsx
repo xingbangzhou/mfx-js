@@ -4,7 +4,7 @@ import {DescendantProvider, useDescendant} from './descendants'
 import TreeItemContent from './TreeItemContent'
 import TreeViewContext from './TreeViewContext'
 import styled from '@emotion/styled'
-import Collapse from '../Collapse/Collapse'
+import Collapse from '../Collapse'
 
 interface TreeItemProps extends HTMLAttributes<HTMLElement> {
   itemId: string

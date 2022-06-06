@@ -26,7 +26,10 @@ const ButtonWrapper = styled.button`
   -moz-appearance: none;
   -webkit-appearance: none;
   -webkit-tap-highlight-color: transparent;
-  background-color: turquoise;
+  background-color: #1976d2;
+  color: #fff;
+  overflow: hidden;
+  padding: 0 10px;
 `
 
 const Button = forwardRef(function Button(props: ButtonProps, ref?: Ref<HTMLButtonElement>) {
