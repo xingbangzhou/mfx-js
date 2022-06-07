@@ -2,6 +2,7 @@ import {EventEmitter} from 'src/utils/eventemitter'
 import Cocos2d from './Cocos2d'
 import MP4Player from './MP4Player'
 import Office from './Office'
+import WebGLDemo from './WebGL'
 
 export class BizEventMap {
   'activedChanged': (value?: string) => void
@@ -13,6 +14,7 @@ class BizCenter {
       id: 'leason',
       title: 'Leason',
       items: [
+        {id: 'webgl', name: 'WebGL', component: WebGLDemo},
         {id: 'mp4player', name: 'MP4Player', component: MP4Player},
         {id: 'cocos2d', name: 'Cocos2d', component: Cocos2d},
       ],
@@ -23,7 +25,7 @@ class BizCenter {
       items: [{id: 'office', name: 'Office', component: Office}],
     },
   ]
-  private _activedId: string | undefined = 'mp4player'
+  private _activedId: string | undefined = 'webgl'
   private emitter = new EventEmitter()
 
   addListener<K extends keyof BizEventMap>(type: K, listener: BizEventMap[K], prepend = false) {
