@@ -13,11 +13,12 @@ const WebGLDemo = memo(function WebGLDemo() {
   const onRef = useCallback((canvas: HTMLCanvasElement | null) => {
     if (!canvas) return
     test_simple01(canvas)
+    console.log(canvas.width, canvas.height)
   }, [])
 
   return (
     <DemoRoot>
-      <canvas style={{width: '200px', height: '200px'}} ref={onRef} />
+      <canvas style={{width: '400px', height: '400px'}} width="400px" height="400px" ref={onRef} />
     </DemoRoot>
   )
 })
