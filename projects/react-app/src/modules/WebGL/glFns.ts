@@ -42,3 +42,12 @@ export function initGlShaderProgram(gl: WebGLContext, vsSource: string, fsSource
 
   return shaderProgram
 }
+
+export function clearGl(gl: WebGLContext, r = 0.0, g = 0.0, b = 0.0, a = 1.0) {
+  gl.clearColor(r, g, b, a)
+  gl.clearDepth(1.0)
+  gl.enable(gl.DEPTH_TEST)
+  gl.depthFunc(gl.LEQUAL)
+
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+}

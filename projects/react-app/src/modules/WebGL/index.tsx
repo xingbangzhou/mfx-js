@@ -1,6 +1,8 @@
 import styled from '@emotion/styled'
 import {memo, useCallback} from 'react'
-import test_simple01 from './test_simple01'
+import drawPointer from './drawPointer'
+import drawRectangle from './drawRectangle'
+import {clearGl} from './glFns'
 
 const DemoRoot = styled.div`
   position: relative;
@@ -12,8 +14,14 @@ const DemoRoot = styled.div`
 const WebGLDemo = memo(function WebGLDemo() {
   const onRef = useCallback((canvas: HTMLCanvasElement | null) => {
     if (!canvas) return
-    test_simple01(canvas)
-    console.log(canvas.width, canvas.height)
+    const gl = canvas.getContext('webgl')
+    if (!gl) {
+      console.error('Unable to initialize WebGL. Your browser or machine may not support it.')
+      return
+    }
+    clearGl(gl)
+    drawRectangle(gl)
+    drawPointer(gl)
   }, [])
 
   return (
