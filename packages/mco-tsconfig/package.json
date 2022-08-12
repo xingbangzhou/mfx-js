@@ -1,0 +1,12 @@
+{
+  "name": "@mco/tsconfig",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12"
+  },
+  "types": "./index.d.ts",
+  "dependencies": {
+  }
+}
