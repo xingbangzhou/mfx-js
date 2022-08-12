@@ -1,25 +1,21 @@
 {
   "version": "0.0.1",
-  "name": "livjs",
+  "name": "mco",
   "private": true,
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^8.3.4",
-    "@typescript-eslint/eslint-plugin": "4.6.1",
-    "@typescript-eslint/parser": "4.6.1",
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.19.0",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "lerna": "^4.0.0",
-    "prettier": "^2.1.2"
+    "husky": "^4.3.8",
+    "lerna": "^5.1.8"
   },
   "resolutions": {},
-  "workspaces": {
-    "packages": [
-      "packages/*",
-      "projects/*"
-    ]
-  }
+  "workspaces": [
+    "packages/*",
+    "projects/*"
+  ]
 }

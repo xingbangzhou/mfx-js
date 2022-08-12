@@ -65,7 +65,8 @@ const Content = memo(function Content() {
         defaultExpanded={defaultExpanded}
         selected={selectId}
         onItemSelect={onTreeItemSelected}
-        isSelected={isTreeItemSelected}>
+        isSelected={isTreeItemSelected}
+      >
         {itemList}
       </TreeView>
     </ContentRoot>

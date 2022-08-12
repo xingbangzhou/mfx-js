@@ -1,4 +1,11 @@
-#root, .app {
+@import '../../assets/styles/base.scss';
+
+#mco-root {
+  width: 100%;
+  height: 100%;
+}
+
+.app {
   width: 100%;
   height: 100%;
 

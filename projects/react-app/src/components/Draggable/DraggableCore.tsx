@@ -70,8 +70,8 @@ export default class DraggableCore extends React.Component<DraggableCoreProps, D
     this.mounted = false
     if (this.node) {
       const {ownerDocument} = this.node
-      removeDomEvent(ownerDocument, eventsFor.mouse.move, this.handleDrag)
-      removeDomEvent(ownerDocument, eventsFor.mouse.stop, this.handleDragStop)
+      removeDomEvent(ownerDocument, eventsFor.mouse.move, this.handleDrag as EventListener)
+      removeDomEvent(ownerDocument, eventsFor.mouse.stop, this.handleDragStop as EventListener)
     }
   }
 
@@ -106,8 +106,8 @@ export default class DraggableCore extends React.Component<DraggableCoreProps, D
     })
 
     const {ownerDocument} = this.node
-    addDomEvent(ownerDocument, eventsFor.mouse.move, this.handleDrag)
-    addDomEvent(ownerDocument, eventsFor.mouse.stop, this.handleDragStop)
+    addDomEvent(ownerDocument, eventsFor.mouse.move, this.handleDrag as EventListener)
+    addDomEvent(ownerDocument, eventsFor.mouse.stop, this.handleDragStop as EventListener)
   }
 
   private handleDrag = (ev: MouseEvent) => {
@@ -154,8 +154,8 @@ export default class DraggableCore extends React.Component<DraggableCoreProps, D
     })
 
     if (this.node) {
-      removeDomEvent(this.node.ownerDocument, eventsFor.mouse.move, this.handleDrag)
-      removeDomEvent(this.node.ownerDocument, eventsFor.mouse.stop, this.handleDragStop)
+      removeDomEvent(this.node.ownerDocument, eventsFor.mouse.move, this.handleDrag as EventListener)
+      removeDomEvent(this.node.ownerDocument, eventsFor.mouse.stop, this.handleDragStop as EventListener)
     }
   }
 

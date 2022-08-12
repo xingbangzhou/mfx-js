@@ -9,32 +9,32 @@ interface ProgramInfo {
     vertexColor: number
   }
   uniformLocations: {
-    projectionMatrix: WebGLUniformLocation
-    modelViewMatrix: WebGLUniformLocation
+    projectionMatrix?: WebGLUniformLocation | null
+    modelViewMatrix?: WebGLUniformLocation | null
   }
 }
 
 interface Buffers {
-  position: WebGLBuffer
-  indice: WebGLBuffer
-  color: WebGLBuffer
+  position?: WebGLBuffer | null
+  indice?: WebGLBuffer | null
+  color?: WebGLBuffer | null
 }
 
 function initBuffers(gl: WebGLContext) {
   // positions
-  const positionBuffer = gl.createBuffer()!
+  const positionBuffer = gl.createBuffer()
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
   const positions = [0.0, 1.0, -1.0, 1.0, 0.0, 0.0, -1.0, 0.0]
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW)
 
   // indices
-  const indiceBuffer = gl.createBuffer()!
+  const indiceBuffer = gl.createBuffer()
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indiceBuffer)
   const indices = [0, 1, 2, 1, 2, 3]
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(indices), gl.STATIC_DRAW)
 
   // colors
-  const colorBuffer = gl.createBuffer()!
+  const colorBuffer = gl.createBuffer()
   const colors = [
     1.0,
     1.0,
@@ -81,19 +81,21 @@ function drawScene(gl: WebGLContext, programInfo: ProgramInfo, buffers: Buffers)
     const normalize = false
     const stribe = 0
     const offset = 0
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position)
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indice)
+    buffers.position && gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position)
+    buffers.indice && gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indice)
     gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, numComponents, type, normalize, stribe, offset)
     gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition)
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color)
+    buffers.color && gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color)
     gl.vertexAttribPointer(programInfo.attribLocations.vertexColor, 4, gl.FLOAT, false, 0, 0)
     gl.enableVertexAttribArray(programInfo.attribLocations.vertexColor)
   }
 
   gl.useProgram(programInfo.program)
 
-  gl.uniformMatrix4fv(programInfo.uniformLocations.projectionMatrix, false, projectionMatrix)
-  gl.uniformMatrix4fv(programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix)
+  programInfo.uniformLocations.projectionMatrix &&
+    gl.uniformMatrix4fv(programInfo.uniformLocations.projectionMatrix, false, projectionMatrix)
+  programInfo.uniformLocations.modelViewMatrix &&
+    gl.uniformMatrix4fv(programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix)
 
   gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0)
 }
@@ -122,7 +124,8 @@ export default function drawRectangle(gl: WebGLContext) {
     }
   `
 
-  const shaderProgram = initGlShaderProgram(gl, vsSource, fsSource)!
+  const shaderProgram = initGlShaderProgram(gl, vsSource, fsSource)
+  if (!shaderProgram) return
 
   const programInfo: ProgramInfo = {
     program: shaderProgram,
@@ -131,12 +134,12 @@ export default function drawRectangle(gl: WebGLContext) {
       vertexColor: gl.getAttribLocation(shaderProgram, 'aVertexColor'),
     },
     uniformLocations: {
-      projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix')!,
-      modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix')!,
+      projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
+      modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
     },
   }
 
-  const buffers = initBuffers(gl)!
+  const buffers = initBuffers(gl)
 
-  drawScene(gl, programInfo, buffers)
+  buffers && drawScene(gl, programInfo, buffers)
 }

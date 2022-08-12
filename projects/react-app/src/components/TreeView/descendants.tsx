@@ -34,13 +34,12 @@ function binaryFindElement(array: DescendantItem[], element: HTMLElement) {
 
   while (start <= end) {
     const middle = Math.floor((start + end) / 2)
-
-    if (array[middle].element === element) {
+    const el = array[middle].element as HTMLElement
+    if (el === element) {
       return middle
     }
-
-    // eslint-disable-next-line no-bitwise
-    if (array[middle].element!.compareDocumentPosition(element) & Node.DOCUMENT_POSITION_PRECEDING) {
+    const compareFlag = el.compareDocumentPosition(element)
+    if (compareFlag & Node.DOCUMENT_POSITION_PRECEDING) {
       end = middle - 1
     } else {
       start = middle + 1
@@ -117,7 +116,7 @@ export function DescendantProvider(props: {children?: ReactNode; id?: string}) {
 
       let newItems: DescendantItem[] = []
 
-      const index = binaryFindElement(oldItems, element!)
+      const index = element ? binaryFindElement(oldItems, element) : -1
       if (oldItems[index] && oldItems[index].element === element) {
         newItems = oldItems
       } else {

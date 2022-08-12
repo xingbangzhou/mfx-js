@@ -43,7 +43,8 @@ const TreeItemContent = forwardRef(function TreeItemContent(props: TreeItemConte
       onClick={handleClick}
       onMouseDown={handleMouseDown}
       ref={ref}
-      {...other}>
+      {...other}
+    >
       <div className={'iconContainer'}>{icon}</div>
       <div className={'label'}>{label}</div>
     </div>

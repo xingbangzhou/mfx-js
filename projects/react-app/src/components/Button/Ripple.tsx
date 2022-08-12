@@ -52,8 +52,8 @@ const Ripple = memo(function Ripple(props: RippleProps) {
     timerId.current && window.clearTimeout(timerId.current)
     timerId.current = undefined
     const ripple = nodeRef.current?.firstChild as HTMLSpanElement | undefined
-    if (!ripple) return
-    const parentElement = ripple.parentElement!
+    if (!ripple || !ripple.parentElement) return
+    const parentElement = ripple.parentElement
     const size = parentElement.offsetWidth
     const rect = parentElement.getBoundingClientRect()
     const x = ev.pageX - rect.left - size

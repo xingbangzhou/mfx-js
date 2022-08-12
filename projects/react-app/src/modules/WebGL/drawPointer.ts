@@ -19,7 +19,9 @@ export default function drawPointer(gl: WebGLContext) {
 
   gl.flush()
 
-  const shaderProgram = initGlShaderProgram(gl, vsSource, fsSource)!
+  const shaderProgram = initGlShaderProgram(gl, vsSource, fsSource)
+  if (!shaderProgram) return
+
   const aPointer = gl.getAttribLocation(shaderProgram, 'aPointer')
   gl.vertexAttrib3f(aPointer, 0.5, 0.0, 0.0)
 

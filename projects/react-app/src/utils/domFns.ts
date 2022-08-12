@@ -82,7 +82,7 @@ export function getTranslation({x, y}: ControlPosition, positionOffset?: OffsetP
   return translation
 }
 
-export function addDomEvent(el: Node, event: string, handler: Function, inputOptions?: AddEventListenerOptions) {
+export function addDomEvent(el: Node, event: string, handler: EventListener, inputOptions?: AddEventListenerOptions) {
   if (!el) return
   const options = {capture: true, ...inputOptions}
   if (el.addEventListener) {
@@ -97,7 +97,7 @@ export function addDomEvent(el: Node, event: string, handler: Function, inputOpt
 export function removeDomEvent(
   el: Node,
   event: string,
-  handler: Function,
+  handler: EventListener,
   inputOptions?: AddEventListenerOptions,
 ): void {
   if (!el) return

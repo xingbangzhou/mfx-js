@@ -114,7 +114,8 @@ const Collapse = forwardRef(function Collapse(props: CollapseProps, ref?: Ref<HT
       onEntered={handleEntered}
       onEntering={handleEntering}
       onExit={handleExit}
-      onExiting={handleExiting}>
+      onExiting={handleExiting}
+    >
       {state => (
         <CollapseRoot className={className} style={style} ownerState={{...ownerState, state}} ref={handleRef}>
           <CollapseWrapper ref={wrapperRef}>

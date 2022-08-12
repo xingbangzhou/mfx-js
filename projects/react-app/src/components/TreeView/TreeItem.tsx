@@ -153,7 +153,8 @@ const TreeItem = forwardRef(function TreeItem(props: TreeItemProps, ref?: Ref<HT
       role="treeitem"
       aria-expanded={expandable ? expanded : undefined}
       aria-selected={selected}
-      tabIndex={-1}>
+      tabIndex={-1}
+    >
       <StyledTreeItemContent
         label={label}
         itemId={itemId}

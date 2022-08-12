@@ -1,7 +1,7 @@
 node_modules
 yarn-error.log
 dist
-build
+**/dist
 lerna-debug.log
 .changelog
 .DS_Store

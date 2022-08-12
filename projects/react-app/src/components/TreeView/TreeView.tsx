@@ -103,10 +103,10 @@ const TreeView = forwardRef(function TreeView(props: TreeViewProps, ref?: Ref<HT
    */
   const toggleExpansion = (event: SyntheticEvent, value: string) => {
     let newExpanded: string[] | undefined = undefined
-    if (expanded!.indexOf(value) !== -1) {
-      newExpanded = expanded!.filter(el => el !== value)
+    if (expanded?.indexOf(value) !== -1) {
+      newExpanded = expanded?.filter(el => el !== value)
     } else {
-      newExpanded = [value].concat(expanded!)
+      newExpanded = [value].concat(expanded || [])
     }
 
     if (onItemToggle) {
@@ -150,7 +150,8 @@ const TreeView = forwardRef(function TreeView(props: TreeViewProps, ref?: Ref<HT
         registerItem,
         unregisterItem,
         treeId,
-      }}>
+      }}
+    >
       <DescendantProvider>
         <TreeViewRoot id={treeId} ref={handleRef}>
           {children}
