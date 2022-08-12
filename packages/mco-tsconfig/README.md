@@ -7,6 +7,14 @@
 + `tsconfig.json`
 ```js
 module.exports = {
-  "extends": "@mco/tsconfig"
+  "extends": "@mco/tsconfig",
+  "compilerOptions": {
+    "types": ["node", "react", "@mco/tsconfig"],
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"]
+    },
+  }
 }
 ```

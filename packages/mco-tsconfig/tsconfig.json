@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "target": "ESNext",
     "lib": [
       "DOM",
@@ -16,11 +17,12 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
-    // "resolveJsonModule": true,
+    "resolveJsonModule": true,
     "isolatedModules": false,
     "sourceMap": true,
     "jsx": "preserve",
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "importsNotUsedAsValues": "preserve"
   },
   "exclude": ["**/.*/", "**/dist", "**/node_modules", "docs/export"]
 }
