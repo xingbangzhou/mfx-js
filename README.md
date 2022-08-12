@@ -1,5 +1,4 @@
-# LIVJS
+# MCO
 Technology: javascript, typescript, react, webpack.
 
-## Liv
-cli
+## mco-cli
