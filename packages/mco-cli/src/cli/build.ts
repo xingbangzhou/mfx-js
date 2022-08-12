@@ -14,7 +14,7 @@ class BuildRunner {
         return
       }
       if (status?.hasWarnings()) {
-        console.log(chalk.yellow.bold('\n=== LIV Compiled with warnings.===\n'))
+        console.log(chalk.yellow.bold('\n=== MCO Compiled with warnings.===\n'))
         console.log(
           status.toString({
             all: false,
@@ -31,10 +31,10 @@ class BuildRunner {
             errors: true,
           }),
         )
-        console.log(chalk.red.bold('\n=== LIV Failed to compile.===\n'))
+        console.log(chalk.red.bold('\n=== MCO Failed to compile.===\n'))
         process.exit(1)
       }
-      console.log(chalk.green.bold('\n=== LIV Compiled successfully.===\n'))
+      console.log(chalk.green.bold('\n=== MCO Compiled successfully.===\n'))
       console.log(
         status?.toString({
           colors: true,
@@ -45,7 +45,7 @@ class BuildRunner {
 
       // 生成 serve 模式下需要文件
       fs.writeJson(cacheFiles.buildConfig, {devServer: config.devServer}, err => {
-        console.error(err)
+        err && console.error(err)
       })
     })
   }
