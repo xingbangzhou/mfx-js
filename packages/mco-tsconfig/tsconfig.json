@@ -16,7 +16,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
+    // "resolveJsonModule": true,
     "isolatedModules": false,
     "sourceMap": true,
     "jsx": "preserve",
