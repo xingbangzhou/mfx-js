@@ -1,4 +1,4 @@
 module.exports = {
   root: true,
-  extends: ['@mco/eslint-config-react'],
+  extends: ['./packages/mco-eslint-react'],
 }
