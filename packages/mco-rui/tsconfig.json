@@ -4,9 +4,7 @@
     "types": ["node", "react", "@mco/tsconfig"],
     "baseUrl": ".",
     "paths": {
-      "src/*": ["src/*"],
-      "@mco/rui": ["../../packages/mco-rui/src"]
+      "src/*": ["src/*"]
     },
-  },
-  "exclude": ["mco-config.js"]
+  }
 }

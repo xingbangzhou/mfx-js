@@ -12,8 +12,7 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "resolveJsonModule": true,
-    "sourceMap": true,
-    "plugins": [{ "transform": "ts-transform-paths" }]
+    "sourceMap": true
   },
   "exclude": ["**/.*/", "**/dist", "**/node_modules", "docs/export"]
 }

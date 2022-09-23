@@ -1,11 +1,11 @@
 import styled from '@emotion/styled'
-import {forwardRef, memo, Ref} from 'react'
+import {CSSProperties, forwardRef, memo, ReactNode, Ref} from 'react'
 import Ripple from './Ripple'
 
 export interface ButtonProps {
   className?: string
-  style?: React.CSSProperties
-  title?: string
+  style?: CSSProperties
+  content?: ReactNode
 }
 
 const ButtonWrapper = styled.button`
@@ -27,17 +27,17 @@ const ButtonWrapper = styled.button`
   -webkit-appearance: none;
   -webkit-tap-highlight-color: transparent;
   background-color: #1976d2;
-  color: #fff;
+  color: #ffffff;
   overflow: hidden;
   padding: 0 10px;
 `
 
 const Button = forwardRef(function Button(props: ButtonProps, ref?: Ref<HTMLButtonElement>) {
-  const {className, style, title} = props
+  const {className, style, content} = props
 
   return (
     <ButtonWrapper ref={ref} className={className} style={style}>
-      {title}
+      {content}
       <Ripple />
     </ButtonWrapper>
   )

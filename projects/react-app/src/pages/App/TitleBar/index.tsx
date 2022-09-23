@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import {memo} from 'react'
-import Button from 'src/components/Button'
+import {Button} from '@mco/rui'
 
 const Empty = styled.div`
   flex-grow: 1;
@@ -17,7 +17,7 @@ const TitleBar = memo(function TitleBar() {
   return (
     <div className={'titleBar'}>
       <Empty />
-      <ButtonEx title="Application" />
+      <ButtonEx content="Application" />
     </div>
   )
 })

@@ -4,14 +4,14 @@ import drawPointer from './drawPointer'
 import drawRectangle from './drawRectangle'
 import {clearGl} from './glFns'
 
-const DemoRoot = styled.div`
+const Container = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
   background: #909090;
 `
 
-const WebGLDemo = memo(function WebGLDemo() {
+const GLScene = memo(function GLScene() {
   const onRef = useCallback((canvas: HTMLCanvasElement | null) => {
     if (!canvas) return
     const gl = canvas.getContext('webgl')
@@ -25,10 +25,10 @@ const WebGLDemo = memo(function WebGLDemo() {
   }, [])
 
   return (
-    <DemoRoot>
+    <Container>
       <canvas style={{width: '400px', height: '400px'}} width="400px" height="400px" ref={onRef} />
-    </DemoRoot>
+    </Container>
   )
 })
 
-export default WebGLDemo
+export default GLScene

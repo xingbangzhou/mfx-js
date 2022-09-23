@@ -1,13 +1,15 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
+    "plugins": [{ "transform": "ts-transform-paths" }],
     "types": ["webpack/module"],
+    "sourceMap": false,
     "baseUrl": ".",
     "outDir": "dist",
     "paths": {
       "src/*": [
         "./src/*"
-      ],
+      ]
     },
     "target": "esnext",
   },

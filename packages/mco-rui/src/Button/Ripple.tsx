@@ -17,6 +17,7 @@ const RippleInner = styled.span`
   border-radius: 50%;
   pointer-events: none;
   transform: scale(0);
+  background-color: ${props => props.color};
 
   &.start {
     transform: scale(0.2);
@@ -32,7 +33,7 @@ const RippleInner = styled.span`
 interface RippleProps {
   className?: string
   style?: CSSProperties
-  color?: React.CSSProperties['backgroundColor']
+  color?: CSSProperties['backgroundColor']
 }
 
 const Ripple = memo(function Ripple(props: RippleProps) {
@@ -94,7 +95,7 @@ const Ripple = memo(function Ripple(props: RippleProps) {
 
   return (
     <RippleWrapper ref={onRef} className={className} style={style}>
-      <RippleInner style={{backgroundColor: color}} />
+      <RippleInner color={color} />
     </RippleWrapper>
   )
 })
