@@ -1,15 +1,15 @@
 # TSConfig
 
 ## Install
-+ `yarn add @mco/tsconfig -D`
++ `yarn add tsconfig-mco -D`
 
 ## Config
 + `tsconfig.json`
 ```js
 module.exports = {
-  "extends": "@mco/tsconfig",
+  "extends": "tsconfig-mco",
   "compilerOptions": {
-    "types": ["node", "react", "@mco/tsconfig"],
+    "types": ["node", "react", "tsconfig-mco"],
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {

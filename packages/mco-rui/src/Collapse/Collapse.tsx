@@ -2,8 +2,7 @@ import styled from '@emotion/styled'
 import {CSSProperties, forwardRef, memo, ReactNode, Ref, useCallback, useRef} from 'react'
 import {Transition} from 'react-transition-group'
 import {TransitionProps} from 'react-transition-group/Transition'
-import useForkRef from 'src/hooks/useForkRef'
-import {getTransitionProps} from 'src/utils/transitionFns'
+import {useForkRef, getTransitionProps} from '@mco/utils'
 
 interface CollapseProps extends Omit<TransitionProps, 'timeout'> {
   children?: ReactNode

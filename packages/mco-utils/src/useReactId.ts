@@ -6,7 +6,7 @@ export default function useReactId(idOverride?: string): string | undefined {
 
   useEffect(() => {
     if (defaultId == null) {
-      setDefaultId(`tree-${Math.round(Math.random() * 1e9)}`)
+      setDefaultId(`react-${Math.round(Math.random() * 1e9)}`)
     }
   }, [defaultId])
 

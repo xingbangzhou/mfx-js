@@ -1,12 +1,12 @@
 # Eslint React
 
 ## Install
-+ `yarn add @mco/eslint-config-react -D`
++ `yarn add eslint-react-mco -D`
 
 ## Config
 + `.eslintrc.js`
 ```js
 module.exports = {
-  "extends": ["@mco/eslint-config-react"]
+  "extends": ["eslint-react-mco"]
 }
 ```

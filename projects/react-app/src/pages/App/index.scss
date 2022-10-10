@@ -3,6 +3,7 @@
 #mco-root {
   width: 100%;
   height: 100%;
+  background: #28243D;
 }
 
 .app {
@@ -12,12 +13,20 @@
   .titleBar {
     width: 100%;
     height: 59px;
-    background: hsla(0,0%,100%,.95);
-    border-bottom: 1px solid #e2e2e2;
-    box-shadow: 0 0 6px rgba(0,0,0,.06);
     display: flex;
     align-items: center;
     padding: 10px;
+
+    &-empty {
+      flex-grow: 1;
+    }
+
+    &-buttonEx {
+      height: 32px;
+      border-radius: 4px;
+      padding: 0 10px;
+      overflow: hidden;
+    }
   }
 
   .content {
@@ -29,7 +38,6 @@
       position: relative;
       height: 100%;
       width: 280px;
-      background-color: rgb(17, 24, 39);
     }
 
     .mainArea {

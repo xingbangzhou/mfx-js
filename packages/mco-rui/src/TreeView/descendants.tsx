@@ -1,5 +1,5 @@
 import {createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react'
-import useEnhancedEffect from 'src/hooks/useEnhancedEffect'
+import {useEnhancedEffect} from '@mco/utils'
 
 interface DescendantProps {
   element?: HTMLElement | null

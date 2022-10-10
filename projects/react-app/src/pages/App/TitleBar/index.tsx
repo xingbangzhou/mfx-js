@@ -1,23 +1,15 @@
-import styled from '@emotion/styled'
 import {memo} from 'react'
 import {Button} from '@mco/rui'
 
-const Empty = styled.div`
-  flex-grow: 1;
-`
-
-const ButtonEx = styled(Button)`
-  height: 32px;
-  border-radius: 4px;
-  padding: 0 10px;
-  overflow: hidden;
-`
+const Empty = memo(function Empty() {
+  return <div className="titleBar-empty" />
+})
 
 const TitleBar = memo(function TitleBar() {
   return (
     <div className={'titleBar'}>
       <Empty />
-      <ButtonEx content="Application" />
+      <Button className="titleBar-buttonEx" content="我的应用" />
     </div>
   )
 })

@@ -1,5 +1,5 @@
 import {forwardRef, memo, ReactNode, Ref, useContext, useEffect, useMemo, useState, HTMLAttributes} from 'react'
-import useForkRef from 'src/hooks/useForkRef'
+import {useForkRef} from '@mco/utils'
 import {DescendantProvider, useDescendant} from './descendants'
 import TreeItemContent from './TreeItemContent'
 import TreeViewContext from './TreeViewContext'

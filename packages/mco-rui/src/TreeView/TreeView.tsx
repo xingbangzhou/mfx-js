@@ -1,7 +1,5 @@
 import {forwardRef, memo, ReactNode, Ref, SyntheticEvent, useCallback, useRef} from 'react'
-import useControlled from 'src/hooks/useControlled'
-import useForkRef from 'src/hooks/useForkRef'
-import useReactId from 'src/hooks/useReactId'
+import {useControlled, useForkRef, useReactId} from '@mco/utils'
 import {DescendantProvider} from './descendants'
 import TreeViewContext, {RegisterTreeItemProps} from './TreeViewContext'
 import styled from '@emotion/styled'

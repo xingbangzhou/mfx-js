@@ -1,6 +1,7 @@
 export interface ListenerFn {
   (...args: any[]): void
 }
+
 class EE {
   fn: ListenerFn
   context?: any
@@ -24,17 +25,16 @@ export class ListenerHolder {
   }
 
   off() {
-    this.emitter &&
-      this.type &&
+    this.type &&
       this.listener &&
-      this.emitter.off(this.type, this.listener.fn, this.listener.context, this.listener.once)
+      this.emitter?.off(this.type, this.listener.fn, this.listener.context, this.listener.once)
     this.emitter = undefined
     this.type = undefined
     this.listener = undefined
   }
 }
 
-export class EventEmitter {
+export default class EventEmitter {
   private _events: Record<string, EE | EE[]> = {}
   private _eventCount = 0
 
@@ -85,44 +85,42 @@ export class EventEmitter {
     return names
   }
 
-  clearFns(fn: ListenerFn, context?: any, once?: boolean) {
-    const names = this.eventNames()
-    for (let i = 0, length = names.length; i < length; i++) {
-      this.removeListener(names[i], fn, context, once)
-    }
-  }
-
   private addListener(type: string, fn: ListenerFn, context?: any, once?: boolean, prepend = false) {
-    const listener = new EE(fn, context || this, once)
+    let listener = new EE(fn, context || this, once)
     const event = this._events[type]
     if (!event) {
       this._events[type] = listener
       this._eventCount++
     } else if (Array.isArray(event)) {
-      prepend ? event.unshift(listener) : event.push(listener)
+      const itr = event.find(
+        el => el.fn === listener.fn && el.context === listener.context && (!el.once || listener.once),
+      )
+      if (itr) listener = itr
+      else prepend ? event.unshift(listener) : event.push(listener)
     } else {
-      this._events[type] = prepend ? [listener, event] : [event, listener]
+      if (event.fn !== listener.fn || event.context !== listener.context || (event.once && !listener.once)) {
+        this._events[type] = prepend ? [listener, event] : [event, listener]
+      } else listener = event
     }
+
     return listener
   }
 
   private removeListener(type: string, fn: ListenerFn, context?: any, once?: boolean) {
-    const listeners = this._events[type]
-    if (!listeners) return
+    const event = this._events[type]
+    if (!event) return
 
-    if (Array.isArray(listeners)) {
+    if (Array.isArray(event)) {
       const accus: EE[] = []
-      for (let i = 0, length = listeners.length; i < length; i++) {
-        if (listeners[i].fn !== fn || (once && !listeners[i].once) || (context && listeners[i].context !== context)) {
-          accus.push(listeners[i])
+      for (let i = 0, length = event.length; i < length; i++) {
+        if (event[i].fn !== fn || (once && !event[i].once) || (context && event[i].context !== context)) {
+          accus.push(event[i])
         }
       }
       if (accus.length) this._events[type] = accus.length === 1 ? accus[0] : accus
       else this.clearEvent(type)
-    } else {
-      if (listeners.fn === fn && (!once || listeners.once) && (!context || listeners.context === context)) {
-        this.clearEvent(type)
-      }
+    } else if (event.fn === fn && (!once || event.once) && (!context || event.context === context)) {
+      this.clearEvent(type)
     }
   }
 

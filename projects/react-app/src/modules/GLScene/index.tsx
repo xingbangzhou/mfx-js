@@ -8,7 +8,6 @@ const Container = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  background: #909090;
 `
 
 const GLScene = memo(function GLScene() {

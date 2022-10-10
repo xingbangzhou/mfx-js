@@ -2,8 +2,9 @@ import './index.scss'
 import LeftBar from './LeftBar'
 import TitleBar from './TitleBar'
 import MainArea from './MainArea'
+import {memo} from 'react'
 
-export default function App() {
+function App() {
   return (
     <div className="app">
       <TitleBar />
@@ -14,3 +15,5 @@ export default function App() {
     </div>
   )
 }
+
+export default memo(App)

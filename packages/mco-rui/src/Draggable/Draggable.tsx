@@ -5,7 +5,7 @@ import DraggableCore, {
   DraggableData,
   DraggableEventHandler,
 } from './DraggableCore'
-import {ControlPosition, getTranslation, OffsetPosition, Bounds, getBoundPosition} from 'src/utils/domFns'
+import {ControlPosition, getTranslation, OffsetPosition, Bounds, getBoundPosition} from '@mco/utils'
 
 interface DraggableState {
   dragging: boolean

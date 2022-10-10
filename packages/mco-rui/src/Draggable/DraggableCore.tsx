@@ -1,5 +1,5 @@
 import React, {createRef} from 'react'
-import {matchesSelector, offsetXYFromParent, addDomEvent, removeDomEvent} from 'src/utils/domFns'
+import {matchesSelector, offsetXYFromParent, addDomEvent, removeDomEvent} from '@mco/utils'
 
 export interface DraggableData {
   node: HTMLElement

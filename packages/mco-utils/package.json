@@ -1,11 +1,10 @@
 {
-  "name": "@mco/rui",
+  "name": "@mco/utils",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@emotion/styled": "^11.10.4",
-    "@mco/utils": "^1.0.0"
+    "@emotion/styled": "^11.10.4"
   },
   "peerDependencies": {
     "react": ">= 17.0.2",
