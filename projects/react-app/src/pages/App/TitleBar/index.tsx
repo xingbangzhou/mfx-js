@@ -1,15 +1,15 @@
 import {memo} from 'react'
 import {Button} from '@mco/rui'
 
-const Empty = memo(function Empty() {
-  return <div className="titleBar-empty" />
+const Menus = memo(function Menus() {
+  return <div className="titleBar-menus" />
 })
 
 const TitleBar = memo(function TitleBar() {
   return (
     <div className={'titleBar'}>
-      <Empty />
-      <Button className="titleBar-buttonEx" content="我的应用" />
+      <Menus />
+      <Button className="titleBar-button" content="Application" />
     </div>
   )
 })

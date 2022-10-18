@@ -5,7 +5,8 @@
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"],
-      "@mco/rui": ["../../packages/mco-rui/src"]
+      "@mco/rui": ["../../packages/mco-rui/src"],
+      "@mco/utils": ["../../packages/mco-utils/src"]
     },
   },
   "exclude": ["mco-config.js"]
