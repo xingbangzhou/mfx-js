@@ -7,7 +7,7 @@ module.exports = ({wpChain, mode, options}) => {
   const devPort = 5002
   wpChain.devServer.port(devPort)
 
-  wpChain.resolve.alias.set('@mco/rui', path.resolve(__dirname, '../../packages/mco-rui/src'))
+  wpChain.resolve.alias.set('@mco/ui', path.resolve(__dirname, '../../packages/mco-ui/src'))
   wpChain.resolve.alias.set('@mco/utils', path.resolve(__dirname, '../../packages/mco-utils/src'))
 
   wpChain.plugin('html').tap(args => {

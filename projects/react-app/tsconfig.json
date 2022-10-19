@@ -5,7 +5,7 @@
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"],
-      "@mco/rui": ["../../packages/mco-rui/src"],
+      "@mco/ui": ["../../packages/mco-ui/src"],
       "@mco/utils": ["../../packages/mco-utils/src"]
     },
   },

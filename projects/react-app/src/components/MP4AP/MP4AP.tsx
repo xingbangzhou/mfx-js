@@ -9,11 +9,11 @@ export interface MP4APHandler {
   clear(): void
 }
 
-type ReactMP4APProps = {
+type MP4APProps = {
   handlerRef?: React.Ref<MP4APHandler>
 } & HTMLAttributes<HTMLDivElement>
 
-const ReactMP4AP = forwardRef(function ReactMP4(props: ReactMP4APProps, ref?: React.Ref<HTMLDivElement>) {
+const MP4AP = forwardRef(function MP4AP(props: MP4APProps, ref?: React.Ref<HTMLDivElement>) {
   const {handlerRef, ...other} = props
   const mp4apRender = useRef<MP4APRender>()
   const rootRef = useRef<HTMLDivElement>(null)
@@ -23,7 +23,7 @@ const ReactMP4AP = forwardRef(function ReactMP4(props: ReactMP4APProps, ref?: Re
     play: (opts: Omit<MP4APOptions, 'container'>) => {
       if (mp4apRender.current) mp4apRender.current.clear()
       if (!rootRef.current) {
-        console.error('[ReactMP4AP]: play', 'container is null')
+        console.error('[MP4AP]: play', 'container is null')
       } else {
         mp4apRender.current = new MP4APRender(Object.assign(opts, {container: rootRef.current}))
         mp4apRender.current.play()
@@ -46,4 +46,4 @@ const ReactMP4AP = forwardRef(function ReactMP4(props: ReactMP4APProps, ref?: Re
   return <div ref={forkRef} {...other}></div>
 })
 
-export default memo(ReactMP4AP)
+export default memo(MP4AP)

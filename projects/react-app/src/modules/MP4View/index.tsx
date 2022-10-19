@@ -1,6 +1,6 @@
 import {memo, useCallback, useRef} from 'react'
-import ReactMP4AP, {MP4APHandler} from 'src/components/MP4AP/ReactMP4AP'
-import DrapView from './DrapArea'
+import MP4AP, {MP4APHandler} from 'src/components/MP4AP/MP4AP'
+import DrapArea from './DrapArea'
 import './index.scss'
 
 const MP4View = memo(function MP4View() {
@@ -14,9 +14,9 @@ const MP4View = memo(function MP4View() {
   )
 
   return (
-    <DrapView className="mp4View" onDrapped={onDrapped}>
-      <ReactMP4AP className="render" handlerRef={handlerRef} />
-    </DrapView>
+    <DrapArea className="mp4View" onDrapped={onDrapped}>
+      <MP4AP className="mp4ap" handlerRef={handlerRef} />
+    </DrapArea>
   )
 })
 

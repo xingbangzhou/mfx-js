@@ -1,2 +1,2 @@
-export {default} from './ReactMP4AP'
+export {default} from './MP4AP'
 export * from './types'

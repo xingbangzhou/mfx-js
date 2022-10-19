@@ -1,5 +1,5 @@
 import {memo} from 'react'
-import {Button} from '@mco/rui'
+import {Button} from '@mco/ui'
 
 const Menus = memo(function Menus() {
   return <div className="titleBar-menus" />

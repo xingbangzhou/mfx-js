@@ -80,6 +80,14 @@ export default class MP4APCore {
     this.video.addEventListener('ended', this.onEnded)
     this.video.addEventListener('canplay', this.onCanplay)
     this.video.addEventListener('error', this.onError)
+    this.video.addEventListener('loadeddata', () => {
+      console.log('[Video]: loadeddata', this.video?.videoWidth, this.video?.videoHeight)
+      this.onLoadedData()
+    })
+  }
+
+  protected onLoadedData() {
+    console.log('[Video]: loadeddata', this.video?.width, this.video?.height)
   }
 
   private requestAnimFunc() {
