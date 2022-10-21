@@ -1,7 +1,7 @@
 {
   "extends": "tsconfig-mco",
   "compilerOptions": {
-    "types": ["node", "react"],
+    "types": ["node"],
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"],

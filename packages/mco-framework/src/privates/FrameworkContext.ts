@@ -1,4 +1,4 @@
-import McoFramework from 'src/Framework'
+import McoFramework from '../Framework'
 import McoModules from './Modules'
 import McoServices from './Services'
 

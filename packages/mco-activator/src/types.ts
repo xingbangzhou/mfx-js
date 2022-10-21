@@ -55,13 +55,13 @@ export interface McoModuleContextFuncs {
 
   unregisterService(service: McoService): void
 
-  connectService(sId: string, connn: McoServiceConnn): McoServiceConnnHolder | undefined
+  connectService(sId: string, connn: McoServiceConnn): McoServiceConnnHolder
 
   disconnectService(sId: string, connn: McoServiceConnn): void
 
   invokeFunc(uri: string, ...args: any[]): Promise<any>
 
-  connectSignal(uri: string, slot: McoServiceSlot): McoServiceSlotHolder | undefined
+  connectSignal(uri: string, slot: McoServiceSlot): McoServiceSlotHolder
 
   disconnectSignal(uri: string, slot: McoServiceSlot): void
 }

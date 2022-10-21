@@ -1,17 +1,17 @@
-import IFrameModule from 'src/modules/IFrameModule'
+import IFrameModule from '../modules/FrameModule'
 import McoModule from '../Module'
 import McoFrameworkContext from './FrameworkContext'
 import McoModuleCleaner from './ModuleCleaner'
 
 enum McoModuleType {
   Module,
-  IFrame,
+  Frame,
 }
 
 class McoModuleHolder {
   constructor(fwCtx: McoFrameworkContext, mId: string, type: McoModuleType, ...args: any[]) {
     switch (type) {
-      case McoModuleType.IFrame:
+      case McoModuleType.Frame:
         this._module = new IFrameModule(fwCtx, this.cleaner, mId, args[0])
         break
       default:
@@ -52,9 +52,9 @@ export default class McoModules {
     return this.insertModule(mId, McoModuleType.Module)
   }
 
-  loadIFrame(mId: string, container: HTMLIFrameElement) {
+  loadFrame(mId: string, container: HTMLIFrameElement) {
     if (!mId) return
-    return this.insertModule(mId, McoModuleType.IFrame, container)
+    return this.insertModule(mId, McoModuleType.Frame, container)
   }
 
   unload(mId: string) {

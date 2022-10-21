@@ -39,11 +39,21 @@ export default class McoServices {
   }
 
   connect(sId: string, connn: McoServiceConnn) {
+    if (!sId || typeof sId !== 'string') return
     return this.emitter.on(sId, connn)
   }
 
   disconnect(sId: string, connn: McoServiceConnn) {
     this.emitter.off(sId, connn)
+  }
+
+  async invokeFunc(uri: string, ...args: any[]) {
+    const [sId, name] = uri.split('/')
+
+    const service = this.getService(sId)
+    if (!service) return undefined
+
+    return service.invokeFunc(name, ...args)
   }
 
   connectSignal(uri: string, slot: McoServiceSlot) {

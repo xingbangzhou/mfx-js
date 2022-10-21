@@ -5,5 +5,9 @@ export default class McoFrameworkLauncher {
     this.fwCtx = new McoFrameworkContext()
   }
 
-  readonly fwCtx: McoFrameworkContext
+  private fwCtx: McoFrameworkContext
+
+  get framework() {
+    return this.fwCtx.framework
+  }
 }
