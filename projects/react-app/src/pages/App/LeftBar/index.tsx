@@ -1,15 +1,16 @@
-import {CSSProperties, memo, useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {memo, useCallback, useMemo, useRef, useState} from 'react'
 import {DraggableCore, DraggableData} from '@mco/ui'
 import styles from './index.module.scss'
+import Content from './Content'
 
-const MINWIDTH = 273
+const MINWIDTH = 60
+const NORWIDTH = 273
 const MAXWIDTH = 420
 
 const LeftBar = memo(function LeftBar() {
-  const [width, setWidth] = useState(MINWIDTH)
-  const [maxisize, setMaxisize] = useState(true)
+  const [width, setWidth] = useState(NORWIDTH)
+  const [minisize, setMinisize] = useState(false)
 
-  const rootRef = useRef<HTMLDivElement>(null)
   const slackW = useRef(0)
 
   const resetData = useCallback(() => {
@@ -19,14 +20,14 @@ const LeftBar = memo(function LeftBar() {
   const runConstraints = useCallback((w: number) => {
     const oldW = w
     w += slackW.current
-    w = Math.max(MINWIDTH, w)
+    w = Math.max(NORWIDTH, w)
     w = Math.min(MAXWIDTH, w)
     slackW.current = slackW.current + oldW - w
     return w
   }, [])
 
   const onResize = useCallback(
-    (ev: MouseEvent, {deltaX}: DraggableData) => {
+    (_ev: MouseEvent, {deltaX}: DraggableData) => {
       let newW = width + deltaX
       newW = runConstraints(newW)
       if (newW !== width) {
@@ -55,40 +56,25 @@ const LeftBar = memo(function LeftBar() {
   const onMaxminized = useCallback(
     (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       ev.stopPropagation()
-      setMaxisize(!maxisize)
+      setMinisize(!minisize)
     },
-    [maxisize],
+    [minisize],
   )
 
   const style = useMemo(() => {
     return {
-      position: 'absolute',
-      left: `${maxisize ? 0 : -width}px`,
-      top: '0px',
-      zIndex: 10,
+      left: `${minisize ? MINWIDTH - width : 0}px`,
       width: `${width}px`,
-    } as CSSProperties
-  }, [width, maxisize])
-
-  useEffect(() => {
-    if (!rootRef.current) return
-    const siblingEl = rootRef.current.nextElementSibling as HTMLDivElement | null
-    if (siblingEl) {
-      const w = 0
-      Object.assign(siblingEl.style, {
-        minWidth: `calc(100% - ${w}px)`,
-        maxWidth: `calc(100% - ${w}px)`,
-      })
     }
-  }, [width])
+  }, [width, minisize])
 
   return (
-    <div ref={rootRef} className={styles.leftBar} style={style}>
-      <div className={styles.content}></div>
+    <div className={styles.leftBar} style={style}>
+      <Content />
       <DraggableCore onStop={onResizeStop} onStart={onResizeStart} onDrag={onResize}>
-        <span className={styles.dragHandler}></span>
+        <span className={styles.draggable} aria-hidden={minisize}></span>
       </DraggableCore>
-      <div className={maxisize ? styles.maximize : styles.minimize}>
+      <div className={minisize ? styles.minimize : styles.maximize}>
         <div className={styles.handle} onClick={onMaxminized} />
       </div>
     </div>

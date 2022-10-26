@@ -3,6 +3,7 @@ import TitleBar from './TitleBar'
 import MainArea from './MainArea'
 import {memo} from 'react'
 import LeftBar from './LeftBar'
+import Board from './Board'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <LeftBar />
         <MainArea />
       </div>
+      <Board />
     </div>
   )
 }

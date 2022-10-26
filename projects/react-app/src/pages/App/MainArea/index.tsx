@@ -1,12 +1,8 @@
 import {memo} from 'react'
-import MP4View from 'src/modules/MP4View'
+import styles from './index.module.scss'
 
 const MainArea = memo(function MainArea() {
-  return (
-    <div className="mainArea">
-      <MP4View />
-    </div>
-  )
+  return <div className={styles.mainArea}></div>
 })
 
 export default MainArea

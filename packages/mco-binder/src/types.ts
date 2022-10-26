@@ -51,19 +51,19 @@ export class McoServiceSlotHolder {
 }
 
 export interface McoModuleContextFuncs {
-  get mId(): string
+  resize(width: number, height: number): void
 
   registerService(service: McoService): void
 
   unregisterService(service: McoService): void
 
-  connectService(sId: string, connn: McoServiceConnn): McoServiceConnnHolder | undefined
+  connectService(sId: string, connn: McoServiceConnn): McoServiceConnnHolder
 
   disconnectService(sId: string, connn: McoServiceConnn): void
 
-  invokeService(uri: string, ...args: any[]): Promise<any>
+  invokeFunc(uri: string, ...args: any[]): Promise<any>
 
-  connectSignal(uri: string, slot: McoServiceSlot): McoServiceSlotHolder | undefined
+  connectSignal(uri: string, slot: McoServiceSlot): McoServiceSlotHolder
 
   disconnectSignal(uri: string, slot: McoServiceSlot): void
 }

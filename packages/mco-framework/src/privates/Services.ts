@@ -2,13 +2,11 @@ import McoService from '../Service'
 import McoFrameworkContext from './FrameworkContext'
 import {EventEmitter} from '@mco/utils'
 import {McoServiceConnn, McoServiceSlot} from '../types'
+import logger from './logger'
 
 export default class McoServices {
-  constructor(fwCtx: McoFrameworkContext) {
-    this.fwCtx = fwCtx
-  }
+  constructor(_fwCtx: McoFrameworkContext) {}
 
-  private fwCtx: McoFrameworkContext
   private services?: Record<string, McoService>
   private emitter = new EventEmitter()
 
@@ -17,11 +15,14 @@ export default class McoServices {
   }
 
   register(service: McoService) {
-    if (!this.services) this.services = {}
-
     const sId = service.sId
-    if (this.services[sId]) return false
 
+    if (this.services?.[sId]) {
+      logger.error('McoServices.register', 'Error: service exist!', sId)
+      return false
+    }
+
+    this.services = this.services || {}
     this.services[sId] = service
 
     this.emitter.emit(sId, true, sId)
@@ -34,12 +35,15 @@ export default class McoServices {
     if (this.services?.[sId] !== service) return
 
     delete this.services[sId]
-
     this.emitter.emit(sId, false, sId)
   }
 
   connect(sId: string, connn: McoServiceConnn) {
-    if (!sId || typeof sId !== 'string') return
+    if (!sId || typeof sId !== 'string') {
+      logger.error('McoServices.connect', 'Error: sId invalid!', sId)
+      return
+    }
+
     return this.emitter.on(sId, connn)
   }
 
@@ -47,21 +51,29 @@ export default class McoServices {
     this.emitter.off(sId, connn)
   }
 
-  async invokeFunc(uri: string, ...args: any[]) {
+  async invoke(uri: string, ...args: any[]) {
     const [sId, name] = uri.split('/')
-
     const service = this.getService(sId)
-    if (!service) return undefined
 
-    return service.invokeFunc(name, ...args)
+    if (!service) {
+      logger.error('McoServices.invokeFunc', 'Error: service is null!', sId)
+      return undefined
+    }
+
+    const result = await service.invoke(name, ...args)
+    return result
   }
 
   connectSignal(uri: string, slot: McoServiceSlot) {
     const [sId, signal] = uri.split('/')
-
     const service = this.getService(sId)
 
-    return service?.connectSignal(signal, slot)
+    if (!service) {
+      logger.error('McoServices.connectSignal', 'Error: service is null!', sId)
+      return undefined
+    }
+
+    return service.connectSignal(signal, slot)
   }
 
   disconnectSignal(uri: string, slot: McoServiceSlot) {

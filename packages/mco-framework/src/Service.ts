@@ -30,7 +30,7 @@ export default class McoService {
    * @param args 参数列表
    * @returns Promise<any>
    */
-  async invokeFunc(name: string, ...args: any[]) {
+  async invoke(name: string, ...args: any[]) {
     const method = this.regFuncs?.[name]
     if (method) return await method.call(this, ...args)
 

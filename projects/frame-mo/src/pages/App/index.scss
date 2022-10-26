@@ -1,19 +1,13 @@
 @import '../../assets/styles/base.scss';
 
 #mco-root {
-  width: 100%;
-  height: 100%;
+  width: 224px;
+  height: 160px;
   background-color: transparent;
 }
 
 .app {
   width: 100%;
   height: 100%;
-
-  .content {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-  }
+  background-color: red;
 }

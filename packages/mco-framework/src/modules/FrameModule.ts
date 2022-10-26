@@ -1,8 +1,8 @@
-import McoFrameworkContext from 'src/privates/FrameworkContext'
-import McoModuleCleaner from 'src/privates/ModuleCleaner'
-import RPCModule from './RPCModule'
+import McoFrameworkContext from '../privates/FrameworkContext'
+import McoModuleCleaner from '../privates/ModuleCleaner'
+import ModuleProxy from './ModuleProxy'
 
-class RPCChannel {
+class FrameChannel {
   constructor() {
     window.addEventListener('message', this.onMessage)
   }
@@ -26,24 +26,21 @@ class RPCChannel {
     const module = this.modules?.find(el => el.window === source)
     if (!module) return
 
-    let cmd: string | undefined = undefined
-    let args: any[] = []
     try {
-      cmd = data.cmd
-      if (Array.isArray(data.args)) {
-        args = data.args
+      const cmd = data.cmd
+      const args = data.args
+      if (Array.isArray(args)) {
+        module.onHandle(cmd, ...args)
       }
     } catch (error) {
-      console.error('[RPCChannel]onMesssage, error', error)
+      console.error('[FrameChannel]onMesssage, error', error)
     }
-
-    cmd && module.onHandle(cmd, ...args)
   }
 }
 
-const channel = new RPCChannel()
+const channel = new FrameChannel()
 
-export default class FrameModule extends RPCModule {
+export default class FrameModule extends ModuleProxy {
   constructor(fwCtx: McoFrameworkContext, cleaner: McoModuleCleaner, id: string, container: HTMLIFrameElement) {
     super(fwCtx, cleaner, id)
 
@@ -59,7 +56,11 @@ export default class FrameModule extends RPCModule {
     return this.container?.contentWindow
   }
 
-  protected rpc(cmd: string, ...args: any[]) {
+  resize(width: number, height: number) {
+    this.container && Object.assign(this.container.style, {width: `${width}px`, height: `${height}px`})
+  }
+
+  protected postMessage(cmd: string, ...args: any[]) {
     this.window?.postMessage({cmd, args}, '*')
   }
 

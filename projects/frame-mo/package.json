@@ -1,0 +1,32 @@
+{
+  "name": "frame-mo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "mco dev --env dev --hot",
+    "build": "mco build",
+    "build:dev": "mco build --env dev",
+    "build:analyze": "mco build --analyze",
+    "serve": "mco serve"
+  },
+  "dependencies": {
+    "@mco/ui": "^1.0.0",
+    "@mco/utils": "^1.0.0",
+    "@mco/binder": "^1.0.0",
+    "clsx": "^1.1.1",
+    "gl-matrix": "^3.4.3",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-transition-group": "^4.4.2"
+  },
+  "devDependencies": {
+    "@emotion/react": "^11.9.0",
+    "@mco/cli": "^1.0.0",
+    "@types/react": "^17.0.34",
+    "@types/react-dom": "^17.0.11",
+    "@types/react-transition-group": "^4.4.4",
+    "eslint-plugin-react-hooks": "^4.5.0",
+    "tsconfig-mco": "^1.0.0"
+  }
+}

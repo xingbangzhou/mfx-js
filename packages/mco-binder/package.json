@@ -1,0 +1,14 @@
+{
+  "name": "@mco/binder",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@mco/utils": "^1.0.0"
+  },
+  "peerDependencies": {
+  },
+  "devDependencies": {
+    "tsconfig-mco": "^1.0.0"
+  }
+}

@@ -1,5 +1,6 @@
 import McoModule from './Module'
 import McoFrameworkContext from './privates/FrameworkContext'
+import logger from './privates/logger'
 import McoModuleCleaner from './privates/ModuleCleaner'
 import McoService from './Service'
 import {
@@ -23,7 +24,13 @@ export default class McoModuleContext implements McoModuleContextFuncs {
   private connns?: [string, McoServiceConnn][] = []
   private slots?: [string, McoServiceSlot][] = []
 
+  get mId() {
+    return this.module.mId
+  }
+
   registerService(service: McoService) {
+    logger.log('McoModuleContext.registerService', service, this.mId)
+
     const {fwCtx} = this
 
     const success = fwCtx.services.register(service)
@@ -36,6 +43,8 @@ export default class McoModuleContext implements McoModuleContextFuncs {
   }
 
   unregisterService(service: McoService) {
+    logger.log('McoModuleContext.unregisterService', service, this.mId)
+
     const {fwCtx} = this
 
     fwCtx.services.unregister(service)
@@ -43,6 +52,8 @@ export default class McoModuleContext implements McoModuleContextFuncs {
   }
 
   connectService(sId: string, connn: McoServiceConnn): McoServiceConnnHolder | undefined {
+    logger.log('McoModuleContext.connectService', sId, connn, this.mId)
+
     const {fwCtx} = this
 
     const l = fwCtx.services.connect(sId, connn)
@@ -59,6 +70,8 @@ export default class McoModuleContext implements McoModuleContextFuncs {
   }
 
   disconnectService(sId: string, connn: McoServiceConnn) {
+    logger.log('McoModuleContext.disconnectService', sId, connn, this.mId)
+
     const {fwCtx} = this
 
     fwCtx.services.disconnect(sId, connn)
@@ -66,13 +79,17 @@ export default class McoModuleContext implements McoModuleContextFuncs {
     this.connns = this.connns?.filter(el => el[0] === sId && el[1] === connn)
   }
 
-  async invokeFunc(uri: string, ...args: any[]) {
+  async invokeService(uri: string, ...args: any[]) {
+    logger.log('McoModuleContext.invokeFunc', uri, ...args, this.mId)
+
     const {fwCtx} = this
 
-    return fwCtx.services.invokeFunc(uri, ...args)
+    return fwCtx.services.invoke(uri, ...args)
   }
 
   connectSignal(uri: string, slot: McoServiceSlot): McoServiceSlotHolder | undefined {
+    logger.log('McoModuleContext.connectSignal', uri, slot, this.mId)
+
     const {fwCtx} = this
 
     const l = fwCtx.services.connectSignal(uri, slot)
@@ -87,6 +104,8 @@ export default class McoModuleContext implements McoModuleContextFuncs {
   }
 
   disconnectSignal(uri: string, slot: McoServiceSlot) {
+    logger.log('McoModuleContext.disconnectSignal', uri, slot, this.mId)
+
     const {fwCtx} = this
 
     fwCtx.services.disconnectSignal(uri, slot)
@@ -95,6 +114,8 @@ export default class McoModuleContext implements McoModuleContextFuncs {
   }
 
   private clearAll = () => {
+    logger.log('McoModuleContext.clearAll', this.mId)
+
     const {fwCtx} = this
 
     this.slots?.forEach(el => this.disconnectSignal(el[0], el[1]))
