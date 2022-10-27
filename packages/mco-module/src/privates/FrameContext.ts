@@ -6,7 +6,7 @@ export default class FrameContext extends ContextProxy {
 
     window.addEventListener('message', this.onMessage, false)
 
-    this.imReady()
+    this.ready()
   }
 
   private static instance_?: FrameContext

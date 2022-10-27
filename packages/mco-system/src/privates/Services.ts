@@ -1,7 +1,7 @@
 import McoService from '../Service'
 import McoFrameworkContext from './FrameworkContext'
 import {EventEmitter} from '@mco/utils'
-import {McoServiceConnn, McoServiceSlot} from '../types'
+import {McoServiceLinker, McoServiceSlot} from '../types'
 import logger from './logger'
 
 export default class McoServices {
@@ -38,7 +38,7 @@ export default class McoServices {
     this.emitter.emit(sId, false, sId)
   }
 
-  connect(sId: string, connn: McoServiceConnn) {
+  link(sId: string, connn: McoServiceLinker) {
     if (!sId || typeof sId !== 'string') {
       logger.error('McoServices.connect', 'Error: sId invalid!', sId)
       return
@@ -47,7 +47,7 @@ export default class McoServices {
     return this.emitter.on(sId, connn)
   }
 
-  disconnect(sId: string, connn: McoServiceConnn) {
+  unlink(sId: string, connn: McoServiceLinker) {
     this.emitter.off(sId, connn)
   }
 

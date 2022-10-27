@@ -1,11 +1,11 @@
-import {mcoBase} from 'src/base'
+import {mcoEnv} from 'src/base'
 import {webpack} from 'webpack'
 import chalk from 'chalk'
 import fs from 'fs-extra'
 
 class BuildRunner {
   async start() {
-    const {wpChain, cacheFiles} = mcoBase
+    const {wpChain, cacheFiles} = mcoEnv
     const config = wpChain.toConfig()
 
     webpack(config, (err, status) => {

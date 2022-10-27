@@ -1,9 +1,9 @@
-import {mcoBase} from 'src/base'
+import {mcoEnv} from 'src/base'
 import {RuleSetRule} from 'webpack'
 
 class Module {
   async setup() {
-    const {wpChain, options, isDev, pkg} = mcoBase
+    const {wpChain, options, isDev, pkg} = mcoEnv
 
     wpChain?.merge({
       module: {

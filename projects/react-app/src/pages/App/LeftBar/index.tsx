@@ -1,5 +1,5 @@
 import {memo, useCallback, useMemo, useRef, useState} from 'react'
-import {DraggableCore, DraggableData} from '@mco/ui'
+import {DraggableCore, DraggableData} from '@mco/joy'
 import styles from './index.module.scss'
 import Content from './Content'
 

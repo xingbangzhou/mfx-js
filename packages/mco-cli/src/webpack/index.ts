@@ -1,4 +1,4 @@
-import {mcoBase} from 'src/base'
+import {mcoEnv} from 'src/base'
 import Common from './Common'
 import CSS from './CSS'
 import File from './File'
@@ -7,7 +7,7 @@ import Plugin from './Plugin'
 import Development from './Development'
 import Production from './Production'
 
-class WpConfig {
+export default class McoWebpack {
   common = new Common()
   css = new CSS()
   file = new File()
@@ -25,11 +25,7 @@ class WpConfig {
       this.plugin.setup(),
     ])
 
-    if (mcoBase.mode === 'development' || mcoBase.mode === 'serve') await this.development.setup()
-    else if (mcoBase.mode === 'production') await this.production.setup()
+    if (mcoEnv.mode === 'development' || mcoEnv.mode === 'serve') await this.development.setup()
+    else if (mcoEnv.mode === 'production') await this.production.setup()
   }
 }
-
-const wpConfig = new WpConfig()
-
-export default wpConfig

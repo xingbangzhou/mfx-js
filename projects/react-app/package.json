@@ -11,9 +11,9 @@
     "start": "mco serve"
   },
   "dependencies": {
-    "@mco/framework": "^1.0.0",
-    "@mco/ui": "^1.0.0",
+    "@mco/joy": "^1.0.0",
     "@mco/utils": "^1.0.0",
+    "@mco/system": "^1.0.0",
     "clsx": "^1.1.1",
     "gl-matrix": "^3.4.3",
     "react": "^17.0.2",

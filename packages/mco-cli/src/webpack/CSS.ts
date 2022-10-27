@@ -1,4 +1,4 @@
-import {mcoBase} from 'src/base'
+import {mcoEnv} from 'src/base'
 import {RuleSetRule, RuleSetUseItem} from 'webpack'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
@@ -12,7 +12,7 @@ const lessModuleRegex = /\.module\.less$/
 
 class CSS {
   async setup() {
-    const {isDev, wpChain} = mcoBase
+    const {isDev, wpChain} = mcoEnv
 
     wpChain?.merge({
       module: {
@@ -56,7 +56,7 @@ class CSS {
     modules = false,
     preProcessor: Record<string, RuleSetUseItem> = {},
   ): Record<string, RuleSetUseItem> {
-    const {isDev} = mcoBase
+    const {isDev} = mcoEnv
     const localIdentName = isDev ? '[path][name]-[local]-[hash:base64:5]' : '_[hash:base64:7]'
 
     return {
@@ -102,7 +102,7 @@ class CSS {
   }
 
   private get sass(): RuleSetRule {
-    const {isDev} = mcoBase
+    const {isDev} = mcoEnv
 
     return {
       test: sassRegex,
@@ -122,7 +122,7 @@ class CSS {
   }
 
   private get sassModule(): RuleSetRule {
-    const {isDev} = mcoBase
+    const {isDev} = mcoEnv
 
     return {
       test: sassModuleRegex,

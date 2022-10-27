@@ -1,6 +1,6 @@
-export type MCOModeType = 'development' | 'production' | 'serve' | undefined
+export type McoModeType = 'development' | 'production' | 'serve' | undefined
 
-export type MCOOptions = {
+export type McoOptions = {
   env?: string
   hot?: boolean
   open?: boolean

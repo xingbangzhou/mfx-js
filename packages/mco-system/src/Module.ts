@@ -5,7 +5,7 @@ import McoModuleCleaner from './privates/ModuleCleaner'
 export default class McoModule {
   constructor(fwCtx: McoFrameworkContext, cleaner: McoModuleCleaner, mId: string) {
     this._mId = mId
-    cleaner.bindUnloadFn(() => this.unload())
+    cleaner.bindUnload(() => this.unload())
     this._ctx = new McoModuleContext(this, fwCtx, cleaner)
   }
 

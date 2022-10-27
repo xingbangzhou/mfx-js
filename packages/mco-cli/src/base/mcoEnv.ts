@@ -1,9 +1,9 @@
 import path from 'path'
 import fs from 'fs-extra'
 import WebpackConfig from 'webpack-chain'
-import type {MCOOptions, MCOModeType} from 'src/types'
+import type {McoOptions, McoModeType} from 'src/types'
 
-class MCOBase {
+class McoEnv {
   // 项目根目录路径
   readonly root: string
   // 缓存路径
@@ -11,9 +11,9 @@ class MCOBase {
   // webpack-chain实例
   readonly wpChain = new WebpackConfig()
   // 生产模式
-  mode?: MCOModeType
+  mode?: McoModeType
   // 用户选项
-  options?: MCOOptions
+  options?: McoOptions
   // 源码目录
   src?: string
   // 打包路径
@@ -52,7 +52,7 @@ class MCOBase {
     return this.mode === 'development'
   }
 
-  async init(mode: MCOModeType, options: MCOOptions) {
+  async init(mode: McoModeType, options: McoOptions) {
     this.mode = mode
     this.options = options
     this.src = this.resolve('src')
@@ -85,6 +85,6 @@ class MCOBase {
   }
 }
 
-const mcoBase = new MCOBase()
+const mcoEnv = new McoEnv()
 
-export default mcoBase
+export default mcoEnv

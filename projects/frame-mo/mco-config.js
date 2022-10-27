@@ -9,7 +9,7 @@ module.exports = ({wpChain, mode, options}) => {
 
   wpChain.resolve.alias.set('@mco/ui', path.resolve(__dirname, '../../packages/mco-ui/src'))
   wpChain.resolve.alias.set('@mco/utils', path.resolve(__dirname, '../../packages/mco-utils/src'))
-  wpChain.resolve.alias.set('@mco/binder', path.resolve(__dirname, '../../packages/mco-binder/src'))
+  wpChain.resolve.alias.set('@mco/module', path.resolve(__dirname, '../../packages/mco-module/src'))
 
   wpChain.plugin('html').tap(args => {
     args[0] = {

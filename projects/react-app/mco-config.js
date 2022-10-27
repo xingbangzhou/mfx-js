@@ -7,9 +7,9 @@ module.exports = ({wpChain, mode, options}) => {
   const devPort = 5002
   wpChain.devServer.port(devPort)
 
-  wpChain.resolve.alias.set('@mco/ui', path.resolve(__dirname, '../../packages/mco-ui/src'))
+  wpChain.resolve.alias.set('@mco/joy', path.resolve(__dirname, '../../packages/mco-joy/src'))
   wpChain.resolve.alias.set('@mco/utils', path.resolve(__dirname, '../../packages/mco-utils/src'))
-  wpChain.resolve.alias.set('@mco/framework', path.resolve(__dirname, '../../packages/mco-framework/src'))
+  wpChain.resolve.alias.set('@mco/system', path.resolve(__dirname, '../../packages/mco-system/src'))
 
   wpChain.plugin('html').tap(args => {
     args[0] = {

@@ -1,11 +1,11 @@
-import {mcoBase} from 'src/base'
+import {mcoEnv} from 'src/base'
 import {Configuration} from 'webpack'
 
 const {version} = require('../../package.json')
 
 class Common {
   async setup() {
-    const {wpChain} = mcoBase
+    const {wpChain} = mcoEnv
 
     wpChain?.merge({
       cache: this.cache,
@@ -18,7 +18,7 @@ class Common {
   }
 
   private get cache(): Configuration['cache'] {
-    const {options, cacheFiles, conf} = mcoBase
+    const {options, cacheFiles, conf} = mcoEnv
 
     const buildDependenciesConfigs = [__filename]
     if (conf) {
@@ -38,7 +38,7 @@ class Common {
   }
 
   private get optimization(): Configuration['optimization'] {
-    const {isDev} = mcoBase
+    const {isDev} = mcoEnv
 
     return {
       chunkIds: 'named',
@@ -48,7 +48,7 @@ class Common {
   }
 
   private get entry(): Configuration['entry'] {
-    const {entry} = mcoBase
+    const {entry} = mcoEnv
 
     return (
       entry && {
@@ -58,7 +58,7 @@ class Common {
   }
 
   private get output(): Configuration['output'] {
-    const {dist} = mcoBase
+    const {dist} = mcoEnv
 
     return {
       path: dist,
@@ -78,10 +78,10 @@ class Common {
   }
 
   private get resolve(): Configuration['resolve'] {
-    const {src = ''} = mcoBase
+    const {src = ''} = mcoEnv
 
     return {
-      modules: ['node_modules', mcoBase.resolve('node_modules'), src],
+      modules: ['node_modules', mcoEnv.resolve('node_modules'), src],
       alias: {
         src: src,
       },

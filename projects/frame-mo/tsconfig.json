@@ -7,7 +7,7 @@
       "src/*": ["src/*"],
       "@mco/ui": ["../../packages/mco-ui/src"],
       "@mco/utils": ["../../packages/mco-utils/src"],
-      "@mco/binder": ["../../packages/mco-binder/src"]
+      "@mco/module": ["../../packages/mco-module/src"]
     },
   },
   "exclude": ["mco-config.js"]

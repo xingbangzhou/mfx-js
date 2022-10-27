@@ -1,9 +1,9 @@
-import {mcoBase} from 'src/base'
+import {mcoEnv} from 'src/base'
 import TerserPlugin from 'terser-webpack-plugin'
 
 class Production {
   async setup() {
-    const {wpChain} = mcoBase
+    const {wpChain} = mcoEnv
 
     wpChain?.merge({
       mode: 'production',

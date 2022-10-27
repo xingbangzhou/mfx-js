@@ -1,11 +1,11 @@
 import './index.scss'
 import {memo, useEffect} from 'react'
-import binder from 'src/core/binder'
+import activator from 'src/activator'
 
 function App() {
   useEffect(() => {
-    binder.doing(() => {
-      binder.ctx?.resize(224, 160)
+    activator.ensure(ctx => {
+      ctx.resize(224, 160)
     })
   }, [])
 

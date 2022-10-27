@@ -1,5 +1,6 @@
 import McoModule from './Module'
 import McoFrameworkContext from './privates/FrameworkContext'
+import logger from './privates/logger'
 import McoModuleCleaner from './privates/ModuleCleaner'
 
 export default class McoFramework extends McoModule {
@@ -14,6 +15,7 @@ export default class McoFramework extends McoModule {
   init() {
     if (this.inited) return
     this.inited = true
+    logger.log('McoFramework.init')
 
     window['mco.framework'] = true
   }
@@ -25,6 +27,8 @@ export default class McoFramework extends McoModule {
   }
 
   loadModule(mId: string) {
+    logger.log('McoFramework.loadModule', mId)
+
     const {fwCtx} = this
     const module = fwCtx.modules.load(mId)
 
@@ -32,6 +36,8 @@ export default class McoFramework extends McoModule {
   }
 
   loadFrameModule(mId: string, container: HTMLIFrameElement) {
+    logger.log('McoFramework.loadFrameModule', mId, container)
+
     const {fwCtx} = this
     const module = fwCtx.modules.loadFrame(mId, container)
 
@@ -39,6 +45,8 @@ export default class McoFramework extends McoModule {
   }
 
   unloadModule(mId: string) {
+    logger.log('McoFramework.unloadModule', mId)
+
     const {fwCtx} = this
 
     fwCtx.modules.unload(mId)

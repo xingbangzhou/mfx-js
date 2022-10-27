@@ -1,8 +1,8 @@
-import {mcoBase} from 'src/base'
+import {mcoEnv} from 'src/base'
 
 class Development {
   async setup() {
-    const {wpChain} = mcoBase
+    const {wpChain} = mcoEnv
     wpChain?.merge({
       mode: 'development',
       optimization: {
@@ -16,7 +16,7 @@ class Development {
    * dev server
    */
   private get devServer() {
-    const {options} = mcoBase
+    const {options} = mcoEnv
 
     return {
       port: 8000,
@@ -30,7 +30,7 @@ class Development {
       },
       static: [
         {
-          directory: mcoBase.public,
+          directory: mcoEnv.public,
           publicPath: '/',
         },
       ],

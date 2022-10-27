@@ -47,7 +47,7 @@ export default class FrameModule extends ModuleProxy {
     this.container = container
     channel.attach(this)
 
-    this.fwReady()
+    this.ready()
   }
 
   private container?: HTMLIFrameElement

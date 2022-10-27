@@ -5,8 +5,8 @@
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"],
-      "@mco/framework": ["../../packages/mco-framework/src"],
-      "@mco/ui": ["../../packages/mco-ui/src"],
+      "@mco/system": ["../../packages/mco-system/src"],
+      "@mco/joy": ["../../packages/mco-joy/src"],
       "@mco/utils": ["../../packages/mco-utils/src"]
     },
   },

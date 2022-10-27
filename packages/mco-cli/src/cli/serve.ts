@@ -1,7 +1,7 @@
 import express from 'express'
 import compression from 'compression'
 import cors from 'cors'
-import {mcoBase} from 'src/base'
+import {mcoEnv} from 'src/base'
 import path from 'path'
 import fs from 'fs-extra'
 import chalk from 'chalk'
@@ -14,17 +14,17 @@ class ServeRunner {
     app.use(compression())
     app.use(cors())
 
-    const staticRoot = mcoBase.dist || mcoBase.resolve('dist')
+    const staticRoot = mcoEnv.dist || mcoEnv.resolve('dist')
     app.use(express.static(staticRoot))
 
     const html = await fs.readFile(path.join(staticRoot, 'index.html'), 'utf8')
     app.get('*', (req, res) => res.send(html))
 
-    const devServer = mcoBase.wpChain.toConfig().devServer as any
+    const devServer = mcoEnv.wpChain.toConfig().devServer as any
 
     const {host, port} = devServer
     const httpsOptions = devServer.https
-    const publicPath = mcoBase.public
+    const publicPath = mcoEnv.public
     if (httpsOptions) {
       const httpsServer = https.createServer(httpsOptions, app)
       httpsServer.listen(port, () => {

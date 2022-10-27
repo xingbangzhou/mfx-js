@@ -1,4 +1,4 @@
-import {mcoBase} from 'src/base'
+import {mcoEnv} from 'src/base'
 import {EnvironmentPlugin, container} from 'webpack'
 import {CleanWebpackPlugin} from 'clean-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
@@ -9,7 +9,7 @@ import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer'
 
 class Plugin {
   async setup() {
-    const {wpChain, isDev, root, src, options, cacheFiles} = mcoBase
+    const {wpChain, isDev, root, src, options, cacheFiles} = mcoEnv
 
     const plugin: Record<string, any> = {
       env: this.env,
@@ -29,7 +29,7 @@ class Plugin {
       }
     }
     // TS/ESLint
-    const tsconfig = mcoBase.resolve('tsconfig.json')
+    const tsconfig = mcoEnv.resolve('tsconfig.json')
     if (fs.existsSync(tsconfig)) {
       plugin.ts = {
         plugin: require.resolve('fork-ts-checker-webpack-plugin'),
@@ -84,7 +84,7 @@ class Plugin {
   }
 
   private get env() {
-    const {mode, options} = mcoBase
+    const {mode, options} = mcoEnv
 
     return {
       plugin: EnvironmentPlugin,
@@ -102,7 +102,7 @@ class Plugin {
   }
 
   private get html() {
-    const {template, favicon, isDev} = mcoBase
+    const {template, favicon, isDev} = mcoEnv
 
     return {
       plugin: HtmlWebpackPlugin,

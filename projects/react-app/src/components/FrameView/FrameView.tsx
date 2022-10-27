@@ -1,5 +1,5 @@
 import {CSSProperties, memo, useCallback, useEffect, useMemo, useRef} from 'react'
-import {syncUrlProto} from '@mco/utils'
+import {synHrefProtocol} from '@mco/utils'
 import framework from 'src/core/framework'
 
 interface FrameViewProps {
@@ -15,7 +15,7 @@ const FrameView = memo(function FrameView(props: FrameViewProps) {
 
   const url = useMemo(() => {
     if (!src) return undefined
-    return syncUrlProto(src)
+    return synHrefProtocol(src)
   }, [src])
 
   const mId = url
