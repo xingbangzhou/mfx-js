@@ -1,4 +1,4 @@
-import {memo, useCallback, useMemo, useRef, useState} from 'react'
+import {memo, useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {DraggableCore, DraggableData} from '@mco/joy'
 import styles from './index.module.scss'
 import Content from './Content'
@@ -11,6 +11,7 @@ const LeftBar = memo(function LeftBar() {
   const [width, setWidth] = useState(NORWIDTH)
   const [minisize, setMinisize] = useState(false)
 
+  const rootRef = useRef<HTMLDivElement>(null)
   const slackW = useRef(0)
 
   const resetData = useCallback(() => {
@@ -63,13 +64,12 @@ const LeftBar = memo(function LeftBar() {
 
   const style = useMemo(() => {
     return {
-      left: `${minisize ? MINWIDTH - width : 0}px`,
-      width: `${width}px`,
+      width: `${minisize ? MINWIDTH : width}px`,
     }
   }, [width, minisize])
 
   return (
-    <div className={styles.leftBar} style={style}>
+    <div ref={rootRef} className={styles.leftBar} style={style}>
       <Content />
       <DraggableCore onStop={onResizeStop} onStart={onResizeStart} onDrag={onResize}>
         <span className={styles.draggable} aria-hidden={minisize}></span>

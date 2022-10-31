@@ -9,6 +9,7 @@ export default class McoServices {
 
   private services?: Record<string, McoService>
   private emitter = new EventEmitter()
+  private slots?: Record<string, [string, McoServiceSlot][]>
 
   getService(sId: string) {
     return this.services?.[sId]
@@ -18,12 +19,18 @@ export default class McoServices {
     const sId = service.sId
 
     if (this.services?.[sId]) {
-      logger.error('McoServices.register', 'Error: service exist!', sId)
+      logger.warn('McoServices.register', 'Error: service duplicated!', sId)
       return false
     }
 
     this.services = this.services || {}
     this.services[sId] = service
+
+    // Signal
+    const l = this.slots?.[sId]
+    l?.forEach(el => {
+      service.connectSignal(el[0], el[1])
+    })
 
     this.emitter.emit(sId, true, sId)
 
@@ -33,6 +40,12 @@ export default class McoServices {
   unregister(service: McoService) {
     const sId = service.sId
     if (this.services?.[sId] !== service) return
+
+    // Signal
+    const l = this.slots?.[sId]
+    l?.forEach(el => {
+      service.disconnectSignal(el[0], el[1])
+    })
 
     delete this.services[sId]
     this.emitter.emit(sId, false, sId)
@@ -66,21 +79,42 @@ export default class McoServices {
 
   connectSignal(uri: string, slot: McoServiceSlot) {
     const [sId, signal] = uri.split('/')
-    const service = this.getService(sId)
-
-    if (!service) {
-      logger.error('McoServices.connectSignal', 'Error: service is null!', sId)
-      return undefined
+    if (!sId || !signal) {
+      logger.error('McoServices.connectSignal', 'Error: uri is invalid!', uri)
+      return
     }
 
-    return service.connectSignal(signal, slot)
+    if (!this.slots) this.slots = {}
+    const l = this.slots[sId] || []
+    if (!l.find(el => el[0] === signal && el[1] === slot)) {
+      l.push([signal, slot])
+    }
+    this.slots[sId] = l
+
+    const service = this.getService(sId)
+    if (service) {
+      service.connectSignal(signal, slot)
+    } else {
+      logger.warn('McoServices.connectSignal', 'Warn: service is null!', sId)
+    }
+
+    return true
   }
 
   disconnectSignal(uri: string, slot: McoServiceSlot) {
     const [sId, signal] = uri.split('/')
 
-    const service = this.getService(sId)
+    const l = this.slots?.[sId]
+    if (!l) return
+    const idx = l.findIndex(el => el[0] === signal && el[1] === slot)
+    if (idx !== -1) {
+      l.splice(idx, 1)
+      if (!l.length) {
+        delete this.slots?.[sId]
+      }
+    }
 
+    const service = this.getService(sId)
     service?.disconnectSignal(signal, slot)
   }
 }

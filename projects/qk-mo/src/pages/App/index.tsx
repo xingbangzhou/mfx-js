@@ -4,12 +4,10 @@ import activator from 'src/activator'
 
 function App() {
   useEffect(() => {
-    activator.ensure(ctx => {
-      ctx.resize(224, 160)
-    })
+    activator.ensure(ctx => {})
   }, [])
 
-  return <div className="app">Frame Module</div>
+  return <div className="app">Qiankun Module</div>
 }
 
 export default memo(App)

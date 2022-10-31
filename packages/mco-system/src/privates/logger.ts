@@ -5,6 +5,10 @@ class McoLogger {
     console.log(`%c[${name}]%c[${this.timeStr()}]`, `color: #c678dd`, `color: gray`, ...args)
   }
 
+  warn(name: string, ...args: any[]) {
+    console.warn(`%c[${name}]%c[${this.timeStr()}]`, `color: #953800`, `color: gray`, ...args)
+  }
+
   error(name: string, ...args: any[]) {
     console.error(`%c[${name}]%c[${this.timeStr()}]`, `color: red`, `color: gray`, ...args)
   }

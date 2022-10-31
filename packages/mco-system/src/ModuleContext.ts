@@ -83,7 +83,7 @@ export default class McoModuleContext implements McoModuleContextFuncs {
   }
 
   async invoke(uri: string, ...args: any[]) {
-    logger.log('McoModuleContext.invokeFunc', uri, ...args, this.module.mId)
+    logger.log('McoModuleContext.invoke', uri, ...args, this.module.mId)
 
     const {fwCtx} = this
 

@@ -74,8 +74,6 @@ export class McoEventListenerHolder {
 }
 
 export interface McoModuleContextFuncs {
-  getMId(): Promise<string>
-
   resize(width: number, height: number): void
 
   register(service: McoService): void

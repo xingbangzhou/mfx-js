@@ -63,10 +63,6 @@ export default abstract class ContextProxy implements McoModuleContextFuncs {
   private invIntervalId?: number
   private listeners?: Record<string, McoEventListener[]>
 
-  getMId(): Promise<string> {
-    return this.callRemote(AskCommand.Inoke0, 'getMId')
-  }
-
   resize(width: number, height: number) {
     this.callRemote(AskCommand.Inoke0, 'resize', width, height)
   }
@@ -81,11 +77,11 @@ export default abstract class ContextProxy implements McoModuleContextFuncs {
 
   link(sId: string, connn: McoServiceLinker): McoServiceLinkerHolder {
     if (!this.lnks) this.lnks = {}
-    const list = this.lnks[sId] || []
-    if (!list.includes(connn)) {
-      list.push(connn)
+    const l = this.lnks[sId] || []
+    if (!l.includes(connn)) {
+      l.push(connn)
     }
-    this.lnks[sId] = list
+    this.lnks[sId] = l
 
     this.command(AskCommand.Link, sId)
 
@@ -93,12 +89,12 @@ export default abstract class ContextProxy implements McoModuleContextFuncs {
   }
 
   unlink(sId: string, connn: McoServiceLinker) {
-    const list = this.lnks?.[sId]
-    if (!list) return
-    const idx = list.indexOf(connn)
-    if (idx && idx !== -1) {
-      list.splice(idx, 1)
-      if (!list.length) {
+    const l = this.lnks?.[sId]
+    if (!l) return
+    const idx = l.indexOf(connn)
+    if (idx !== -1) {
+      l.splice(idx, 1)
+      if (!l.length) {
         delete this.lnks?.[sId]
         this.command(AskCommand.Unlink, sId)
       }
@@ -111,11 +107,11 @@ export default abstract class ContextProxy implements McoModuleContextFuncs {
 
   connectSignal(uri: string, slot: McoServiceSlot): McoServiceSlotHolder {
     if (!this.slots) this.slots = {}
-    const list = this.slots[uri] || []
-    if (!list.includes(slot)) {
-      list.push(slot)
+    const l = this.slots[uri] || []
+    if (!l.includes(slot)) {
+      l.push(slot)
     }
-    this.slots[uri] = list
+    this.slots[uri] = l
 
     this.command(AskCommand.ConnectSignal, uri)
 
@@ -123,12 +119,12 @@ export default abstract class ContextProxy implements McoModuleContextFuncs {
   }
 
   disconnectSignal(uri: string, slot: McoServiceSlot) {
-    const list = this.slots?.[uri]
-    if (!list) return
-    const idx = list?.indexOf(slot)
-    if (idx && idx !== -1) {
-      list.splice(idx, 1)
-      if (!list.length) {
+    const l = this.slots?.[uri]
+    if (!l) return
+    const idx = l.indexOf(slot)
+    if (idx !== -1) {
+      l.splice(idx, 1)
+      if (!l.length) {
         delete this.slots?.[uri]
         this.command(AskCommand.DisconnectSignal, uri)
       }
@@ -141,11 +137,11 @@ export default abstract class ContextProxy implements McoModuleContextFuncs {
 
   addEventListener(event: string, listener: McoEventListener): McoEventListenerHolder | undefined {
     if (!this.listeners) this.listeners = {}
-    const list = this.listeners[event] || []
-    if (!list.includes(listener)) {
-      list.push(listener)
+    const l = this.listeners[event] || []
+    if (!l.includes(listener)) {
+      l.push(listener)
     }
-    this.listeners[event] = list
+    this.listeners[event] = l
 
     this.command(AskCommand.AddEventListener, event)
 
@@ -153,12 +149,12 @@ export default abstract class ContextProxy implements McoModuleContextFuncs {
   }
 
   removeEventListener(event: string, listener: McoEventListener) {
-    const list = this.listeners?.[event]
-    if (!list) return
-    const idx = list?.indexOf(listener)
-    if (idx && idx !== -1) {
-      list.splice(idx, 1)
-      if (!list.length) {
+    const l = this.listeners?.[event]
+    if (!l) return
+    const idx = l.indexOf(listener)
+    if (idx !== -1) {
+      l.splice(idx, 1)
+      if (!l.length) {
         delete this.listeners?.[event]
         this.command(AskCommand.RemoveEventListener, event)
       }

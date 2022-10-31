@@ -5,7 +5,7 @@ import styles from './index.module.scss'
 const Board = memo(function Board() {
   return (
     <div className={styles.board}>
-      <FrameView src="http://localhost:5003/" />
+      <FrameView src="http://localhost:3002/" />
     </div>
   )
 })

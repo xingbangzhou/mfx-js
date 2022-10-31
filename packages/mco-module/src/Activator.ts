@@ -39,7 +39,9 @@ export default class McoBinder {
   }
 
   // Warning: 由框架来激活
-  active(ctx: McoModuleContextFuncs) {
+  active(ctx: McoModuleContextFuncs | undefined) {
+    if (!ctx) return
+
     this._ctx = ctx
 
     this.fns?.forEach(el => el(ctx))

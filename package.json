@@ -10,8 +10,13 @@
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^8.3.4",
+    "@rollup/plugin-commonjs": "^23.0.2",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-terser": "^0.1.0",
     "husky": "^4.3.8",
-    "lerna": "^5.1.8"
+    "lerna": "^5.1.8",
+    "rollup": "^3.2.3",
+    "rollup-plugin-node-globals": "^1.4.0"
   },
   "workspaces": [
     "packages/*",

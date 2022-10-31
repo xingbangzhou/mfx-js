@@ -18,11 +18,10 @@ export default class McoService {
   }
 
   async invoke(name: string, ...args: any[]) {
-    const method = this.invs?.[name]
-    if (!method) return undefined
+    const fn = this.invs?.[name]
+    if (!fn) return undefined
 
-    const result = await method.call(this, ...args)
-
+    const result = await fn.call(this, ...args)
     return result
   }
 
