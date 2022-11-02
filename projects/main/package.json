@@ -1,5 +1,5 @@
 {
-  "name": "qk-mo",
+  "name": "main",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -12,10 +12,11 @@
   },
   "dependencies": {
     "@mco/joy": "^1.0.0",
+    "@mco/system": "^1.0.0",
     "@mco/utils": "^1.0.0",
-    "@mco/module": "^1.0.0",
     "clsx": "^1.1.1",
     "gl-matrix": "^3.4.3",
+    "qiankun": "^2.8.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-transition-group": "^4.4.2"

@@ -9,7 +9,11 @@ function App() {
     })
   }, [])
 
-  return <div className="app">Frame Module</div>
+  return (
+    <div className="app">
+      <div className="title">IFrame App</div>
+    </div>
+  )
 }
 
 export default memo(App)
