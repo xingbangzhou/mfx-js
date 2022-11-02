@@ -1,38 +1,47 @@
 import {McoModule} from '@mco/system'
-import {replaceUrlProto} from '@mco/utils'
+import {uniformUrl} from '@mco/utils'
 import {loadMicroApp, MicroApp} from 'qiankun'
 import {memo, useEffect, useMemo, useRef} from 'react'
 import framework from 'src/core/framework'
 
 interface QKViewProps {
   name?: string
-  src?: string
+  url?: string
+  className?: string
 }
 
 const QKView = memo(function QKView(props: QKViewProps) {
-  const {name, src} = props
+  const {name, url, className} = props
   const rootRef = useRef<HTMLDivElement>(null)
   const microApp = useRef<MicroApp>()
   const mcoModule = useRef<McoModule>()
 
   const entry = useMemo(() => {
-    if (!src) return undefined
-    return replaceUrlProto(src)
-  }, [src])
+    if (!url) return undefined
+    return uniformUrl(url)
+  }, [url])
 
   useEffect(() => {
     if (rootRef.current && entry) {
       const mId = name || entry
 
-      microApp.current = loadMicroApp({
-        name: `qk-${mId}`,
-        entry: entry,
-        container: rootRef.current,
-      })
       mcoModule.current = framework.mcoFw.loadModule(mId)
-      microApp.current.mountPromise.then(() => {
-        microApp.current?.update?.({ctx: mcoModule.current?.ctx})
-      })
+      microApp.current = loadMicroApp(
+        {
+          name: mId,
+          entry: entry,
+          container: rootRef.current,
+          props: {
+            ctx: mcoModule.current?.ctx,
+          },
+        },
+        {
+          sandbox: {
+            strictStyleIsolation: true,
+            experimentalStyleIsolation: true,
+          },
+        },
+      )
     }
 
     return () => {
@@ -44,7 +53,7 @@ const QKView = memo(function QKView(props: QKViewProps) {
     }
   }, [entry, rootRef.current])
 
-  return <div ref={rootRef}></div>
+  return <div ref={rootRef} id="subapp-container" className={className}></div>
 })
 
 export default QKView

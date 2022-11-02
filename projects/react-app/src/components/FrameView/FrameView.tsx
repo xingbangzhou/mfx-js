@@ -1,5 +1,5 @@
 import {CSSProperties, memo, useCallback, useEffect, useMemo, useRef} from 'react'
-import {replaceUrlProto} from '@mco/utils'
+import {uniformUrl} from '@mco/utils'
 import framework from 'src/core/framework'
 
 interface FrameViewProps {
@@ -15,7 +15,7 @@ const FrameView = memo(function FrameView(props: FrameViewProps) {
 
   const url = useMemo(() => {
     if (!src) return undefined
-    return replaceUrlProto(src)
+    return uniformUrl(src)
   }, [src])
 
   const mId = url

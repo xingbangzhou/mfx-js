@@ -1,24 +1,34 @@
 import './index.scss'
 import TitleBar from './TitleBar'
-import MainArea from './MainArea'
+import Centre from './Centre'
 import {memo, useEffect} from 'react'
 import LeftBar from './LeftBar'
-import Board from './Board'
-import framework from 'src/core/framework'
+import Splittable, {SplitPane} from 'src/components/Splittable'
+import Right from './Right'
+
+const dimensions = {
+  RightMin: '273px',
+  RightMax: '420px',
+  CentreMin: '820px',
+}
 
 function App() {
-  useEffect(() => {
-    const {ctx} = framework.mcoFw
-  }, [])
+  useEffect(() => {}, [])
 
   return (
     <div className="app">
       <TitleBar />
-      <div className="content">
+      <div className="mainArea">
         <LeftBar />
-        <MainArea />
+        <Splittable>
+          <SplitPane minSize={dimensions.CentreMin}>
+            <Centre />
+          </SplitPane>
+          <SplitPane initialSize={dimensions.RightMin} minSize={dimensions.RightMin} maxSize={dimensions.RightMax}>
+            <Right />
+          </SplitPane>
+        </Splittable>
       </div>
-      <Board />
     </div>
   )
 }

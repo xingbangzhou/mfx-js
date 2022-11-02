@@ -5,7 +5,7 @@ import styles from './index.module.scss'
 const TitleBar = memo(function TitleBar() {
   return (
     <div className={styles.titleBar}>
-      <Button content="Application" />
+      <Button content="Home" />
     </div>
   )
 })

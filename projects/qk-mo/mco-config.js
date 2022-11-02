@@ -14,7 +14,6 @@ module.exports = ({wpChain, mode, options}) => {
   wpChain.output.set('library', `${name}-[name]`)
   wpChain.output.set('libraryTarget', `umd`)
   wpChain.output.set('chunkLoadingGlobal', `webpackJsonp_${name}`)
-  wpChain.output.set('globalObject', 'window')
 
   wpChain.plugin('html').tap(args => {
     args[0] = {

@@ -56,13 +56,17 @@ class CSS {
     modules = false,
     preProcessor: Record<string, RuleSetUseItem> = {},
   ): Record<string, RuleSetUseItem> {
-    const {isDev} = mcoEnv
+    const {isDev, pkg} = mcoEnv
     const localIdentName = isDev ? '[path][name]-[local]-[hash:base64:5]' : '_[hash:base64:7]'
 
     return {
       style: {
         loader: isDev ? require.resolve('style-loader') : MiniCssExtractPlugin.loader,
-        options: {},
+        options: {
+          attributes: {
+            'data-module': pkg?.name,
+          },
+        },
       },
       css: {
         loader: require.resolve('css-loader'),

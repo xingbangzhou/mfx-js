@@ -54,13 +54,13 @@ const LeftBar = memo(function LeftBar() {
     [width],
   )
 
-  const onMaxminized = useCallback(
-    (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      ev.stopPropagation()
-      setMinisize(!minisize)
-    },
-    [minisize],
-  )
+  // const onMaxminized = useCallback(
+  //   (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  //     ev.stopPropagation()
+  //     setMinisize(!minisize)
+  //   },
+  //   [minisize],
+  // )
 
   const style = useMemo(() => {
     return {
@@ -74,9 +74,9 @@ const LeftBar = memo(function LeftBar() {
       <DraggableCore onStop={onResizeStop} onStart={onResizeStart} onDrag={onResize}>
         <span className={styles.draggable} aria-hidden={minisize}></span>
       </DraggableCore>
-      <div className={minisize ? styles.minimize : styles.maximize}>
+      {/* <div className={minisize ? styles.minimize : styles.maximize}>
         <div className={styles.handle} onClick={onMaxminized} />
-      </div>
+      </div> */}
     </div>
   )
 })

@@ -8,7 +8,7 @@
     "build": "mco build",
     "build:dev": "mco build --env dev",
     "build:analyze": "mco build --analyze",
-    "serve": "mco serve"
+    "start": "mco serve"
   },
   "dependencies": {
     "@mco/joy": "^1.0.0",
