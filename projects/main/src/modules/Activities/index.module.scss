@@ -1,0 +1,14 @@
+.actPanels {
+  position: relative;
+  width: 180px;
+  height: 0px;
+  visibility: hidden;
+
+  .panel {
+    position: absolute;
+    top: 0px;
+    right: 15px;
+    bottom: 12px;
+    user-select: none;
+  }
+}

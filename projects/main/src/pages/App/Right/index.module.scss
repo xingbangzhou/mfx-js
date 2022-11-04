@@ -1,0 +1,82 @@
+.right {
+  width: 100%;
+
+  .maixuList {
+    width: 100%;
+    font-family: MicrosoftYahei;
+
+    .title {
+      font-size: 16px;
+      color: #000;
+      line-height: 32px;
+      font-weight: bold;
+
+      span {
+        margin-left: 10px;
+        height: 16px;
+        padding: 2px 5px;
+        background: #FFDD00;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: normal;
+        text-align: center;
+        color: #1D1D1D;
+        cursor: pointer;
+      }
+    }
+
+    ul {
+      list-style-type: none;
+
+      li {
+        position: relative;
+        width: 100%;
+        height: 22px;
+        overflow: hidden;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        padding-left: 10px;
+        white-space: nowrap;
+
+        &:hover {
+          .btns {
+            display: inherit;
+          }
+        }
+
+        .seatId {
+          flex-shrink: 0;
+          font-size: 13px;
+          font-weight: 700;
+          color: #2da7db;
+        }
+
+        .name {
+          margin-left: 10px;
+          color: #000000;
+          overflow: hidden;
+          text-overflow: clip;
+        }
+      }
+
+
+      .inputLi {
+        background-color: rgba(75, 71, 71, 0.1);
+
+        input {
+          width: 100%;
+          height: 100%;
+          border: unset;
+          display: none;
+        }
+
+        &[data-active=true] {
+          input {
+            display: inherit;
+          }
+        }
+      }
+    }
+  }
+}

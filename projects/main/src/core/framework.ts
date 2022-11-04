@@ -1,4 +1,4 @@
-import {McoFrameworkLauncher} from '@mco/system'
+import {McoFrameworkLauncher} from '@mco/core'
 
 class Framework {
   constructor() {

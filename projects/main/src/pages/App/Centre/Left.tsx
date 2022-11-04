@@ -1,11 +1,11 @@
 import {memo} from 'react'
-import QKView from 'src/components/QKView'
+import {ActPanels} from 'src/modules/Activities'
 import styles from './index.module.scss'
 
 const Left = memo(function Left() {
   return (
     <div className={styles.left}>
-      <QKView className={styles.qkView} name="qk-mo" url="http://localhost:3003" />
+      <ActPanels />
     </div>
   )
 })

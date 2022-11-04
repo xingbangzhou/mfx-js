@@ -5,9 +5,9 @@
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"],
-      "@mco/core": ["../../packages/mco-core/src"],
       "@mco/joy": ["../../packages/mco-joy/src"],
-      "@mco/utils": ["../../packages/mco-utils/src"]
+      "@mco/utils": ["../../packages/mco-utils/src"],
+      "@mco/sdk": ["../../packages/mco-sdk/src"]
     },
   },
   "exclude": ["mco-config.js"]
