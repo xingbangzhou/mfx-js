@@ -1,6 +1,6 @@
-import ContextProxy from './ContextProxy'
+import ExtContext from './ExtContext'
 
-export default class FrameContext extends ContextProxy {
+export default class FrameContext extends ExtContext {
   constructor() {
     super()
 

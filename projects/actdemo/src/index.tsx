@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom'
-import activator from './activator'
+import mcoApi from './mcoApi'
 import App from './pages/App'
 
 function render(props: any) {
@@ -12,7 +12,7 @@ if (!window['__POWERED_BY_QIANKUN__']) {
 }
 
 export async function bootstrap(props?: any) {
-  activator.active(props?.ctx)
+  mcoApi.active(props?.ctx)
   console.log('qiankun bootstrap', props)
 }
 

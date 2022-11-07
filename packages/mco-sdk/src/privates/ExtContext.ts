@@ -52,7 +52,7 @@ function invokeId() {
   return `${invTime}_${invIndex}`
 }
 
-export default abstract class ContextProxy implements McoModuleContextFuncs {
+export default abstract class ExtContext implements McoModuleContextFuncs {
   constructor() {}
 
   private fwReady = false
@@ -64,7 +64,7 @@ export default abstract class ContextProxy implements McoModuleContextFuncs {
   private listeners?: Record<string, McoEventListener[]>
 
   resize(width: number, height: number) {
-    this.callRemote(AskCommand.Inoke0, 'resize', width, height)
+    this.callInvoke(AskCommand.Inoke0, 'resize', width, height)
   }
 
   register(_service: Service): void {
@@ -102,7 +102,7 @@ export default abstract class ContextProxy implements McoModuleContextFuncs {
   }
 
   async invoke(uri: string, ...args: any[]) {
-    return this.callRemote(AskCommand.Invoke, uri, ...args)
+    return this.callInvoke(AskCommand.Invoke, uri, ...args)
   }
 
   connectSignal(uri: string, slot: McoServiceSlot): McoServiceSlotHolder {
@@ -237,7 +237,7 @@ export default abstract class ContextProxy implements McoModuleContextFuncs {
     list?.forEach(el => el(event, ...args))
   }
 
-  private async callRemote(cmd: string, uri: string, ...args: any[]): Promise<any> {
+  private async callInvoke(cmd: string, uri: string, ...args: any[]): Promise<any> {
     const result = await new Promise((resolve, reject) => {
       if (!this.invs) this.invs = {}
       const id = invokeId()

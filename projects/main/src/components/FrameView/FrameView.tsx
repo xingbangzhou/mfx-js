@@ -3,22 +3,22 @@ import {uniformUrl} from '@mco/utils'
 import framework from 'src/core/framework'
 
 interface FrameViewProps {
-  src?: string
+  url?: string
   className?: string
   style?: CSSProperties
 }
 
 const FrameView = memo(function FrameView(props: FrameViewProps) {
-  const {src, className, style} = props
+  const {url, className, style} = props
 
   const rootRef = useRef<HTMLIFrameElement>(null)
 
-  const url = useMemo(() => {
-    if (!src) return undefined
-    return uniformUrl(src)
-  }, [src])
+  const entry = useMemo(() => {
+    if (!url) return undefined
+    return uniformUrl(url)
+  }, [url])
 
-  const mId = url
+  const mId = entry
 
   useEffect(() => {
     if (!rootRef.current) return

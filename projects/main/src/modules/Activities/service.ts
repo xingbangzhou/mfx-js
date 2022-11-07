@@ -2,10 +2,11 @@ import {McoService} from '@mco/core'
 import {action, makeObservable, observable} from 'mobx'
 
 export interface ActItemInfo {
-  id: number
+  actId: number
   url: string
-  priority?: number
-  info?: string
+  width: number
+  height: number
+  priority: number
 }
 
 function less(lhs: ActItemInfo, rhs: ActItemInfo) {
@@ -18,15 +19,26 @@ class ActService extends McoService {
 
     this.registerInvoke('getItemInfo', this.getItemInfo)
 
+    this.insterItems([{actId: 1, url: 'http://localhost:3001', width: 160, height: 224, priority: 0}])
+
     makeObservable(this)
   }
 
   @observable
   itemList: ActItemInfo[] = []
 
+  @observable
+  focuseId = 0
+
+  pkInfos?: Record<number, string>
+
   // Invokes
-  getItemInfo(id: number) {
-    return this.itemList?.find(el => el.id === id)
+  getItemInfo(actId: number) {
+    return this.itemList?.find(el => el.actId === actId)
+  }
+
+  update(actId: number, pkInfo: string) {
+    this.emitSignal(`${actId}ActInfoChanged`, pkInfo)
   }
 
   // Opetators
@@ -34,11 +46,15 @@ class ActService extends McoService {
   insterItems(items: ActItemInfo[]) {
     if (items.length <= 0) return
 
+    let topItem: ActItemInfo | undefined = undefined
     for (let i = 0, l = items.length; i < l; i++) {
       const item = items[i]
-      const index = this.itemList.findIndex(el => el.id === item.id)
+      const index = this.itemList.findIndex(el => el.actId === item.actId)
       if (index === -1) {
         this.itemList.push(item)
+        if (!topItem || topItem.priority <= item.priority) {
+          topItem = item
+        }
       } else {
         this.itemList[index] = item
       }
@@ -46,7 +62,7 @@ class ActService extends McoService {
 
     this.itemList = this.itemList.sort(less).slice()
 
-    items.forEach(el => this.emitSignal(`actifo${el.id}`, el.info))
+    if (topItem) this.focuseId = topItem.actId
   }
 
   @action
@@ -56,11 +72,16 @@ class ActService extends McoService {
 
     for (let i = 0; i < l; i++) {
       const item = this.itemList[i]
-      if (ids.includes(item.id)) continue
+      if (ids.includes(item.actId)) continue
       newItemList.push(item)
     }
 
     this.itemList = newItemList
+
+    const idx = this.itemList.findIndex(el => el.actId === this.focuseId)
+    if (idx === -1) {
+      this.focuseId = this.itemList[0]?.actId || 0
+    }
   }
 }
 

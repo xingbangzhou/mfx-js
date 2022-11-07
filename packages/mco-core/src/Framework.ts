@@ -17,7 +17,7 @@ export default class McoFramework extends McoModule {
     this.inited = true
     logger.log('McoFramework.init')
 
-    window['mco.framework'] = true
+    window['__McoFramework__'] = true
   }
 
   getModule(mId: string) {

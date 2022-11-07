@@ -4,7 +4,7 @@ const rootPath = path.resolve('./')
 const {name} = require(path.join(rootPath, 'package.json'))
 
 module.exports = ({wpChain, mode, options}) => {
-  const devPort = 3003
+  const devPort = 3001
   wpChain.devServer.port(devPort)
 
   wpChain.resolve.alias.set('@mco/sdk', path.resolve(__dirname, '../../packages/mco-sdk/src'))

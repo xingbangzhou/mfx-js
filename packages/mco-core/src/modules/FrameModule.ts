@@ -1,6 +1,6 @@
 import McoFrameworkContext from '../privates/FrameworkContext'
 import McoModuleCleaner from '../privates/ModuleCleaner'
-import ModuleProxy from './ModuleProxy'
+import ExtModule from './ExtModule'
 
 class FrameChannel {
   constructor() {
@@ -40,7 +40,7 @@ class FrameChannel {
 
 const channel = new FrameChannel()
 
-export default class FrameModule extends ModuleProxy {
+export default class FrameModule extends ExtModule {
   constructor(fwCtx: McoFrameworkContext, cleaner: McoModuleCleaner, id: string, container: HTMLIFrameElement) {
     super(fwCtx, cleaner, id)
 

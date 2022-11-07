@@ -1,14 +1,22 @@
 .actPanels {
   position: relative;
-  width: 180px;
-  height: 0px;
   visibility: hidden;
+
+  &[data-visible=true] {
+    visibility: inherit;
+  }
 
   .panel {
     position: absolute;
-    top: 0px;
-    right: 15px;
-    bottom: 12px;
+    visibility: hidden;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     user-select: none;
+
+    &[data-visible=true] {
+      visibility: inherit;
+    }
   }
 }

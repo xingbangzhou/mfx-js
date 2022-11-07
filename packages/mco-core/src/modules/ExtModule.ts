@@ -24,7 +24,7 @@ enum RespCommand {
   Event = 'module.event',
 }
 
-export default abstract class ModuleProxy extends McoModule {
+export default abstract class ExtModule extends McoModule {
   constructor(fwCtx: McoFrameworkContext, cleaner: McoModuleCleaner, mId: string) {
     super(fwCtx, cleaner, mId)
   }
