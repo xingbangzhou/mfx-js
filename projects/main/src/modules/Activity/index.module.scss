@@ -1,0 +1,28 @@
+.activityPanels {
+  position: relative;
+  display: none;
+  max-width: 190px;
+  max-height: 224px;
+
+  &[data-display=true] {
+    display: inherit;
+  }
+
+  .bottomBar {
+    position: relative;
+    .btn {
+      display: inline-block;
+      margin-left: 10px;
+    }
+  }
+
+  .panel {
+    position: absolute;
+    visibility: hidden;
+    user-select: none;
+
+    &[data-visible=true] {
+      visibility: inherit;
+    }
+  }
+}

@@ -1,11 +1,11 @@
 import {memo} from 'react'
-import {ActPanels} from 'src/modules/Activities'
+import {ActivityPanels} from 'src/modules/Activity'
 import styles from './index.module.scss'
 
 const Left = memo(function Left() {
   return (
     <div className={styles.left}>
-      <ActPanels />
+      <ActivityPanels />
     </div>
   )
 })

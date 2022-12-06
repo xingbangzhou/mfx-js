@@ -10,7 +10,7 @@ enum AskCommand {
   ConnectSignal = 'activator.connect_signal',
   DisconnectSignal = 'activator.disconnect_signal',
   Invoke = 'activator.invoke',
-  Inoke0 = 'activator.invoke0',
+  Method = 'activator.method',
   PostEvent = 'activator.post_event',
   AddEventListener = 'activator.add_event_listener',
   RemoveEventListener = 'activator.remove_event_listener',
@@ -18,8 +18,8 @@ enum AskCommand {
 
 enum RespCommand {
   Ready = 'module.ready',
-  LinkStatus = 'module.linke_status',
-  InvokeResult = 'module.invoke_result',
+  LinkStatus = 'module.link_status',
+  CallResult = 'module.call_result',
   Signal = 'module.signal',
   Event = 'module.event',
 }
@@ -37,28 +37,40 @@ export default abstract class ExtModule extends McoModule {
         this.ready()
         break
       case AskCommand.Link:
-        this.ctx.link(args[0], this.onLinkStatus)
+        {
+          const [clazz] = args
+          this.ctx.link(clazz, this.onLinkStatus)
+        }
         break
       case AskCommand.Unlink:
-        this.ctx.unlink(args[0], this.onLinkStatus)
+        {
+          const [clazz] = args
+          this.ctx.unlink(clazz, this.onLinkStatus)
+        }
         break
       case AskCommand.Invoke:
         {
-          const [id, uri, ...params] = args
-          this.handleInvoke(1, id, uri, ...params)
+          const [id, clazz, name, ...params] = args
+          this.handleInvoke(id, clazz, name, ...params)
         }
         break
-      case AskCommand.Inoke0:
+      case AskCommand.Method:
         {
-          const [id, uri, ...params] = args
-          this.handleInvoke(0, id, uri, ...params)
+          const [id, name, ...params] = args
+          this.handleMethod(id, name, ...params)
         }
         break
       case AskCommand.ConnectSignal:
-        this.ctx.connectSignal(args[0], this.onSignal)
+        {
+          const [clazz, signal] = args
+          this.ctx.connectSignal(clazz, signal, this.onSignal)
+        }
         break
       case AskCommand.DisconnectSignal:
-        this.ctx.disconnectSignal(args[0], this.onSignal)
+        {
+          const [clazz, signal] = args
+          this.ctx.disconnectSignal(clazz, signal, this.onSignal)
+        }
         break
       case AskCommand.PostEvent:
         {
@@ -67,10 +79,16 @@ export default abstract class ExtModule extends McoModule {
         }
         break
       case AskCommand.AddEventListener:
-        this.ctx.addEventListener(args[0], this.onEvent)
+        {
+          const [event] = args
+          this.ctx.addEventListener(event, this.onEvent)
+        }
         break
       case AskCommand.RemoveEventListener:
-        this.ctx.removeEventListener(args[0], this.onEvent)
+        {
+          const [event] = args
+          this.ctx.removeEventListener(event, this.onEvent)
+        }
         break
       default:
         break
@@ -83,22 +101,22 @@ export default abstract class ExtModule extends McoModule {
 
   protected abstract postMessage(cmd: string, ...args: any[]): void
 
-  private async handleInvoke(mode: number, id: string, uri: string, ...args: any[]) {
-    if (mode === 0) {
-      const result = await (this as any)[uri]?.(...args)
-      this.postMessage(RespCommand.InvokeResult, id, result)
-    } else if (mode === 1) {
-      const result = await this.ctx.invoke(uri, ...args)
-      this.postMessage(RespCommand.InvokeResult, id, result)
-    }
+  private async handleInvoke(id: string, clazz: string, name: string, ...args: any[]) {
+    const result = await this.ctx.invoke(clazz, name, ...args)
+    this.postMessage(RespCommand.CallResult, id, result)
   }
 
-  private onLinkStatus = (on: boolean, sId: string) => {
-    this.postMessage(RespCommand.LinkStatus, on, sId)
+  private async handleMethod(id: string, name: string, ...args: any[]) {
+    const result = await (this as any)[name]?.(...args)
+    this.postMessage(RespCommand.CallResult, id, result)
   }
 
-  private onSignal = (uri: string, ...args: any[]) => {
-    this.postMessage(RespCommand.Signal, uri, ...args)
+  private onLinkStatus = (on: boolean, clazz: string) => {
+    this.postMessage(RespCommand.LinkStatus, on, clazz)
+  }
+
+  private onSignal = (clazz: string, signal: string, ...args: any[]) => {
+    this.postMessage(RespCommand.Signal, clazz, signal, ...args)
   }
 
   private onEvent = (event: string, ...args: any[]) => {

@@ -1,5 +1,5 @@
 {
-  "name": "actdemo",
+  "name": "demo",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -11,7 +11,7 @@
     "start": "mco serve"
   },
   "dependencies": {
-    "@mco/sdk": "^1.0.0",
+    "@mco/mdi": "^1.0.0",
     "@mco/joy": "^1.0.0",
     "@mco/utils": "^1.0.0",
     "clsx": "^1.1.1",

@@ -7,13 +7,13 @@ export default class McoEvents {
 
   private emitter = new EventEmitter()
 
-  post(event: string, ...args: any[]) {
+  postEvent(event: string, ...args: any[]) {
     this.emitter.emit(event, event, ...args)
   }
 
   addListener(event: string, listener: McoEventListener) {
     if (!event || typeof event !== 'string') {
-      logger.error('McoServices.connect', 'Error: event invalid!', event)
+      logger.error('McoServices.connect', 'Error: event invalid, ', event)
       return
     }
 

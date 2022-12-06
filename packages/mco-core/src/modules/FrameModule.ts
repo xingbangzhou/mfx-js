@@ -65,6 +65,7 @@ export default class FrameModule extends ExtModule {
   }
 
   protected unload() {
+    super.unload()
     channel.detach(this)
     this.container = undefined
   }

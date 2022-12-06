@@ -1,17 +1,9 @@
-import {McoEventListenerHolder} from '.'
 import McoModule from './Module'
 import McoFrameworkContext from './privates/FrameworkContext'
 import logger from './privates/logger'
 import McoModuleCleaner from './privates/ModuleCleaner'
 import McoService from './Service'
-import {
-  McoModuleContextFuncs,
-  McoServiceLinkerHolder,
-  McoServiceLinker,
-  McoServiceSlot,
-  McoServiceSlotHolder,
-  McoEventListener,
-} from './types'
+import {McoModuleContextFuncs, McoServiceLinker, McoServiceSlot, McoEventListener} from './types'
 
 export default class McoModuleContext implements McoModuleContextFuncs {
   constructor(module: McoModule, fwCtx: McoFrameworkContext, cleaner: McoModuleCleaner) {
@@ -22,98 +14,86 @@ export default class McoModuleContext implements McoModuleContextFuncs {
 
   readonly module: McoModule
   private fwCtx: McoFrameworkContext
-  private srvs?: McoService[]
-  private lnks?: [string, McoServiceLinker][]
-  private slots?: [string, McoServiceSlot][]
+  private linkers?: [string, McoServiceLinker][]
+  private slots?: [string, string, McoServiceSlot][]
   private listeners?: [string, McoEventListener][]
 
-  getMId() {
-    return this.module.mId
+  getId() {
+    return this.module.id
   }
 
   register(service: McoService) {
-    logger.log('McoModuleContext.registerService', service, this.module.mId)
+    logger.log('McoModuleContext.register', service, this.module.id)
 
     const {fwCtx} = this
 
-    const success = fwCtx.services.register(service)
-    if (!success) return false
-
-    if (!this.srvs) this.srvs = [service]
-    else if (!this.srvs.includes(service)) this.srvs.push(service)
-
-    return true
+    return fwCtx.services.register(this, service)
   }
 
   unregister(service: McoService) {
-    logger.log('McoModuleContext.unregisterService', service, this.module.mId)
+    logger.log('McoModuleContext.unregister', service, this.module.id)
 
     const {fwCtx} = this
 
-    fwCtx.services.unregister(service)
-    this.srvs = this.srvs?.filter(el => el !== service)
+    fwCtx.services.unregister(this, service)
   }
 
-  link(sId: string, connn: McoServiceLinker): McoServiceLinkerHolder | undefined {
-    logger.log('McoModuleContext.connectService', sId, connn, this.module.mId)
+  link(clazz: string, linker: McoServiceLinker) {
+    logger.log('McoModuleContext.link', clazz, linker, this.module.id)
 
     const {fwCtx} = this
 
-    const l = fwCtx.services.link(sId, connn)
+    const l = fwCtx.services.link(clazz, linker)
     if (!l) return
 
-    if (!this.lnks) this.lnks = [[sId, connn]]
-    else if (!this.lnks.find(el => el[0] === sId && el[1] === connn)) {
-      this.lnks.push([sId, connn])
+    if (!this.linkers) this.linkers = [[clazz, linker]]
+    else if (!this.linkers.find(el => el[0] === clazz && el[1] === linker)) {
+      this.linkers.push([clazz, linker])
     }
 
-    fwCtx.services.getService(sId) && connn(true, sId)
-
-    return new McoServiceLinkerHolder(this, sId, connn)
+    fwCtx.services.getService(clazz) && linker(true, clazz)
   }
 
-  unlink(sId: string, connn: McoServiceLinker) {
-    logger.log('McoModuleContext.disconnectService', sId, connn, this.module.mId)
+  unlink(clazz: string, linker: McoServiceLinker) {
+    logger.log('McoModuleContext.unlink', clazz, linker, this.module.id)
 
     const {fwCtx} = this
 
-    fwCtx.services.unlink(sId, connn)
+    fwCtx.services.unlink(clazz, linker)
 
-    this.lnks = this.lnks?.filter(el => el[0] === sId && el[1] === connn)
+    this.linkers = this.linkers?.filter(el => el[0] === clazz && el[1] === linker)
   }
 
-  async invoke(uri: string, ...args: any[]) {
-    logger.log('McoModuleContext.invoke', uri, ...args, this.module.mId)
+  async invoke(clazz: string, name: string, ...args: any[]) {
+    logger.log('McoModuleContext.invoke', clazz, name, ...args, this.module.id)
 
     const {fwCtx} = this
 
-    return fwCtx.services.invoke(uri, ...args)
+    return fwCtx.services.invoke(clazz, name, ...args)
   }
 
-  connectSignal(uri: string, slot: McoServiceSlot): McoServiceSlotHolder | undefined {
-    logger.log('McoModuleContext.connectSignal', uri, slot, this.module.mId)
+  connectSignal(clazz: string, signal: string, slot: McoServiceSlot) {
+    logger.log('McoModuleContext.connectSignal', clazz, signal, slot, this.module.id)
 
     const {fwCtx} = this
 
-    const l = fwCtx.services.connectSignal(uri, slot)
+    const l = fwCtx.services.connectSignal(clazz, signal, slot)
     if (!l) return
 
-    if (!this.slots) this.slots = [[uri, slot]]
-    else if (!this.slots.find(el => el[0] === uri && el[1] === slot)) {
-      this.slots.push([uri, slot])
+    if (!this.slots) this.slots = [[clazz, signal, slot]]
+    else if (!this.slots.find(el => el[0] === clazz && el[1] === signal && el[2] === slot)) {
+      this.slots.push([clazz, signal, slot])
     }
-
-    return new McoServiceSlotHolder(this, uri, slot)
   }
 
-  disconnectSignal(uri: string, slot: McoServiceSlot) {
-    logger.log('McoModuleContext.disconnectSignal', uri, slot, this.module.mId)
+  disconnectSignal(clazz: string, signal: string, slot: McoServiceSlot) {
+    logger.log('McoModuleContext.disconnectSignal', clazz, signal, slot, this.module.id)
 
     const {fwCtx} = this
 
-    fwCtx.services.disconnectSignal(uri, slot)
+    fwCtx.services.disconnectSignal(clazz, signal, slot)
 
-    this.slots = this.slots?.filter(el => el[0] === uri && el[1] === slot)
+    this.slots = this.slots?.filter(el => el[0] !== clazz || el[1] !== signal || el[2] !== slot)
   }
 
   postEvent(event: string, ...args: any[]) {
@@ -121,11 +101,11 @@ export default class McoModuleContext implements McoModuleContextFuncs {
 
     const {fwCtx} = this
 
-    fwCtx.events.post(event, ...args)
+    fwCtx.events.postEvent(event, ...args)
   }
 
-  addEventListener(event: string, listener: McoEventListener): McoEventListenerHolder | undefined {
-    logger.log('McoModuleContext.addEventListener', event, listener, this.module.mId)
+  addEventListener(event: string, listener: McoEventListener) {
+    logger.log('McoModuleContext.addEventListener', event, listener, this.module.id)
 
     const {fwCtx} = this
 
@@ -136,12 +116,10 @@ export default class McoModuleContext implements McoModuleContextFuncs {
     else if (!this.listeners.find(el => el[0] === event && el[1] === listener)) {
       this.listeners.push([event, listener])
     }
-
-    return new McoEventListenerHolder(this, event, listener)
   }
 
   removeEventListener(event: string, listener: McoEventListener) {
-    logger.log('McoModuleContext.removeEventListener', event, listener, this.module.mId)
+    logger.log('McoModuleContext.removeEventListener', event, listener, this.module.id)
 
     const {fwCtx} = this
 
@@ -151,20 +129,19 @@ export default class McoModuleContext implements McoModuleContextFuncs {
   }
 
   private clearAll = () => {
-    logger.log('McoModuleContext.clearAll', this.module.mId)
+    logger.log('McoModuleContext.clearAll', this.module.id)
 
     const {fwCtx} = this
 
     this.listeners?.forEach(el => fwCtx.events.removeListener(el[0], el[1]))
     this.listeners = undefined
 
-    this.slots?.forEach(el => fwCtx.services.disconnectSignal(el[0], el[1]))
+    this.slots?.forEach(el => fwCtx.services.disconnectSignal(el[0], el[1], el[2]))
     this.slots = undefined
 
-    this.lnks?.forEach(el => fwCtx.services.unlink(el[0], el[1]))
-    this.lnks = undefined
+    this.linkers?.forEach(el => fwCtx.services.unlink(el[0], el[1]))
+    this.linkers = undefined
 
-    this.srvs?.forEach(el => fwCtx.services.unregister(el))
-    this.srvs = undefined
+    fwCtx.services.unregisterAll(this)
   }
 }

@@ -74,18 +74,18 @@ const MaixuList = memo(function MaixuList() {
   const [itemList, setItemList] = useState<string[]>()
 
   useEffect(() => {
-    const fn = (uri: string, l?: string[]) => {
+    const fn = (clazz: string, signal: string, l?: string[]) => {
       setItemList(l?.concat())
     }
     setItemList(service.getItemList())
 
-    const holder = service.connectSignal('itemListChanged', fn)
+    service.connectSignal('itemListChanged', fn)
 
     const {mcoFw} = framework
     mcoFw.ctx.register(service)
 
     return () => {
-      holder?.off()
+      service.disconnectSignal('itemListChanged', fn)
       mcoFw.ctx.unregister(service)
     }
   }, [])

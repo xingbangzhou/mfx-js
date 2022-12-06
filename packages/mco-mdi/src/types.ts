@@ -17,8 +17,6 @@ export interface McoEventListener {
 }
 
 export interface McoModuleContextFuncs {
-  getId(): string
-
   register(service: McoService): void
   unregister(service: McoService): void
 

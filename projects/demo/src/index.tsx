@@ -1,10 +1,10 @@
 import ReactDOM from 'react-dom'
-import mcoApi from './mcoApi'
+import mcoApi from './mcoMdi'
 import App from './pages/App'
 
 function render(props: any) {
   const {container} = props
-  ReactDOM.render(<App />, container ? container.querySelector('#mco-root') : document.querySelector('#root'))
+  ReactDOM.render(<App />, (container || document).querySelector('#mco-root'))
 }
 
 if (!window['__POWERED_BY_QIANKUN__']) {
@@ -13,20 +13,15 @@ if (!window['__POWERED_BY_QIANKUN__']) {
 
 export async function bootstrap(props?: any) {
   mcoApi.active(props?.ctx)
-  console.log('qiankun bootstrap', props)
 }
 
 export async function mount(props: any) {
-  console.log('qiankun mount', props)
   render(props)
 }
 
 export async function unmount(props: any) {
-  console.log('qiankun unmount', props)
   const {container} = props
   ReactDOM.unmountComponentAtNode(container ? container.querySelector('#mco-root') : document.querySelector('#root'))
 }
 
-export async function update(props: any) {
-  console.log('qiankun update props', props)
-}
+export async function update(props: any) {}

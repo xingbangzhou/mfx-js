@@ -4,7 +4,7 @@ import {loadMicroApp, MicroApp} from 'qiankun'
 import {CSSProperties, memo, useEffect, useMemo, useRef} from 'react'
 import framework from 'src/core/framework'
 
-interface MicroViewProps {
+interface QKViewProps {
   name?: string
   url?: string
   className?: string
@@ -12,7 +12,7 @@ interface MicroViewProps {
   [key: string]: any
 }
 
-const MicroView = memo(function QKView(props: MicroViewProps) {
+const QKView = memo(function QKView(props: QKViewProps) {
   const {name, url, className, style, ...other} = props
   const rootRef = useRef<HTMLDivElement>(null)
   const microApp = useRef<MicroApp>()
@@ -49,7 +49,7 @@ const MicroView = memo(function QKView(props: MicroViewProps) {
     return () => {
       microApp.current?.unmount()
       microApp.current?.unmountPromise.then(() => {
-        mcoModule.current && framework.mcoFw.unloadModule(mcoModule.current.mId)
+        mcoModule.current && framework.mcoFw.unloadModule(mcoModule.current.id)
       })
       microApp.current = undefined
     }
@@ -58,4 +58,4 @@ const MicroView = memo(function QKView(props: MicroViewProps) {
   return <div ref={rootRef} className={className} style={style} {...other} />
 })
 
-export default MicroView
+export default QKView

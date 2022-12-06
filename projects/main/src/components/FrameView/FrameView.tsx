@@ -18,22 +18,22 @@ const FrameView = memo(function FrameView(props: FrameViewProps) {
     return uniformUrl(url)
   }, [url])
 
-  const mId = entry
+  const moduleId = entry
 
   useEffect(() => {
     if (!rootRef.current) return
-    if (!mId) return
+    if (!moduleId) return
 
-    framework.mcoFw.loadFrameModule(mId, rootRef.current)
+    framework.mcoFw.loadFrameModule(moduleId, rootRef.current)
 
     return () => {
-      framework.mcoFw.unloadModule(mId)
+      framework.mcoFw.unloadModule(moduleId)
     }
-  }, [mId, rootRef.current])
+  }, [moduleId, rootRef.current])
 
   const onLoaded = useCallback(() => {
-    console.log('[FrameView] loaded', mId)
-  }, [mId])
+    console.log('[FrameView] loaded', moduleId)
+  }, [moduleId])
 
   return (
     <iframe
