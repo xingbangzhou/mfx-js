@@ -1,8 +1,26 @@
 {
   "name": "@mco/core",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./index.js",
+  "types": "./index.d.ts",
   "license": "MIT",
+  "keywords": [
+    "mco",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xingbangzhou/mco.git",
+    "directory": "packages/mco-core"
+  },
+  "scripts": {
+    "build": "yarn run clean && yarn build:stable && yarn run build:types",
+    "build:stable": "node ../../scripts/build stable",
+    "build:copy-files": "node ../../scripts/copy-files.js",
+    "build:types": "node ../../scripts/buildTypes",
+    "clean": "rimraf build tsconfig.tsbuildinfo",
+    "release": "yarn build && npm publish --access public"
+  },
   "dependencies": {
     "@mco/utils": "^1.0.0"
   },

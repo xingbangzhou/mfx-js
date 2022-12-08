@@ -3,125 +3,123 @@ import McoModule from '../Module'
 import McoModuleCleaner from '../privates/ModuleCleaner'
 import logger from '../privates/logger'
 
-enum AskCommand {
-  Ready = 'activator.ready',
-  Link = 'activator.link',
-  Unlink = 'activator.unlink',
-  ConnectSignal = 'activator.connect_signal',
-  DisconnectSignal = 'activator.disconnect_signal',
-  Invoke = 'activator.invoke',
-  Method = 'activator.method',
-  PostEvent = 'activator.post_event',
-  AddEventListener = 'activator.add_event_listener',
-  RemoveEventListener = 'activator.remove_event_listener',
+enum MdiCommand {
+  Ready = 'mco-mdi:ready',
+  Link = 'mco-mdi:link',
+  Unlink = 'mco-mdi:unlink',
+  ConnectSignal = 'mco-mdi:connect_signal',
+  DisconnectSignal = 'mco-mdi:disconnect_signal',
+  Invoke = 'mco-mdi:invoke',
+  Method = 'mco-mdi:method',
+  PostEvent = 'mco-mdi:post_event',
+  AddEventListener = 'mco-mdi:add_event_listener',
+  RemoveEventListener = 'mco-mdi:remove_event_listener',
 }
 
-enum RespCommand {
-  Ready = 'module.ready',
-  LinkStatus = 'module.link_status',
-  CallResult = 'module.call_result',
-  Signal = 'module.signal',
-  Event = 'module.event',
+enum FrameworkCommand {
+  Ready = 'mco-framework:ready',
+  LinkStatus = 'mco-framework:link_status',
+  CallResult = 'mco-framework:call_result',
+  Signal = 'mco-framework:signal',
+  Event = 'mco-framework:event',
 }
 
 export default abstract class ExtModule extends McoModule {
-  constructor(fwCtx: McoFrameworkContext, cleaner: McoModuleCleaner, mId: string) {
-    super(fwCtx, cleaner, mId)
+  constructor(fwCtx: McoFrameworkContext, cleaner: McoModuleCleaner, id: string) {
+    super(fwCtx, cleaner, id)
   }
 
-  onHandle(cmd: string, ...args: any[]) {
-    logger.log('ModuleProxy.onHandle', cmd, ...args)
+  onCommand(cmd: string, ...args: any[]) {
+    logger.log('ExtModule', 'onCommand: ', cmd, ...args)
 
     switch (cmd) {
-      case AskCommand.Ready:
-        this.ready()
+      case MdiCommand.Ready:
+        this.imReady()
         break
-      case AskCommand.Link:
+      case MdiCommand.Link:
         {
           const [clazz] = args
           this.ctx.link(clazz, this.onLinkStatus)
         }
         break
-      case AskCommand.Unlink:
+      case MdiCommand.Unlink:
         {
           const [clazz] = args
           this.ctx.unlink(clazz, this.onLinkStatus)
         }
         break
-      case AskCommand.Invoke:
+      case MdiCommand.Invoke:
         {
           const [id, clazz, name, ...params] = args
-          this.handleInvoke(id, clazz, name, ...params)
+          this.onInvoke(id, clazz, name, ...params)
         }
         break
-      case AskCommand.Method:
+      case MdiCommand.Method:
         {
           const [id, name, ...params] = args
-          this.handleMethod(id, name, ...params)
+          this.onMethod(id, name, ...params)
         }
         break
-      case AskCommand.ConnectSignal:
+      case MdiCommand.ConnectSignal:
         {
           const [clazz, signal] = args
           this.ctx.connectSignal(clazz, signal, this.onSignal)
         }
         break
-      case AskCommand.DisconnectSignal:
+      case MdiCommand.DisconnectSignal:
         {
           const [clazz, signal] = args
           this.ctx.disconnectSignal(clazz, signal, this.onSignal)
         }
         break
-      case AskCommand.PostEvent:
+      case MdiCommand.PostEvent:
         {
           const [event, ...params] = args
           this.ctx.postEvent(event, ...params)
         }
         break
-      case AskCommand.AddEventListener:
+      case MdiCommand.AddEventListener:
         {
           const [event] = args
           this.ctx.addEventListener(event, this.onEvent)
         }
         break
-      case AskCommand.RemoveEventListener:
+      case MdiCommand.RemoveEventListener:
         {
           const [event] = args
           this.ctx.removeEventListener(event, this.onEvent)
         }
         break
-      default:
-        break
     }
   }
 
-  protected ready() {
-    this.postMessage(RespCommand.Ready)
+  protected imReady() {
+    this.postMessage(FrameworkCommand.Ready)
   }
 
   protected abstract postMessage(cmd: string, ...args: any[]): void
 
-  private async handleInvoke(id: string, clazz: string, name: string, ...args: any[]) {
+  private async onInvoke(id: string, clazz: string, name: string, ...args: any[]) {
     const result = await this.ctx.invoke(clazz, name, ...args)
-    this.postMessage(RespCommand.CallResult, id, result)
+    this.postMessage(FrameworkCommand.CallResult, id, result)
   }
 
-  private async handleMethod(id: string, name: string, ...args: any[]) {
+  private async onMethod(id: string, name: string, ...args: any[]) {
     const result = await (this as any)[name]?.(...args)
-    this.postMessage(RespCommand.CallResult, id, result)
+    this.postMessage(FrameworkCommand.CallResult, id, result)
   }
 
   private onLinkStatus = (on: boolean, clazz: string) => {
-    this.postMessage(RespCommand.LinkStatus, on, clazz)
+    this.postMessage(FrameworkCommand.LinkStatus, on, clazz)
   }
 
   private onSignal = (clazz: string, signal: string, ...args: any[]) => {
-    this.postMessage(RespCommand.Signal, clazz, signal, ...args)
+    this.postMessage(FrameworkCommand.Signal, clazz, signal, ...args)
   }
 
   private onEvent = (event: string, ...args: any[]) => {
-    logger.log('ModuleProxy.onEvent', event, ...args)
+    logger.log('ExtModule', 'onEvent: ', event, ...args)
 
-    this.postMessage(RespCommand.Event, event, ...args)
+    this.postMessage(FrameworkCommand.Event, event, ...args)
   }
 }

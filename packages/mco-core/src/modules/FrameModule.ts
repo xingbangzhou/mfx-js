@@ -30,7 +30,7 @@ class FrameChannel {
       const cmd = data.cmd
       const args = data.args
       if (Array.isArray(args)) {
-        module.onHandle(cmd, ...args)
+        module.onCommand(cmd, ...args)
       }
     } catch (error) {
       console.error('[FrameChannel]onMesssage, error', error)
@@ -47,7 +47,7 @@ export default class FrameModule extends ExtModule {
     this.container = container
     channel.attach(this)
 
-    this.ready()
+    this.imReady()
   }
 
   private container?: HTMLIFrameElement

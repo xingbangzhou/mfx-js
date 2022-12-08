@@ -2,7 +2,7 @@
 const program = require('commander')
 const package = require('../package.json')
 
-const {exec} = require(`../dist/index.js`).default
+const {exec} = require(`../build/index.js`).default
 
 program.version(package.version, '-v, --version').usage('<command> [options]')
 

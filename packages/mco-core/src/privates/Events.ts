@@ -1,6 +1,5 @@
 import {EventEmitter} from '@mco/utils'
 import {McoEventListener} from '../types'
-import logger from './logger'
 
 export default class McoEvents {
   constructor() {}
@@ -12,11 +11,6 @@ export default class McoEvents {
   }
 
   addListener(event: string, listener: McoEventListener) {
-    if (!event || typeof event !== 'string') {
-      logger.error('McoServices.connect', 'Error: event invalid, ', event)
-      return
-    }
-
     return this.emitter.on(event, listener)
   }
 

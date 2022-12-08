@@ -23,24 +23,21 @@ export default class McoModuleContext implements McoModuleContextFuncs {
   }
 
   register(service: McoService) {
-    logger.log('McoModuleContext.register', service, this.module.id)
-
+    logger.log('McoModuleContext', 'register: ', service, this.module.id)
     const {fwCtx} = this
 
     return fwCtx.services.register(this, service)
   }
 
   unregister(service: McoService) {
-    logger.log('McoModuleContext.unregister', service, this.module.id)
-
+    logger.log('McoModuleContext', 'unregister: ', service, this.module.id)
     const {fwCtx} = this
 
     fwCtx.services.unregister(this, service)
   }
 
   link(clazz: string, linker: McoServiceLinker) {
-    logger.log('McoModuleContext.link', clazz, linker, this.module.id)
-
+    logger.log('McoModuleContext', 'link: ', clazz, linker, this.module.id)
     const {fwCtx} = this
 
     const l = fwCtx.services.link(clazz, linker)
@@ -55,8 +52,7 @@ export default class McoModuleContext implements McoModuleContextFuncs {
   }
 
   unlink(clazz: string, linker: McoServiceLinker) {
-    logger.log('McoModuleContext.unlink', clazz, linker, this.module.id)
-
+    logger.log('McoModuleContext', 'unlink: ', clazz, linker, this.module.id)
     const {fwCtx} = this
 
     fwCtx.services.unlink(clazz, linker)
@@ -65,16 +61,14 @@ export default class McoModuleContext implements McoModuleContextFuncs {
   }
 
   async invoke(clazz: string, name: string, ...args: any[]) {
-    logger.log('McoModuleContext.invoke', clazz, name, ...args, this.module.id)
-
+    logger.log('McoModuleContext', 'invoke: ', clazz, name, ...args, this.module.id)
     const {fwCtx} = this
 
     return fwCtx.services.invoke(clazz, name, ...args)
   }
 
   connectSignal(clazz: string, signal: string, slot: McoServiceSlot) {
-    logger.log('McoModuleContext.connectSignal', clazz, signal, slot, this.module.id)
-
+    logger.log('McoModuleContext', 'connectSignal: ', clazz, signal, slot, this.module.id)
     const {fwCtx} = this
 
     const l = fwCtx.services.connectSignal(clazz, signal, slot)
@@ -87,8 +81,7 @@ export default class McoModuleContext implements McoModuleContextFuncs {
   }
 
   disconnectSignal(clazz: string, signal: string, slot: McoServiceSlot) {
-    logger.log('McoModuleContext.disconnectSignal', clazz, signal, slot, this.module.id)
-
+    logger.log('McoModuleContext', 'disconnectSignal: ', clazz, signal, slot, this.module.id)
     const {fwCtx} = this
 
     fwCtx.services.disconnectSignal(clazz, signal, slot)
@@ -97,20 +90,17 @@ export default class McoModuleContext implements McoModuleContextFuncs {
   }
 
   postEvent(event: string, ...args: any[]) {
-    logger.log('McoModuleContext.postEvent', event, ...args)
-
+    logger.log('McoModuleContext', 'postEvent: ', event, ...args)
     const {fwCtx} = this
 
     fwCtx.events.postEvent(event, ...args)
   }
 
   addEventListener(event: string, listener: McoEventListener) {
-    logger.log('McoModuleContext.addEventListener', event, listener, this.module.id)
-
+    logger.log('McoModuleContext', 'addEventListener: ', event, listener, this.module.id)
     const {fwCtx} = this
 
-    const l = fwCtx.events.addListener(event, listener)
-    if (!l) return
+    fwCtx.events.addListener(event, listener)
 
     if (!this.listeners) this.listeners = [[event, listener]]
     else if (!this.listeners.find(el => el[0] === event && el[1] === listener)) {
@@ -119,8 +109,7 @@ export default class McoModuleContext implements McoModuleContextFuncs {
   }
 
   removeEventListener(event: string, listener: McoEventListener) {
-    logger.log('McoModuleContext.removeEventListener', event, listener, this.module.id)
-
+    logger.log('McoModuleContext', 'removeEventListener: ', event, listener, this.module.id)
     const {fwCtx} = this
 
     fwCtx.events.removeListener(event, listener)
@@ -129,7 +118,7 @@ export default class McoModuleContext implements McoModuleContextFuncs {
   }
 
   private clearAll = () => {
-    logger.log('McoModuleContext.clearAll', this.module.id)
+    logger.log('McoModuleContext', 'clearAll: ', this.module.id)
 
     const {fwCtx} = this
 

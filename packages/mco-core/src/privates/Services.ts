@@ -16,23 +16,23 @@ export default class McoServices {
   }
 
   private emitter = new EventEmitter()
-  private registrations?: Record<string, ServiceRegistration>
+  private regns?: Record<string, ServiceRegistration>
   private slots?: Record<string, [string, McoServiceSlot][]>
 
   getService(clazz: string) {
-    return this.registrations?.[clazz]?.service
+    return this.regns?.[clazz]?.service
   }
 
   register(ctx: McoModuleContext, service: McoService) {
     const clazz = service.clazz
 
-    if (this.registrations?.[clazz]) {
-      logger.warn('McoServices.register', 'Error: service duplicated,', clazz, ctx.getId())
+    if (this.regns?.[clazz]) {
+      logger.warn('McoServices', 'register: ', 'service duplicated,', clazz, ctx.getId())
       return false
     }
 
-    this.registrations = this.registrations || {}
-    this.registrations[clazz] = {ctx, service}
+    this.regns = this.regns || {}
+    this.regns[clazz] = {ctx, service}
 
     // Signal
     const l = this.slots?.[clazz]
@@ -47,7 +47,7 @@ export default class McoServices {
 
   unregister(ctx: McoModuleContext, service: McoService) {
     const clazz = service.clazz
-    const regn = this.registrations?.[clazz]
+    const regn = this.regns?.[clazz]
     if (regn?.ctx !== ctx || regn?.service !== service) return
 
     // Signal
@@ -56,26 +56,22 @@ export default class McoServices {
       service.disconnectSignal(el[0], el[1])
     })
 
-    delete this.registrations?.[clazz]
+    delete this.regns?.[clazz]
     this.emitter.emit(clazz, false, clazz)
   }
 
   unregisterAll(ctx: McoModuleContext) {
-    const regns = {...this.registrations}
+    const regns = {...this.regns}
 
     for (const clazz in regns) {
-      if (regns[clazz].ctx !== ctx) continue
-      const service = regns[clazz].service
-      this.unregister(ctx, service)
+      if (regns[clazz].ctx === ctx) {
+        const service = regns[clazz].service
+        this.unregister(ctx, service)
+      }
     }
   }
 
   link(clazz: string, connn: McoServiceLinker) {
-    if (!clazz || typeof clazz !== 'string') {
-      logger.error('McoServices.connect', 'Error: sId invalid,', clazz)
-      return
-    }
-
     return this.emitter.on(clazz, connn)
   }
 
@@ -87,7 +83,7 @@ export default class McoServices {
     const service = this.getService(clazz)
 
     if (!service) {
-      logger.error('McoServices.invokeFunc', 'Error: service is null,', clazz)
+      logger.error('McoServices', 'invokeFunc: ', 'service is null,', clazz)
       return undefined
     }
 
@@ -107,7 +103,7 @@ export default class McoServices {
     if (service) {
       service.connectSignal(signal, slot)
     } else {
-      logger.warn('McoServices.connectSignal', 'Warn: service is null,', clazz)
+      logger.warn('McoServices', 'connectSignal: ', 'service is null,', clazz)
     }
 
     return true

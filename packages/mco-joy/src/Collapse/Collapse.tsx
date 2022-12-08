@@ -2,7 +2,27 @@ import styled from '@emotion/styled'
 import {CSSProperties, forwardRef, memo, ReactNode, Ref, useCallback, useRef} from 'react'
 import {Transition} from 'react-transition-group'
 import {TransitionProps} from 'react-transition-group/Transition'
-import {useForkRef, getTransitionProps} from '@mco/utils'
+import {useForkRef} from '../utils'
+
+interface ComponentProps {
+  easing: string | {enter?: string; exit?: string} | undefined
+  style: React.CSSProperties | undefined
+  timeout: number | {enter?: number; exit?: number}
+}
+
+interface Options {
+  mode: 'enter' | 'exit'
+}
+
+export function getTransitionProps(props: ComponentProps, options: Options) {
+  const {timeout, easing, style = {}} = props
+
+  return {
+    duration: style.transitionDuration ?? (typeof timeout === 'number' ? timeout : timeout[options.mode] || 0),
+    easing: style.transitionTimingFunction ?? (typeof easing === 'object' ? easing[options.mode] : easing),
+    delay: style.transitionDelay,
+  }
+}
 
 interface CollapseProps extends Omit<TransitionProps, 'timeout'> {
   children?: ReactNode

@@ -23,6 +23,6 @@ export default class McoModule {
   }
 
   protected unload() {
-    logger.log('McoModule.unload', this.id)
+    logger.log('McoModule', 'unload: ', this.id)
   }
 }

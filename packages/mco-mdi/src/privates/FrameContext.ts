@@ -6,7 +6,7 @@ export default class FrameContext extends ExtContext {
 
     window.addEventListener('message', this.onMessage, false)
 
-    this.ready()
+    this.imReady()
   }
 
   private static instance_?: FrameContext
@@ -31,7 +31,7 @@ export default class FrameContext extends ExtContext {
       const cmd = data.cmd
       const args = data.args
       if (Array.isArray(args)) {
-        this.onHandle(cmd, ...args)
+        this.onCommand(cmd, ...args)
       }
     } catch (error) {
       console.error('[FrameContext] onMessage, error: ', error)

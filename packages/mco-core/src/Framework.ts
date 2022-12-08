@@ -15,40 +15,39 @@ export default class McoFramework extends McoModule {
   init() {
     if (this.inited) return
     this.inited = true
-    logger.log('McoFramework.init')
+    logger.log('McoFramework', 'initial.')
 
-    window['__McoFramework__'] = true
+    window['_McoFramework_'] = true
   }
 
-  getModule(mId: string) {
+  getModule(id: string) {
     const {fwCtx} = this
 
-    return fwCtx.modules?.getModule(mId)
+    return fwCtx.modules?.getModule(id)
   }
 
-  loadModule(mId: string) {
-    logger.log('McoFramework.loadModule', mId)
-
+  loadModule(id: string) {
+    logger.log('McoFramework', 'loadModule: ', id)
     const {fwCtx} = this
-    const module = fwCtx.modules.load(mId)
+
+    const module = fwCtx.modules.load(id)
 
     return module
   }
 
-  loadFrameModule(mId: string, container: HTMLIFrameElement) {
-    logger.log('McoFramework.loadFrameModule', mId, container)
-
+  loadFrameModule(id: string, container: HTMLIFrameElement) {
+    logger.log('McoFramework', 'loadFrameModule: ', id, container)
     const {fwCtx} = this
-    const module = fwCtx.modules.loadFrame(mId, container)
+
+    const module = fwCtx.modules.loadFrame(id, container)
 
     return module
   }
 
-  unloadModule(mId: string) {
-    logger.log('McoFramework.unloadModule', mId)
-
+  unloadModule(id: string) {
+    logger.log('McoFramework', 'unloadModule: ', id)
     const {fwCtx} = this
 
-    fwCtx.modules.unload(mId)
+    fwCtx.modules.unload(id)
   }
 }

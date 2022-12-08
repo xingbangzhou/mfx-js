@@ -1,25 +1,25 @@
 import Service from '../Service'
 import {McoEventListener, McoModuleContextFuncs, McoServiceLinker, McoServiceSlot} from '../types'
 
-enum AskCommand {
-  Ready = 'activator.ready',
-  Link = 'activator.link',
-  Unlink = 'activator.unlink',
-  ConnectSignal = 'activator.connect_signal',
-  DisconnectSignal = 'activator.disconnect_signal',
-  Invoke = 'activator.invoke',
-  Method = 'activator.method',
-  PostEvent = 'activator.post_event',
-  AddEventListener = 'activator.add_event_listener',
-  RemoveEventListener = 'activator.remove_event_listener',
+enum MdiCommand {
+  Ready = 'mco-mdi:ready',
+  Link = 'mco-mdi:link',
+  Unlink = 'mco-mdi:unlink',
+  ConnectSignal = 'mco-mdi:connect_signal',
+  DisconnectSignal = 'mco-mdi:disconnect_signal',
+  Invoke = 'mco-mdi:invoke',
+  Method = 'mco-mdi:method',
+  PostEvent = 'mco-mdi:post_event',
+  AddEventListener = 'mco-mdi:add_event_listener',
+  RemoveEventListener = 'mco-mdi:remove_event_listener',
 }
 
-enum RespCommand {
-  Ready = 'module.ready',
-  LinkStatus = 'module.link_status',
-  CallResult = 'module.call_result',
-  Signal = 'module.signal',
-  Event = 'module.event',
+enum FrameworkCommand {
+  Ready = 'mco-framework:ready',
+  LinkStatus = 'mco-framework:link_status',
+  CallResult = 'mco-framework:call_result',
+  Signal = 'mco-framework:signal',
+  Event = 'mco-framework:event',
 }
 
 const CALLINTERVALMS = 5000
@@ -74,7 +74,7 @@ export default abstract class ExtContext implements McoModuleContextFuncs {
     }
     this.linkers[clazz] = l
 
-    this.command(AskCommand.Link, clazz)
+    this.command(MdiCommand.Link, clazz)
   }
 
   unlink(clazz: string, linker: McoServiceLinker) {
@@ -85,13 +85,13 @@ export default abstract class ExtContext implements McoModuleContextFuncs {
       l.splice(idx, 1)
       if (!l.length) {
         delete this.linkers?.[clazz]
-        this.command(AskCommand.Unlink, clazz)
+        this.command(MdiCommand.Unlink, clazz)
       }
     }
   }
 
   async invoke(clazz: string, name: string, ...args: any[]) {
-    return this.callFunc(AskCommand.Invoke, clazz, name, ...args)
+    return this.callFunc(MdiCommand.Invoke, clazz, name, ...args)
   }
 
   connectSignal(clazz: string, signal: string, slot: McoServiceSlot) {
@@ -102,7 +102,7 @@ export default abstract class ExtContext implements McoModuleContextFuncs {
       sl.push(slot)
     }
 
-    this.command(AskCommand.ConnectSignal, clazz, signal)
+    this.command(MdiCommand.ConnectSignal, clazz, signal)
   }
 
   disconnectSignal(clazz: string, signal: string, slot: McoServiceSlot) {
@@ -116,7 +116,7 @@ export default abstract class ExtContext implements McoModuleContextFuncs {
         if (idx !== -1) {
           sl.splice(idx, 1)
           if (!sl.length) {
-            this.command(AskCommand.DisconnectSignal, clazz, signal)
+            this.command(MdiCommand.DisconnectSignal, clazz, signal)
             continue
           }
         }
@@ -128,7 +128,7 @@ export default abstract class ExtContext implements McoModuleContextFuncs {
   }
 
   postEvent(event: string, ...args: any[]) {
-    this.command(AskCommand.PostEvent, event, ...args)
+    this.command(MdiCommand.PostEvent, event, ...args)
   }
 
   addEventListener(event: string, listener: McoEventListener) {
@@ -139,7 +139,7 @@ export default abstract class ExtContext implements McoModuleContextFuncs {
     }
     this.listeners[event] = l
 
-    this.command(AskCommand.AddEventListener, event)
+    this.command(MdiCommand.AddEventListener, event)
   }
 
   removeEventListener(event: string, listener: McoEventListener) {
@@ -150,37 +150,37 @@ export default abstract class ExtContext implements McoModuleContextFuncs {
       l.splice(idx, 1)
       if (!l.length) {
         delete this.listeners?.[event]
-        this.command(AskCommand.RemoveEventListener, event)
+        this.command(MdiCommand.RemoveEventListener, event)
       }
     }
   }
 
   protected abstract postMessage(cmd: string, ...args: any[]): void
 
-  protected ready() {
-    this.postMessage(AskCommand.Ready)
+  protected imReady() {
+    this.postMessage(MdiCommand.Ready)
   }
 
-  protected onHandle = (cmd: string, ...args: any[]) => {
+  protected onCommand = (cmd: string, ...args: any[]) => {
     switch (cmd) {
-      case RespCommand.Ready:
-        this.onReady()
+      case FrameworkCommand.Ready:
+        this.onFwReady()
         break
-      case RespCommand.LinkStatus:
+      case FrameworkCommand.LinkStatus:
         const [on, clazz] = args
         this.onLinkStatus(on, clazz)
         break
-      case RespCommand.CallResult:
+      case FrameworkCommand.CallResult:
         const [id, result] = args
         this.onCallResult(id, result)
         break
-      case RespCommand.Signal:
+      case FrameworkCommand.Signal:
         {
           const [clazz, signal, ...params] = args
           this.onSignal(clazz, signal, ...params)
         }
         break
-      case RespCommand.Event:
+      case FrameworkCommand.Event:
         {
           const [event, ...params] = args
           this.onEvent(event, ...params)
@@ -200,7 +200,7 @@ export default abstract class ExtContext implements McoModuleContextFuncs {
     else this.blockCmds.push([cmd, args])
   }
 
-  private onReady() {
+  private onFwReady() {
     if (this.fwReady) return
     this.fwReady = true
 

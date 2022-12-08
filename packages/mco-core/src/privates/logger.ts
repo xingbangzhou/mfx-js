@@ -2,15 +2,15 @@ class McoLogger {
   constructor() {}
 
   log(name: string, ...args: any[]) {
-    console.log(`%c[${name}]%c[${this.timeStr()}]`, `color: #c678dd`, `color: gray`, ...args)
+    console.log(`%c[Log][${name}]%c[${this.timeStr()}]`, `color: #c678dd`, `color: gray`, ...args)
   }
 
   warn(name: string, ...args: any[]) {
-    console.warn(`%c[${name}]%c[${this.timeStr()}]`, `color: #953800`, `color: gray`, ...args)
+    console.warn(`%c[Warn][${name}]%c[${this.timeStr()}]`, `color: #953800`, `color: gray`, ...args)
   }
 
   error(name: string, ...args: any[]) {
-    console.error(`%c[${name}]%c[${this.timeStr()}]`, `color: red`, `color: gray`, ...args)
+    console.error(`%c[Error][${name}]%c[${this.timeStr()}]`, `color: red`, `color: gray`, ...args)
   }
 
   private timeStr() {
