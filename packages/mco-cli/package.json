@@ -3,12 +3,17 @@
   "version": "1.0.0",
   "license": "MIT",
   "keywords": [
-    "react",
+    "mco-cli",
     "webpack5",
     "typescript"
   ],
   "engines": {
-    "node": ">=12"
+    "node": ">=14"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xingbangzhou/mco.git",
+    "directory": "packages/mco-cli"
   },
   "bin": {
     "mco": "./bin/mco.js"
@@ -17,7 +22,8 @@
   "types": "build/index.d.ts",
   "scripts": {
     "dev": "rimraf build && ttsc -w",
-    "build": "rimraf build && ttsc"
+    "build": "rimraf build && ttsc",
+    "release": "yarn build && npm publish --access public"
   },
   "dependencies": {
     "@babel/core": "^7.20.5",
