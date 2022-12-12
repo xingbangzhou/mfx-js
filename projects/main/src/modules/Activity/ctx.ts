@@ -1,4 +1,4 @@
-import {McoService} from '@mco/core'
+import {MscxService} from '@mscx/framework'
 import {action, makeObservable, observable} from 'mobx'
 import {ActItemProps} from './types'
 
@@ -10,7 +10,7 @@ function actInfoSignal(actId: number) {
   return `ActInfoSignal_#${actId}`
 }
 
-class ActivityContext extends McoService {
+class ActivityContext extends MscxService {
   constructor() {
     super('ActivityService')
     makeObservable(this)

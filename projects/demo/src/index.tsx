@@ -1,10 +1,10 @@
 import ReactDOM from 'react-dom'
-import mcoApi from './mcoMdi'
+import mscx from './mscx'
 import App from './pages/App'
 
 function render(props: any) {
   const {container} = props
-  ReactDOM.render(<App />, (container || document).querySelector('#mco-root'))
+  ReactDOM.render(<App />, (container || document).querySelector('#root'))
 }
 
 if (!window['__POWERED_BY_QIANKUN__']) {
@@ -12,7 +12,7 @@ if (!window['__POWERED_BY_QIANKUN__']) {
 }
 
 export async function bootstrap(props?: any) {
-  mcoApi.active(props?.ctx)
+  mscx.active(props?.ctx)
 }
 
 export async function mount(props: any) {
@@ -21,7 +21,7 @@ export async function mount(props: any) {
 
 export async function unmount(props: any) {
   const {container} = props
-  ReactDOM.unmountComponentAtNode(container ? container.querySelector('#mco-root') : document.querySelector('#root'))
+  ReactDOM.unmountComponentAtNode(container ? container.querySelector('#root') : document.querySelector('#root'))
 }
 
 export async function update(props: any) {}

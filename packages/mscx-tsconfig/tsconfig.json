@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "plugins": [{ "name": "typescript-plugin-css-modules" }],
+    "target": "ESNext",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "noEmit": false,
+    "experimentalDecorators": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "sourceMap": true,
+    "jsx": "preserve",
+    "suppressImplicitAnyIndexErrors": true,
+    "importsNotUsedAsValues": "preserve"
+  },
+  "exclude": ["**/.*/", "**/dist", "**/build", "**/node_modules", "docs/export", "mscx-config.js"]
+}

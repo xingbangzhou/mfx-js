@@ -1,11 +1,14 @@
 {
-  "version": "1.0.0",
-  "name": "mco",
+  "version": "1.2.0",
+  "name": "mscx",
   "private": true,
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
+  },
+  "scripts": {
+    "release": "lerna run --parallel --scope \"@mscx/*\" release"
   },
   "devDependencies": {
     "@babel/cli": "^7.19.3",

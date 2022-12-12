@@ -1,1 +1,1 @@
-export {default as framework} from './framework'
+export {default as mscxFw} from './mscxFw'

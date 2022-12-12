@@ -1,0 +1,10 @@
+{
+  "extends": "@mscx/tsconfig",
+  "compilerOptions": {
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"]
+    },
+  }
+}

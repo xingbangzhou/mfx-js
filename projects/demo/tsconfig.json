@@ -1,14 +1,14 @@
 {
-  "extends": "@mco/tsconfig",
+  "extends": "@mscx/tsconfig",
   "compilerOptions": {
-    "types": ["node", "react", "@mco/tsconfig"],
+    "types": ["node", "react", "@mscx/tsconfig"],
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"],
-      "@mco/mdi": ["../../packages/mco-mdi/src"],
-      "@mco/joy": ["../../packages/mco-joy/src"],
-      "@mco/utils": ["../../packages/mco-utils/src"]
+      "@mscx/module": ["../../packages/mscx-module/src"],
+      "@mscx/material": ["../../packages/mscx-material/src"],
+      "@mscx/utils": ["../../packages/mscx-utils/src"]
     },
   },
-  "exclude": ["mco-config.js"]
+  "exclude": ["mscx-config.js"]
 }

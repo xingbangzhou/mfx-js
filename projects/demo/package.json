@@ -1,19 +1,19 @@
 {
   "name": "demo",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "mco dev --env dev --hot",
-    "build": "mco build",
-    "build:dev": "mco build --env dev",
-    "build:analyze": "mco build --analyze",
-    "start": "mco serve"
+    "dev": "mscx dev --env dev --hot",
+    "build": "mscx build",
+    "build:dev": "mscx build --env dev",
+    "build:analyze": "mscx build --analyze",
+    "start": "mscx serve"
   },
   "dependencies": {
-    "@mco/mdi": "^1.0.0",
-    "@mco/joy": "^1.0.0",
-    "@mco/utils": "^1.0.0",
+    "@mscx/module": "^1.1.0",
+    "@mscx/material": "^1.1.0",
+    "@mscx/utils": "^1.1.0",
     "clsx": "^1.1.1",
     "gl-matrix": "^3.4.3",
     "react": "^17.0.2",
@@ -22,8 +22,8 @@
   },
   "devDependencies": {
     "@emotion/react": "^11.9.0",
-    "@mco/cli": "^1.0.0",
-	  "@mco/tsconfig": "^1.0.0",
+    "@mscx/cli": "^1.1.0",
+	  "@mscx/tsconfig": "^1.1.0",
     "@types/react": "^17.0.34",
     "@types/react-dom": "^17.0.11",
     "@types/react-transition-group": "^4.4.4",

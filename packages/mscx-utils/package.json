@@ -1,0 +1,37 @@
+{
+  "name": "@mscx/utils",
+  "version": "1.2.0",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "license": "MIT",
+  "keywords": [
+    "mscx",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xingbangzhou/mscx.git",
+    "directory": "packages/mscx-utils"
+  },
+  "scripts": {
+    "build": "yarn run prebuild && yarn build:stable && yarn run build:types && yarn run build:copy-files",
+    "build:stable": "node ../../scripts/build stable",
+    "build:types": "node ../../scripts/buildTypes",
+    "build:copy-files": "node ../../scripts/copyFiles.js",
+    "prebuild": "rimraf build tsconfig.build.tsbuildinfo",
+    "release": "yarn build && npm publish build --access public"
+  },
+  "dependencies": {
+  },
+  "peerDependencies": {
+  },
+  "devDependencies": {
+    "@mscx/tsconfig": "^1.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

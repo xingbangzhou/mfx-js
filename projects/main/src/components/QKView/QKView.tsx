@@ -1,8 +1,8 @@
-import {McoModule} from '@mco/core'
-import {uniformUrl} from '@mco/utils'
+import {MscxModule} from '@mscx/framework'
+import {uniformUrl} from '@mscx/utils'
 import {loadMicroApp, MicroApp} from 'qiankun'
 import {CSSProperties, memo, useEffect, useMemo, useRef} from 'react'
-import framework from 'src/core/framework'
+import mscxFw from 'src/core/mscxFw'
 
 interface QKViewProps {
   name?: string
@@ -16,7 +16,7 @@ const QKView = memo(function QKView(props: QKViewProps) {
   const {name, url, className, style, ...other} = props
   const rootRef = useRef<HTMLDivElement>(null)
   const microApp = useRef<MicroApp>()
-  const mcoModule = useRef<McoModule>()
+  const mscxModule = useRef<MscxModule>()
 
   const entry = useMemo(() => {
     if (!url) return undefined
@@ -27,14 +27,14 @@ const QKView = memo(function QKView(props: QKViewProps) {
     if (rootRef.current && entry) {
       const mId = name || entry
 
-      mcoModule.current = framework.mcoFw.loadModule(mId)
+      mscxModule.current = mscxFw.instance.loadModule(mId)
       microApp.current = loadMicroApp(
         {
           name: mId,
           entry: entry,
           container: rootRef.current,
           props: {
-            ctx: mcoModule.current?.ctx,
+            ctx: mscxModule.current?.ctx,
           },
         },
         {
@@ -49,7 +49,7 @@ const QKView = memo(function QKView(props: QKViewProps) {
     return () => {
       microApp.current?.unmount()
       microApp.current?.unmountPromise.then(() => {
-        mcoModule.current && framework.mcoFw.unloadModule(mcoModule.current.id)
+        mscxModule.current && mscxFw.instance.unloadModule(mscxModule.current.id)
       })
       microApp.current = undefined
     }

@@ -1,4 +1,4 @@
-# MCO
+# MSCX
 Technology: javascript, typescript, react, webpack.
 
-## mco-cli
+## mscx-cli

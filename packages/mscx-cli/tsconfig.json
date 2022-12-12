@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "plugins": [{ "transform": "ts-transform-paths" }],
+    "types": ["webpack/module"],
+    "target": "es2018",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "declaration": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "outDir": "build"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

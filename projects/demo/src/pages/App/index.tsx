@@ -1,12 +1,12 @@
 import './index.scss'
 import {memo, useEffect, useState} from 'react'
-import mcoApi from 'src/mcoMdi'
+import mscx from 'src/mscx'
 
 function App() {
   const [title, setTitle] = useState<string>()
 
   useEffect(() => {
-    mcoApi.invoke('ActivityService', 'getActInfo', 1).then(actInfo => {
+    mscx.invoke('ActivityService', 'getActInfo', 1).then(actInfo => {
       setTitle(actInfo?.title)
     })
 
@@ -14,10 +14,10 @@ function App() {
       setTitle(actInfo?.title)
     }
 
-    mcoApi.connectSignal('ActivityService', 'ActInfoSignal_#1', onActInfoChanged)
+    mscx.connectSignal('ActivityService', 'ActInfoSignal_#1', onActInfoChanged)
 
     return () => {
-      mcoApi.disconnectSignal('ActivityService', 'ActInfoSignal_#1', onActInfoChanged)
+      mscx.disconnectSignal('ActivityService', 'ActInfoSignal_#1', onActInfoChanged)
     }
   }, [])
 

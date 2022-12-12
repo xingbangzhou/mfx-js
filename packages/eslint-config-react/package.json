@@ -1,11 +1,8 @@
 {
-  "name": "@mco/eslint-config-react",
-  "version": "1.0.0",
+  "name": "@mscx/eslint-config-react",
+  "version": "1.2.0",
   "main": "index.js",
   "license": "MIT",
-  "engines": {
-    "node": ">=12"
-  },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "4.6.1",
     "@typescript-eslint/parser": "4.6.1",
@@ -19,5 +16,11 @@
   "peerDependencies": {
     "eslint": "^7.32.0",
     "eslint-plugin-prettier": "^3.1.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }

@@ -1,6 +1,6 @@
 import {CSSProperties, memo, useCallback, useEffect, useMemo, useRef} from 'react'
-import {uniformUrl} from '@mco/utils'
-import framework from 'src/core/framework'
+import {uniformUrl} from '@mscx/utils'
+import mscxFw from 'src/core/mscxFw'
 
 interface FrameViewProps {
   url?: string
@@ -24,10 +24,10 @@ const FrameView = memo(function FrameView(props: FrameViewProps) {
     if (!rootRef.current) return
     if (!moduleId) return
 
-    framework.mcoFw.loadFrameModule(moduleId, rootRef.current)
+    mscxFw.instance.loadFrameModule(moduleId, rootRef.current)
 
     return () => {
-      framework.mcoFw.unloadModule(moduleId)
+      mscxFw.instance.unloadModule(moduleId)
     }
   }, [moduleId, rootRef.current])
 

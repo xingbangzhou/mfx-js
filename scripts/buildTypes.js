@@ -14,9 +14,9 @@ const exec = promisify(childProcess.exec)
  * @param {string} importPath - POSIX path
  */
 function rewriteImportPath(importPath) {
-  const utilsSrcPath = path.posix.join('..', 'mco-utils', 'src')
+  const utilsSrcPath = path.posix.join('..', 'mscx-utils', 'src')
   if (importPath.startsWith(utilsSrcPath)) {
-    return importPath.replace(utilsSrcPath, '@mco/utils')
+    return importPath.replace(utilsSrcPath, '@mscx/utils')
   }
 
   // throw new Error(`Don't know where to rewrite '${importPath}' to`)
