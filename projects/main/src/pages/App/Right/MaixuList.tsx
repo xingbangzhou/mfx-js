@@ -1,6 +1,6 @@
-import {MscxService} from '@mscx/framework'
+import {MfxService} from '@mfx0/base'
 import {memo, useCallback, useEffect, useRef, useState} from 'react'
-import mscxFw from 'src/core/mscxFw'
+import mainFw from 'src/core/fw'
 import styles from './index.module.scss'
 
 interface MaixuProps {
@@ -47,11 +47,11 @@ const InputLi = memo(function InputHolder(props: {onEnd?: (value?: string) => vo
   )
 })
 
-class MaixuListService extends MscxService {
+class MaixuListService extends MfxService {
   constructor() {
     super('MaixuList')
 
-    this.registerInvoke('getItemList', this.getItemList)
+    this.invokable('getItemList', this.getItemList)
   }
 
   private itemList?: string[]
@@ -81,12 +81,12 @@ const MaixuList = memo(function MaixuList() {
 
     service.connectSignal('itemListChanged', fn)
 
-    const {ctx: mscxCtx} = mscxFw.instance
-    mscxCtx.register(service)
+    const {ctx: mainCtx} = mainFw.instance
+    mainCtx.register(service)
 
     return () => {
       service.disconnectSignal('itemListChanged', fn)
-      mscxCtx.unregister(service)
+      mainCtx.unregister(service)
     }
   }, [])
 

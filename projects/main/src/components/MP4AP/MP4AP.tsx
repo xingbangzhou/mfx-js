@@ -1,7 +1,7 @@
 import React, {forwardRef, HTMLAttributes, memo, useEffect, useImperativeHandle, useRef} from 'react'
 import MP4APRender from './MP4APRender'
 import {MP4APOptions} from './types'
-import {useForkRef} from '@mscx/material'
+import {useForkRef} from '@mfx0/material'
 
 export interface MP4APHandler {
   play(opts: Omit<MP4APOptions, 'container'>): void

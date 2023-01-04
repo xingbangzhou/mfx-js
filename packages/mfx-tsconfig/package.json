@@ -1,0 +1,19 @@
+{
+  "name": "@mfx0/tsconfig",
+  "version": "1.0.0",
+  "main": "",
+  "license": "MIT",
+  "types": "types/mfx-react.d.ts",
+  "dependencies": {
+    "typescript-plugin-css-modules": "^3.4.0"
+  },
+  "scripts": {
+    "release": "npm publish --access public"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

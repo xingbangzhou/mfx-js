@@ -7,7 +7,7 @@ module.exports = function (api) {
       {
         bugfixes: true,
         browserslistEnv: process.env.BABEL_ENV || process.env.NODE_ENV,
-        debug: process.env.MSCX_BUILD_VERBOSE === 'true',
+        debug: process.env.MFX_BUILD_VERBOSE === 'true',
         modules: useESModules ? false : 'commonjs',
         shippedProposals: api.env('modern'),
       },

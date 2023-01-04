@@ -1,0 +1,38 @@
+{
+  "name": "@mfx0/material",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "keywords": [
+    "mfx",
+    "react",
+    "material",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xingbangzhou/mfx.git",
+    "directory": "packages/mfx-material"
+  },
+  "scripts": {
+    "build": "yarn run prebuild && yarn build:stable && yarn run build:types && yarn run build:copy-files",
+    "build:stable": "node ../../scripts/build stable",
+    "build:types": "node ../../scripts/buildTypes",
+    "build:copy-files": "node ../../scripts/copyFiles.js",
+    "prebuild": "rimraf build tsconfig.build.tsbuildinfo",
+    "release": "yarn build && npm publish build --access public"
+  },
+  "dependencies": {
+    "@emotion/styled": "^11.10.4",
+    "@mfx0/utils": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react": ">= 17.0.2",
+    "react-dom": ">= 17.0.2"
+  },
+  "devDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "@mfx0/tsconfig": "^1.0.0"
+  }
+}

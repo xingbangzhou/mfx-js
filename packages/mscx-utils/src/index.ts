@@ -1,5 +1,0 @@
-export * from './EventEmitter'
-export {default as EventEmitter} from './EventEmitter'
-export * from './domFns'
-export * from './shimFns'
-export * from './urlFns'

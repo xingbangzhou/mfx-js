@@ -1,19 +1,20 @@
 {
   "name": "main",
-  "version": "1.2.0",
+  "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "mscx dev --env dev --hot",
-    "build": "mscx build",
-    "build:dev": "mscx build --env dev",
-    "build:analyze": "mscx build --analyze",
-    "start": "mscx serve"
+    "dev": "mfx dev --env dev --hot",
+    "build": "mfx build",
+    "build:dev": "mfx build --env dev",
+    "build:analyze": "mfx build --analyze",
+    "start": "mfx serve"
   },
   "dependencies": {
-    "@mscx/framework": "^1.1.0",
-    "@mscx/material": "^1.1.0",
-    "@mscx/utils": "^1.1.0",
+    "@mfx0/base": "^1.0.0",
+    "@mfx0/framework": "^1.0.0",
+    "@mfx0/material": "^1.0.0",
+    "@mfx0/utils": "^1.0.0",
     "clsx": "^1.1.1",
     "gl-matrix": "^3.4.3",
     "mobx": "^6.6.2",
@@ -25,8 +26,8 @@
   },
   "devDependencies": {
     "@emotion/react": "^11.9.0",
-    "@mscx/cli": "^1.1.0",
-    "@mscx/tsconfig": "^1.1.0",
+    "@mfx0/cli": "^1.0.0",
+    "@mfx0/tsconfig": "^1.0.0",
     "@types/react": "^17.0.34",
     "@types/react-dom": "^17.0.11",
     "@types/react-transition-group": "^4.4.4",

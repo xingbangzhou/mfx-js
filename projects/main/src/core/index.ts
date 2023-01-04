@@ -1,1 +1,1 @@
-export {default as mscxFw} from './mscxFw'
+export {default as mainFw} from './fw'

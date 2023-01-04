@@ -1,15 +1,16 @@
 import {CSSProperties, memo, useCallback, useEffect, useMemo, useRef} from 'react'
-import {uniformUrl} from '@mscx/utils'
-import mscxFw from 'src/core/mscxFw'
+import {uniformUrl} from 'src/utils/urlFns'
+import {MfxFramework} from '@mfx0/framework'
 
 interface FrameViewProps {
+  fw: MfxFramework
   url?: string
   className?: string
   style?: CSSProperties
 }
 
 const FrameView = memo(function FrameView(props: FrameViewProps) {
-  const {url, className, style} = props
+  const {fw, url, className, style} = props
 
   const rootRef = useRef<HTMLIFrameElement>(null)
 
@@ -24,10 +25,10 @@ const FrameView = memo(function FrameView(props: FrameViewProps) {
     if (!rootRef.current) return
     if (!moduleId) return
 
-    mscxFw.instance.loadFrameModule(moduleId, rootRef.current)
+    fw.loadFrameModule(moduleId, rootRef.current)
 
     return () => {
-      mscxFw.instance.unloadModule(moduleId)
+      fw.unloadModule(moduleId)
     }
   }, [moduleId, rootRef.current])
 

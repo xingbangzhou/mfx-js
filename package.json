@@ -1,6 +1,6 @@
 {
   "version": "1.2.0",
-  "name": "mscx",
+  "name": "mfx",
   "private": true,
   "husky": {
     "hooks": {
@@ -8,7 +8,7 @@
     }
   },
   "scripts": {
-    "release": "lerna run --parallel --scope \"@mscx/*\" release"
+    "release": "lerna run --parallel --scope \"@mfx0/*\" release"
   },
   "devDependencies": {
     "@babel/cli": "^7.19.3",

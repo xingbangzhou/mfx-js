@@ -1,10 +1,9 @@
 import {observer} from 'mobx-react-lite'
 import {memo, useEffect} from 'react'
-import mscxFw from 'src/core/mscxFw'
+import mainFw from 'src/core/fw'
 import styles from './index.module.scss'
-import QKView from 'src/components/QKView'
 import ctx from './ctx'
-import {Button} from '@mscx/material'
+import QKunView from 'src/components/QKunView'
 
 interface PanelProps {
   actId: number
@@ -15,21 +14,29 @@ interface PanelProps {
 const Panel = memo(function Panel(props: PanelProps) {
   const {actId, url, visible} = props
 
-  return <QKView className={styles.panel} data-visible={visible} name={`activity#${actId}`} url={url} />
+  return (
+    <QKunView
+      fw={mainFw.instance}
+      className={styles.panel}
+      data-visible={visible}
+      name={`activity#${actId}`}
+      url={url}
+    />
+  )
 })
 
 const ActivityPanels = observer(function ActivityPanels() {
   const {itemList, focuseId} = ctx
 
   useEffect(() => {
-    const {ctx: mscxCtx} = mscxFw.instance
-    mscxCtx.register(ctx)
+    const {ctx: mainCtx} = mainFw.instance
+    mainCtx.register(ctx)
 
     ctx.add([{actId: 1, url: 'http://localhost:3001'}])
     ctx.setActInfo(1, {title: '活动条#1'})
 
     return () => {
-      mscxCtx.unregister(ctx)
+      mainCtx.unregister(ctx)
     }
   }, [])
 

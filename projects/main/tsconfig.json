@@ -1,14 +1,15 @@
 {
-  "extends": "@mscx/tsconfig",
+  "extends": "@mfx0/tsconfig",
   "compilerOptions": {
-    "types": ["node", "react", "@mscx/tsconfig"],
+    "types": ["node", "react", "@mfx0/tsconfig"],
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"],
-      "@mscx/framework": ["../../packages/mscx-framework/src"],
-      "@mscx/material": ["../../packages/mscx-material/src"],
-      "@mscx/utils": ["../../packages/mscx-utils/src"]
+      "@mfx0/base": ["../../packages/mfx-base/src"],
+      "@mfx0/framework": ["../../packages/mfx-framework/src"],
+      "@mfx0/material": ["../../packages/mfx-material/src"],
+      "@mfx0/utils": ["../../packages/mfx-utils/src"]
     },
   },
-  "exclude": ["mscx-config.js"]
+  "exclude": ["mfx-config.js"]
 }

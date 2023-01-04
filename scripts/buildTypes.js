@@ -14,12 +14,12 @@ const exec = promisify(childProcess.exec)
  * @param {string} importPath - POSIX path
  */
 function rewriteImportPath(importPath) {
-  const utilsSrcPath = path.posix.join('..', 'mscx-utils', 'src')
-  if (importPath.startsWith(utilsSrcPath)) {
-    return importPath.replace(utilsSrcPath, '@mscx/utils')
-  }
+  // const utilsSrcPath = path.posix.join('..', 'mfx-utils', 'src')
+  // if (importPath.startsWith(utilsSrcPath)) {
+  //   return importPath.replace(utilsSrcPath, '@mfx/utils')
+  // }
 
-  // throw new Error(`Don't know where to rewrite '${importPath}' to`)
+  throw new Error(`Don't know where to rewrite '${importPath}' to`)
 }
 
 async function main() {

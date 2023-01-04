@@ -1,0 +1,37 @@
+{
+  "name": "@mfx0/utils",
+  "version": "1.0.0",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "license": "MIT",
+  "keywords": [
+    "mfx",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xingbangzhou/mfx.git",
+    "directory": "packages/mfx-utils"
+  },
+  "scripts": {
+    "build": "yarn run prebuild && yarn build:stable && yarn run build:types && yarn run build:copy-files",
+    "build:stable": "node ../../scripts/build stable",
+    "build:types": "node ../../scripts/buildTypes",
+    "build:copy-files": "node ../../scripts/copyFiles.js",
+    "prebuild": "rimraf build tsconfig.build.tsbuildinfo",
+    "release": "yarn build && npm publish build --access public"
+  },
+  "dependencies": {
+  },
+  "peerDependencies": {
+  },
+  "devDependencies": {
+    "@mfx0/tsconfig": "^1.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

@@ -1,4 +1,4 @@
-import {MscxService} from '@mscx/framework'
+import {MfxService} from '@mfx0/base'
 import {action, makeObservable, observable} from 'mobx'
 import {ActItemProps} from './types'
 
@@ -10,12 +10,12 @@ function actInfoSignal(actId: number) {
   return `ActInfoSignal_#${actId}`
 }
 
-class ActivityContext extends MscxService {
+class ActivityContext extends MfxService {
   constructor() {
     super('ActivityService')
     makeObservable(this)
 
-    this.registerInvoke('getActInfo', this.getActInfo)
+    this.invokable('getActInfo', this.getActInfo)
   }
 
   @observable

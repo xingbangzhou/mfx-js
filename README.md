@@ -1,4 +1,3 @@
-# MSCX
-Technology: javascript, typescript, react, webpack.
+# MFX
+A completed integration of Micro Frontends Framework.
 
-## mscx-cli
