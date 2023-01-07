@@ -1,4 +1,5 @@
 import {MfxEventListener, MfxLinkHandler, MfxModuleContextFuncs, MfxService, MfxSignalHandler} from '@mfx0/base'
+import InvokePool from './InvokePool'
 
 enum SdkCommand {
   Ready = 'mfx-sdk:ready',
@@ -7,7 +8,7 @@ enum SdkCommand {
   ConnectSignal = 'mfx-sdk:connect_signal',
   DisconnectSignal = 'mfx-sdk:disconnect_signal',
   Invoke = 'mfx-sdk:invoke',
-  Method = 'mfx-sdk:method',
+  InvokeSelf = 'mfx-sdk:invoke_self',
   PostEvent = 'mfx-sdk:post_event',
   AddEventListener = 'mfx-sdk:add_event_listener',
   RemoveEventListener = 'mfx-sdk:remove_event_listener',
@@ -16,32 +17,9 @@ enum SdkCommand {
 enum FrameworkCommand {
   Ready = 'mfx-framework:::ready',
   LinkStatus = 'mfx-framework:::link_status',
-  CallResult = 'mfx-framework:::call_result',
+  InvokeResult = 'mfx-framework:::call_result',
   Signal = 'mfx-framework:::signal',
   Event = 'mfx-framework:::event',
-}
-
-let callTime = new Date().getTime()
-let callIndex = 0
-const CALLMS = 5000
-
-function callId() {
-  const curTime = new Date().getTime()
-  if (curTime !== callTime) {
-    callTime = curTime
-    callIndex = 0
-  } else {
-    callIndex++
-  }
-  return `${callTime}_${callIndex}`
-}
-
-interface CallResolve {
-  (result: any): void
-}
-
-interface CallReject {
-  (error: any): void
 }
 
 export default abstract class ExtContext implements MfxModuleContextFuncs {
@@ -51,9 +29,9 @@ export default abstract class ExtContext implements MfxModuleContextFuncs {
   private blockCmds?: [string, any[]][]
   private linkers?: Record<string, MfxLinkHandler[]>
   private slots: [string, string, MfxSignalHandler[]][] = []
-  private calls?: Record<string, [number, CallResolve, CallReject]>
-  private callTimerId?: number
   private listeners?: Record<string, MfxEventListener[]>
+
+  private invokePool = new InvokePool()
 
   register(service: MfxService): void {
     service
@@ -89,7 +67,8 @@ export default abstract class ExtContext implements MfxModuleContextFuncs {
   }
 
   async invoke(clazz: string, name: string, ...args: any[]) {
-    return this.callFunc(SdkCommand.Invoke, clazz, name, ...args)
+    const result = await this.invoke0(SdkCommand.Invoke, clazz, name, ...args)
+    return result
   }
 
   connectSignal(clazz: string, signal: string, slot: MfxSignalHandler) {
@@ -168,19 +147,15 @@ export default abstract class ExtContext implements MfxModuleContextFuncs {
         const [on, clazz] = args
         this.onLinkStatus(on, clazz)
         break
-      case FrameworkCommand.CallResult:
+      case FrameworkCommand.InvokeResult:
         const [id, result] = args
-        this.onCallResult(id, result)
+        this.onInvokeResult(id, result)
         break
       case FrameworkCommand.Signal:
-        {
-          this.onSignal(...args)
-        }
+        this.onSignal(...args)
         break
       case FrameworkCommand.Event:
-        {
-          this.onEvent(...args)
-        }
+        this.onEvent(...args)
         break
       default:
         break
@@ -209,12 +184,8 @@ export default abstract class ExtContext implements MfxModuleContextFuncs {
     lks?.forEach(el => el(on, clazz))
   }
 
-  private onCallResult(id: string, result: any) {
-    const inv = this.calls?.[id]
-    if (inv) {
-      inv[1](result)
-      delete this.calls?.[id]
-    }
+  private onInvokeResult(id: string, result: any) {
+    this.invokePool.resolve(id, result)
   }
 
   private onSignal(...args: any[]) {
@@ -229,35 +200,10 @@ export default abstract class ExtContext implements MfxModuleContextFuncs {
     list?.forEach(el => el(...args))
   }
 
-  private async callFunc(cmd: string, ...args: any[]): Promise<any> {
-    const result = await new Promise((resolve, reject) => {
-      if (!this.calls) this.calls = {}
-      const id = callId()
-      this.calls[id] = [new Date().getTime(), resolve, reject]
-      if (!this.callTimerId) {
-        this.callTimerId = window.setInterval(this.onCallInterval, CALLMS)
-      }
-      this.command(cmd, id, ...args)
-    })
+  private async invoke0(cmd: string, ...args: any[]) {
+    const {id, result} = this.invokePool.invoke()
+    this.command(cmd, id, ...args)
 
     return result
-  }
-
-  private onCallInterval = () => {
-    const curTime = new Date().getTime()
-    let count = 0
-    for (const id in this.calls) {
-      count++
-      const inv = this.calls[id]
-      if (curTime - inv[0] < CALLMS) continue
-      inv[2]('invoke timeout!')
-      delete this.calls[id]
-      count--
-    }
-    if (!count) {
-      this.calls = undefined
-      window.clearInterval(this.callTimerId)
-      this.calls = undefined
-    }
   }
 }

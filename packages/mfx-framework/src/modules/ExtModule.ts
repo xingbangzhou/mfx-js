@@ -9,7 +9,7 @@ enum SdkCommand {
   ConnectSignal = 'mfx-sdk:connect_signal',
   DisconnectSignal = 'mfx-sdk:disconnect_signal',
   Invoke = 'mfx-sdk:invoke',
-  Method = 'mfx-sdk:method',
+  InvokeSelf = 'mfx-sdk:invoke_self',
   PostEvent = 'mfx-sdk:post_event',
   AddEventListener = 'mfx-sdk:add_event_listener',
   RemoveEventListener = 'mfx-sdk:remove_event_listener',
@@ -18,7 +18,7 @@ enum SdkCommand {
 enum FrameworkCommand {
   Ready = 'mfx-framework:::ready',
   LinkStatus = 'mfx-framework:::link_status',
-  CallResult = 'mfx-framework:::call_result',
+  InvokeResult = 'mfx-framework:::call_result',
   Signal = 'mfx-framework:::signal',
   Event = 'mfx-framework:::event',
 }
@@ -53,10 +53,10 @@ export default abstract class ExtModule extends MfxModule {
           this.onInvoke(id, clazz, name, ...params)
         }
         break
-      case SdkCommand.Method:
+      case SdkCommand.InvokeSelf:
         {
           const [id, name, ...params] = args
-          this.onMethod(id, name, ...params)
+          this.onInvokeSelf(id, name, ...params)
         }
         break
       case SdkCommand.ConnectSignal:
@@ -102,12 +102,12 @@ export default abstract class ExtModule extends MfxModule {
 
   private async onInvoke(id: string, clazz: string, name: string, ...args: any[]) {
     const result = await this.ctx.invoke(clazz, name, ...args)
-    this.postMessage(FrameworkCommand.CallResult, id, result)
+    this.postMessage(FrameworkCommand.InvokeResult, id, result)
   }
 
-  private async onMethod(id: string, name: string, ...args: any[]) {
+  private async onInvokeSelf(id: string, name: string, ...args: any[]) {
     const result = await (this as any)[name]?.(...args)
-    this.postMessage(FrameworkCommand.CallResult, id, result)
+    this.postMessage(FrameworkCommand.InvokeResult, id, result)
   }
 
   private onLinkStatus = (on: boolean, clazz: string) => {
