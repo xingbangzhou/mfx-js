@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import {CSSProperties, memo, useCallback, useRef} from 'react'
+import React, {CSSProperties, memo, useCallback, useRef} from 'react'
 
 const RippleWrapper = styled.span`
   position: absolute;

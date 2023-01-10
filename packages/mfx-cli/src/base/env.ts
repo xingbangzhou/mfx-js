@@ -73,7 +73,7 @@ class MfxEnv {
     if (this.conf) {
       const configExport = require(this.conf)
       if (typeof configExport === 'function') {
-        await configExport({wpChain: this.wpChain, mode: this.mode, options: this.options})
+        await configExport({chain: this.wpChain, mode: this.mode, options: this.options})
       }
     }
   }

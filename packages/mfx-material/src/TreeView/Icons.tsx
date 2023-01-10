@@ -1,4 +1,4 @@
-import {HTMLAttributes, memo} from 'react'
+import React, {HTMLAttributes, memo} from 'react'
 
 export const DefaultExpandIcon = memo(function DefaultCollapseIcon(props: HTMLAttributes<HTMLOrSVGElement>) {
   const {className, ...other} = props

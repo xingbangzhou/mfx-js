@@ -11,10 +11,10 @@
     "start": "mfx serve"
   },
   "dependencies": {
-    "@mfx0/base": "^1.0.0",
-    "@mfx0/framework": "^1.0.0",
-    "@mfx0/material": "^1.0.0",
-    "@mfx0/utils": "^1.0.0",
+    "@mfx0/base": "^1.0.1",
+    "@mfx0/framework": "^1.0.1",
+    "@mfx0/material": "^1.0.1",
+    "@mfx0/utils": "^1.0.1",
     "clsx": "^1.1.1",
     "gl-matrix": "^3.4.3",
     "mobx": "^6.6.2",

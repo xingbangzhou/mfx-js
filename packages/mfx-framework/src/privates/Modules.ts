@@ -1,4 +1,4 @@
-import FrameModule from '../modules/FrameModule'
+import FrameModule from './modules/FrameModule'
 import MfxModule from '../Module'
 import MfxFrameworkContext from './FrameworkContext'
 import MfxModuleCleaner from './ModuleCleaner'

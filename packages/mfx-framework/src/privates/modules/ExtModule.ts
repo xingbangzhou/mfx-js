@@ -1,6 +1,6 @@
-import MfxFrameworkContext from '../privates/FrameworkContext'
-import MfxModule from '../Module'
-import MfxModuleCleaner from '../privates/ModuleCleaner'
+import MfxFrameworkContext from '../FrameworkContext'
+import MfxModule from '../../Module'
+import MfxModuleCleaner from '../../privates/ModuleCleaner'
 
 enum SdkCommand {
   Ready = 'mfx-sdk:ready',

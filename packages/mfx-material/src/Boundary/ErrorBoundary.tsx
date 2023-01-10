@@ -1,4 +1,4 @@
-import {ErrorInfo, memo, PureComponent, ReactNode} from 'react'
+import React, {ErrorInfo, memo, PureComponent, ReactNode} from 'react'
 
 interface ErrorBoundaryProps {
   errorEl?: ReactNode

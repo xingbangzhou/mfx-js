@@ -1,6 +1,6 @@
 {
   "name": "@mfx0/sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "types": "index.d.ts",
   "license": "MIT",
@@ -14,18 +14,22 @@
     "directory": "packages/mfx-sdk"
   },
   "scripts": {
-    "build": "yarn run prebuild && yarn build:stable && yarn run build:types && yarn run build:copy-files",
-    "build:stable": "node ../../scripts/build stable",
-    "build:types": "node ../../scripts/buildTypes",
-    "build:copy-files": "node ../../scripts/copyFiles.js",
+    "build": "yarn run prebuild && yarn build:node && yarn build:modern && yarn build:stable && yarn build:legacy && yarn run build:types && yarn run build:copy-files",
+    "build:node": "node ../../scripts/build.mjs node",
+    "build:modern": "node ../../scripts/build.mjs modern",
+    "build:stable": "node ../../scripts/build.mjs stable",
+    "build:legacy": "node ../../scripts/build.mjs legacy",
+    "build:types": "node ../../scripts/buildTypes.mjs",
+    "build:copy-files": "node ../../scripts/copyFiles.mjs",
     "prebuild": "rimraf build tsconfig.build.tsbuildinfo",
     "release": "yarn build && npm publish build --access public"
   },
   "dependencies": {
-    "@mfx0/base": "^1.0.0",
-    "@mfx0/utils": "^1.0.0"
+    "@mfx0/base": "^1.0.1",
+    "@mfx0/utils": "^1.0.1"
   },
   "peerDependencies": {
+    "@mfx0/base": ">=1.0.1"
   },
   "devDependencies": {
     "@mfx0/tsconfig": "^1.0.0"

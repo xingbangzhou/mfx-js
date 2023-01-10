@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import {CSSProperties, memo, useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import React, {CSSProperties, memo, useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 export interface LabelProps {
   className?: string

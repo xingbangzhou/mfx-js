@@ -1,4 +1,4 @@
-import {forwardRef, memo, ReactNode, Ref, useContext, useEffect, useMemo, useState, HTMLAttributes} from 'react'
+import React, {forwardRef, memo, ReactNode, Ref, useContext, useEffect, useMemo, useState, HTMLAttributes} from 'react'
 import {useForkRef} from '../utils'
 import {DescendantProvider, useDescendant} from './descendants'
 import TreeItemContent from './TreeItemContent'

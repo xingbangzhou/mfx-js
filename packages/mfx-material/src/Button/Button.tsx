@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import {CSSProperties, forwardRef, memo, ReactNode, Ref} from 'react'
+import React, {CSSProperties, forwardRef, memo, ReactNode, Ref} from 'react'
 import Ripple from './Ripple'
 
 export interface ButtonProps {

@@ -1,8 +1,9 @@
-const childProcess = require('child_process')
-const glob = require('fast-glob')
-const path = require('path')
-const {promisify} = require('util')
-const yargs = require('yargs')
+import childProcess from 'child_process'
+import glob from 'fast-glob'
+import path from 'path'
+import {promisify} from 'util'
+import yargs from 'yargs'
+import {getWorkspaceRoot} from './utils.mjs'
 
 const exec = promisify(childProcess.exec)
 
@@ -27,13 +28,13 @@ async function run(args) {
   const env = {
     NODE_ENV: 'production',
     BABEL_ENV: bundle,
-    MCO_BUILD_VERBOSE: verbose,
+    MFX_BUILD_VERBOSE: verbose,
   }
 
-  const babelConfigPath = path.resolve(__dirname, '../babel.config.js')
+  const babelConfigPath = path.resolve(getWorkspaceRoot(), 'babel.config.js')
   const srcDir = path.resolve('./src')
   const extensions = ['.js', '.ts', '.tsx']
-  const ignore = ['**/*.d.ts']
+  const ignore = ['**/*.d.ts', '**/*.test.js', '**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx']
 
   const outDir = path.resolve(
     relativeOutDir,
@@ -64,7 +65,6 @@ async function run(args) {
   const command = ['yarn babel', ...babelArgs].join(' ')
 
   if (verbose) {
-    // eslint-disable-next-line no-console
     console.log(`running '${command}' with ${JSON.stringify(env)}`)
   }
 
@@ -74,12 +74,11 @@ async function run(args) {
   }
 
   if (verbose) {
-    // eslint-disable-next-line no-console
     console.log(stdout)
   }
 }
 
-yargs
+yargs(process.argv.slice(2))
   .command({
     command: '$0 <bundle>',
     description: 'build package',

@@ -1,10 +1,10 @@
-const chalk = require('chalk')
-const childProcess = require('child_process')
-const glob = require('fast-glob')
-const fse = require('fs-extra')
-const path = require('path')
-const {promisify} = require('util')
-const yargs = require('yargs')
+import chalk from 'chalk'
+import childProcess from 'child_process'
+import glob from 'fast-glob'
+import fse from 'fs-extra'
+import path from 'path'
+import {promisify} from 'util'
+import yargs from 'yargs'
 
 const exec = promisify(childProcess.exec)
 
@@ -57,7 +57,7 @@ async function main() {
       // First and last character are quotes.
       // TypeScript mixes single and double quotes.
       const importPath = importTypeMatch[1].slice(1, -1)
-      // In filesystem semantics `@mui/material` is a relative path.
+      // In filesystem semantics `@mfx/material` is a relative path.
       // But when resolving imports these specifiers are considered "bare specifiers" and work differently.
       // We're only interested in imports that are considered "relative path imports".
       const isBareImportSpecifier = !importPath.startsWith('.')
@@ -119,7 +119,7 @@ async function main() {
   console.log(`Fixed: ${rewrittenTally}\nFailed: ${errorTally}\nTotal: ${declarationFiles.length}`)
 }
 
-yargs
+yargs(process.argv.slice(2))
   .command({
     command: '$0',
     description: 'Builds a project with a fix for https://github.com/microsoft/TypeScript/issues/39117',

@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import {HTMLAttributes, memo, ReactNode, forwardRef, Ref, MouseEvent} from 'react'
+import React, {HTMLAttributes, memo, ReactNode, forwardRef, Ref, MouseEvent} from 'react'
 import useTreeItem from './useTreeItem'
 
 interface TreeItemContentProps extends HTMLAttributes<HTMLElement> {

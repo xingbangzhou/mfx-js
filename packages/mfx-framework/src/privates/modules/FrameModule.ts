@@ -1,5 +1,5 @@
-import MfxFrameworkContext from '../privates/FrameworkContext'
-import MfxModuleCleaner from '../privates/ModuleCleaner'
+import MfxFrameworkContext from '../FrameworkContext'
+import MfxModuleCleaner from '../ModuleCleaner'
 import ExtModule from './ExtModule'
 
 class FrameChannel {

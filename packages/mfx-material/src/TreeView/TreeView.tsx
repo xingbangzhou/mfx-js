@@ -1,4 +1,4 @@
-import {forwardRef, memo, ReactNode, Ref, SyntheticEvent, useCallback, useRef} from 'react'
+import React, {forwardRef, memo, ReactNode, Ref, SyntheticEvent, useCallback, useRef} from 'react'
 import {useControlled, useForkRef, useReactId} from '../utils'
 import {DescendantProvider} from './descendants'
 import TreeViewContext, {RegisterTreeItemProps} from './TreeViewContext'
