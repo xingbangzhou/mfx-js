@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@emotion/react": "^11.9.0",
-    "@mfx0/cli": "^1.0.0",
+    "@mfx0/cli": "^1.0.1",
 	  "@mfx0/tsconfig": "^1.0.0",
     "@types/react": "^17.0.34",
     "@types/react-dom": "^17.0.11",
