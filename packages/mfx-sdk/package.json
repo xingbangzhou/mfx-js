@@ -10,7 +10,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://git.yy.com/webs/web_pcyy/mfx.git",
+    "url": "https://github.com/xingbangzhou/mfx.git",
     "directory": "packages/mfx-sdk"
   },
   "scripts": {
