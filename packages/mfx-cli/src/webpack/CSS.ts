@@ -62,11 +62,7 @@ class CSS {
     return {
       style: {
         loader: isDev ? require.resolve('style-loader') : MiniCssExtractPlugin.loader,
-        options: {
-          attributes: {
-            'data-module': pkg?.name,
-          },
-        },
+        options: {},
       },
       css: {
         loader: require.resolve('css-loader'),

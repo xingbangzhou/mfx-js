@@ -1,6 +1,6 @@
 {
   "name": "@mfx0/cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": false,
   "license": "MIT",
   "author": "Zhou xingbang <zhouxingbang92@163.com>",
@@ -19,7 +19,11 @@
   "bin": {
     "mfx": "./bin/cli.js"
   },
-  "files": ["bin", "build", "template"],
+  "files": [
+    "bin",
+    "build",
+    "template"
+  ],
   "scripts": {
     "build": "rimraf build && ttsc",
     "release": "yarn build && npm publish --access public"
@@ -52,7 +56,7 @@
     "html-webpack-plugin": "^5.3.2",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
-    "mini-css-extract-plugin": "^2.4.5",
+    "mini-css-extract-plugin": "2.7.2",
     "postcss-loader": "^6.2.0",
     "react-refresh": "^0.11.0",
     "sass": "^1.43.4",
