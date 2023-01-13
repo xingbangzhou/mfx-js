@@ -14,10 +14,7 @@
     position: relative;
     width: 100%;
     height: calc(100% - 50px);
-    display: flex;
-
-    .splittable {
-      flex: 1 1 0px;
-    }
+    display: grid;
+    grid-template-columns: auto 1fr;
   }
 }

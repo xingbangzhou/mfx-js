@@ -1,4 +1,11 @@
-import {MfxEventListener, MfxLinkHandler, MfxModuleContextFuncs, MfxService, MfxSignalHandler} from '@mfx0/base'
+import {
+  MfxEventListener,
+  MfxLinkHandler,
+  MfxModuleContextFuncs,
+  MfxService,
+  MfxSignalHandler,
+  MfxContextExecutor,
+} from '@mfx0/base'
 import {Logger} from '@mfx0/utils'
 import MfxModule from './Module'
 import MfxFrameworkContext from './privates/FrameworkContext'
@@ -18,6 +25,7 @@ export default class MfxModuleContext implements MfxModuleContextFuncs {
   private linkers?: [string, MfxLinkHandler][]
   private slots?: [string, string, MfxSignalHandler][]
   private listeners?: [string, MfxEventListener][]
+  private executors?: Record<string, MfxContextExecutor | undefined>
 
   readonly logger: Logger
 
@@ -118,6 +126,21 @@ export default class MfxModuleContext implements MfxModuleContextFuncs {
     const {fwCtx} = this
 
     fwCtx.events.postEvent(event, ...args)
+  }
+
+  setExecutor(name: string, executor?: MfxContextExecutor) {
+    if (!this.executors) this.executors = {[name]: executor}
+    else if (!this.executors[name]) {
+      this.executors[name] = executor
+    }
+  }
+
+  async execute(name: string, ...args: any[]) {
+    const fn = this.executors?.[name]
+    if (!fn) return undefined
+
+    const result = await fn.call(this, ...args)
+    return result
   }
 
   private clearAll = () => {

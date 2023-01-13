@@ -1,9 +1,9 @@
 import {createProgram, createShader} from 'src/utils/glFns'
-import {MP4APOptions} from './types'
-import MP4APCore from './MP4APCore'
+import {VAPOptions} from './types'
+import VAPCore from './VAPCore'
 
-export default class MP4APRender extends MP4APCore {
-  constructor(opts: MP4APOptions) {
+export default class VAPRender extends VAPCore {
+  constructor(opts: VAPOptions) {
     super(opts)
 
     if (this.useFrameCallback) {

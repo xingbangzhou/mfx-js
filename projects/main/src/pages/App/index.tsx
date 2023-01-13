@@ -2,7 +2,7 @@ import './index.scss'
 import TitleBar from './TitleBar'
 import {memo, useEffect} from 'react'
 import LeftBar from './LeftBar'
-import Content from './Content'
+import MainView from './MainView'
 
 function App() {
   useEffect(() => {}, [])
@@ -12,7 +12,7 @@ function App() {
       <TitleBar />
       <div className="mainArea">
         <LeftBar />
-        <Content />
+        <MainView />
       </div>
     </div>
   )

@@ -1,7 +1,7 @@
-import {MP4APOptions} from './types'
+import {VAPOptions} from './types'
 
-export default class MP4APCore {
-  constructor(opts: MP4APOptions) {
+export default class VAPCore {
+  constructor(opts: VAPOptions) {
     this.opts = opts
     this.container = opts.container
     this.fps = opts.fps || 20
@@ -10,7 +10,7 @@ export default class MP4APCore {
     this.initVideo()
   }
 
-  opts: MP4APOptions
+  opts: VAPOptions
   container: HTMLElement
   video?: HTMLVideoElement
   fps: number
@@ -42,7 +42,7 @@ export default class MP4APCore {
     this.video = undefined
   }
 
-  private _drawFrame?: MP4APCore['drawFrame']
+  private _drawFrame?: VAPCore['drawFrame']
   protected drawFrame(_?: unknown, info?: any) {
     this._drawFrame = this._drawFrame || this.drawFrame.bind(this, _, info)
     if (this.useFrameCallback) {

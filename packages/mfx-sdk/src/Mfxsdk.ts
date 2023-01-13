@@ -1,4 +1,11 @@
-import {MfxEventListener, MfxLinkHandler, MfxModuleContextFuncs, MfxService, MfxSignalHandler} from '@mfx0/base'
+import {
+  MfxContextExecutor,
+  MfxEventListener,
+  MfxLinkHandler,
+  MfxModuleContextFuncs,
+  MfxService,
+  MfxSignalHandler,
+} from '@mfx0/base'
 import FrameContext from './privates/FrameContext'
 
 enum EApi {
@@ -12,6 +19,8 @@ enum EApi {
   postEvent = 'postEvent',
   addEventListener = 'addEventListener',
   removeEventListener = 'removeEventListener',
+  setExecutor = 'setExecutor',
+  execute = 'execute',
 }
 
 export default class Mfxsdk implements MfxModuleContextFuncs {
@@ -77,6 +86,16 @@ export default class Mfxsdk implements MfxModuleContextFuncs {
 
   removeEventListener(event: string, listener: MfxEventListener): void {
     this.runApi(EApi.removeEventListener, event, listener)
+  }
+
+  setExecutor(name: string, executor?: MfxContextExecutor) {
+    this.runApi(EApi.setExecutor, name, executor)
+  }
+
+  async execute(name: string, ...args: any[]) {
+    return new Promise(resolve => {
+      this.runApi(EApi.execute, resolve, name, ...args)
+    })
   }
 
   private runApi(api: EApi, ...args: any[]) {
@@ -148,6 +167,18 @@ export default class Mfxsdk implements MfxModuleContextFuncs {
         {
           const [event, listener] = args
           ctx.removeEventListener(event, listener)
+        }
+        break
+      case EApi.setExecutor:
+        {
+          const [name, executor] = args
+          ctx.setExecutor(name, executor)
+        }
+        break
+      case EApi.execute:
+        {
+          const [resolve, name, ...params] = args
+          ctx.execute(name, ...params).then(data => resolve(data))
         }
         break
       default:

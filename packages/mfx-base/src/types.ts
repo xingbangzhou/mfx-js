@@ -13,3 +13,7 @@ export interface MfxSignalHandler {
 export interface MfxEventListener {
   (...args: any[]): void
 }
+
+export interface MfxContextExecutor {
+  (...args: any[]): Promise<any>
+}

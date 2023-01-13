@@ -6,7 +6,7 @@ type DrapAreaProps = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 const Cover = styled.div`
-  position: fixed;
+  position: absolute;
   pointer-events: none;
   left: 0px;
   top: 0px;
@@ -74,4 +74,4 @@ const DrapArea = function (props: DrapAreaProps) {
   )
 }
 
-export default DrapArea
+export default memo(DrapArea)

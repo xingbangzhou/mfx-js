@@ -1,4 +1,4 @@
-export interface MP4APOptions {
+export interface VAPOptions {
   container: HTMLElement
   src: string
   fps?: number

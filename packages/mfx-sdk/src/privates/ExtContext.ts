@@ -1,4 +1,11 @@
-import {MfxEventListener, MfxLinkHandler, MfxModuleContextFuncs, MfxService, MfxSignalHandler} from '@mfx0/base'
+import {
+  MfxContextExecutor,
+  MfxEventListener,
+  MfxLinkHandler,
+  MfxModuleContextFuncs,
+  MfxService,
+  MfxSignalHandler,
+} from '@mfx0/base'
 import InvokePool from './InvokePool'
 
 enum SdkCommand {
@@ -8,7 +15,7 @@ enum SdkCommand {
   ConnectSignal = 'mfx-sdk:connect_signal',
   DisconnectSignal = 'mfx-sdk:disconnect_signal',
   Invoke = 'mfx-sdk:invoke',
-  InvokeSelf = 'mfx-sdk:invoke_self',
+  Execute = 'mfx-sdk:execute',
   PostEvent = 'mfx-sdk:post_event',
   AddEventListener = 'mfx-sdk:add_event_listener',
   RemoveEventListener = 'mfx-sdk:remove_event_listener',
@@ -17,7 +24,7 @@ enum SdkCommand {
 enum FrameworkCommand {
   Ready = 'mfx-framework:::ready',
   LinkStatus = 'mfx-framework:::link_status',
-  InvokeResult = 'mfx-framework:::call_result',
+  Result = 'mfx-framework:::result',
   Signal = 'mfx-framework:::signal',
   Event = 'mfx-framework:::event',
 }
@@ -35,12 +42,12 @@ export default abstract class ExtContext implements MfxModuleContextFuncs {
 
   register(service: MfxService): void {
     service
-    console.error("[ContextProxy]: don't realize registerService")
+    console.error("[ExtContext]: don't realize register")
   }
 
   unregister(service: MfxService): void {
     service
-    console.error("[ContextProxy]: don't realize unregisterService")
+    console.error("[ExtContext]: don't realize unregister")
   }
 
   link(clazz: string, linker: MfxLinkHandler) {
@@ -132,6 +139,17 @@ export default abstract class ExtContext implements MfxModuleContextFuncs {
     }
   }
 
+  setExecutor(name: string, executor?: MfxContextExecutor) {
+    name
+    executor
+    console.error("[ExtContext]: don't realize setExecutor")
+  }
+
+  async execute(name: string, ...args: any[]) {
+    const result = await this.invoke0(SdkCommand.Execute, name, ...args)
+    return result
+  }
+
   protected abstract postMessage(cmd: string, ...args: any[]): void
 
   protected imReady() {
@@ -147,9 +165,9 @@ export default abstract class ExtContext implements MfxModuleContextFuncs {
         const [on, clazz] = args
         this.onLinkStatus(on, clazz)
         break
-      case FrameworkCommand.InvokeResult:
+      case FrameworkCommand.Result:
         const [id, result] = args
-        this.onInvokeResult(id, result)
+        this.onResult(id, result)
         break
       case FrameworkCommand.Signal:
         this.onSignal(...args)
@@ -184,7 +202,7 @@ export default abstract class ExtContext implements MfxModuleContextFuncs {
     lks?.forEach(el => el(on, clazz))
   }
 
-  private onInvokeResult(id: string, result: any) {
+  private onResult(id: string, result: any) {
     this.invokePool.resolve(id, result)
   }
 

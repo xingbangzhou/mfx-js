@@ -3,12 +3,14 @@ import {DraggableCore, DraggableData} from '@mfx0/material'
 import styles from './index.module.scss'
 import Content from './Content'
 
-const MINWIDTH = 60
-const NORWIDTH = 273
-const MAXWIDTH = 420
+const dimensions = {
+  minwidth: 60,
+  norwidth: 273,
+  maxwidth: 820,
+}
 
 const LeftBar = memo(function LeftBar() {
-  const [width, setWidth] = useState(NORWIDTH)
+  const [width, setWidth] = useState(dimensions.norwidth)
   const [minisize, setMinisize] = useState(false)
 
   const rootRef = useRef<HTMLDivElement>(null)
@@ -21,8 +23,8 @@ const LeftBar = memo(function LeftBar() {
   const runConstraints = useCallback((w: number) => {
     const oldW = w
     w += slackW.current
-    w = Math.max(NORWIDTH, w)
-    w = Math.min(MAXWIDTH, w)
+    w = Math.max(dimensions.norwidth, w)
+    w = Math.min(dimensions.maxwidth, w)
     slackW.current = slackW.current + oldW - w
     return w
   }, [])
@@ -54,17 +56,17 @@ const LeftBar = memo(function LeftBar() {
     [width],
   )
 
-  // const onMaxminized = useCallback(
-  //   (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-  //     ev.stopPropagation()
-  //     setMinisize(!minisize)
-  //   },
-  //   [minisize],
-  // )
+  const onMaxminized = useCallback(
+    (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      ev.stopPropagation()
+      setMinisize(!minisize)
+    },
+    [minisize],
+  )
 
   const style = useMemo(() => {
     return {
-      width: `${minisize ? MINWIDTH : width}px`,
+      width: `${minisize ? dimensions.minwidth : width}px`,
     }
   }, [width, minisize])
 
@@ -74,9 +76,9 @@ const LeftBar = memo(function LeftBar() {
       <DraggableCore onStop={onResizeStop} onStart={onResizeStart} onDrag={onResize}>
         <span className={styles.draggable} aria-hidden={minisize}></span>
       </DraggableCore>
-      {/* <div className={minisize ? styles.minimize : styles.maximize}>
+      <div className={minisize ? styles.minimize : styles.maximize}>
         <div className={styles.handle} onClick={onMaxminized} />
-      </div> */}
+      </div>
     </div>
   )
 })
