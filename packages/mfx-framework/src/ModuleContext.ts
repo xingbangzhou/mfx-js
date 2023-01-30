@@ -158,5 +158,7 @@ export default class MfxModuleContext implements MfxModuleContextFuncs {
     this.linkers = undefined
 
     fwCtx.services.unregisterAll(this)
+
+    this.executors = undefined
   }
 }
