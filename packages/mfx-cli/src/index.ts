@@ -1,4 +1,4 @@
-import {mfxEnv} from './base'
+import {mfxEnv} from './core'
 import {MfxOptions, MfxModeType} from './types'
 import MfxWebpack from './webpack'
 

@@ -1,4 +1,4 @@
-import {mfxEnv} from '../base'
+import {mfxEnv} from '../core'
 import TerserPlugin from 'terser-webpack-plugin'
 
 class Production {

@@ -1,13 +1,13 @@
-import MfxFrameworkContext from './privates/FrameworkContext'
+import MxFrameworkContext from './privates/FrameworkContext'
 
-export default class MfxFrameworkLauncher {
+export default class YoFrameworkLauncher {
   constructor() {
-    this.fwCtx = new MfxFrameworkContext()
+    this._fwCtx = new MxFrameworkContext()
   }
 
-  private fwCtx: MfxFrameworkContext
+  private _fwCtx: MxFrameworkContext
 
   get framework() {
-    return this.fwCtx.framework
+    return this._fwCtx.framework
   }
 }

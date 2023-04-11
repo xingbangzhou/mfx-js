@@ -1,4 +1,4 @@
-import {mfxEnv} from '../base'
+import {mfxEnv} from '../core'
 import {webpack} from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 

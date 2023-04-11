@@ -1,47 +1,47 @@
-import FrameModule from './modules/FrameModule'
-import MfxModule from '../Module'
-import MfxFrameworkContext from './FrameworkContext'
-import MfxModuleCleaner from './ModuleCleaner'
+import MxFrameModule from '../Module/FrameModule'
+import MxModule from '../Module'
+import MxFrameworkContext from './FrameworkContext'
+import MxModuleDestructor from './ModuleDestructor'
 
-enum MfxModuleType {
+enum MxModuleType {
   Module,
   Frame,
 }
 
-class MfxModuleHolder {
-  constructor(fwCtx: MfxFrameworkContext, id: string, type: MfxModuleType, ...args: any[]) {
+class YoModuleHolder {
+  constructor(fwCtx: MxFrameworkContext, id: string, type: MxModuleType, ...args: any[]) {
     switch (type) {
-      case MfxModuleType.Frame:
-        this._module = new FrameModule(fwCtx, this.cleaner, id, args[0])
+      case MxModuleType.Frame:
+        this._module = new MxFrameModule(fwCtx, this._destructor, id, args[0])
         break
       default:
-        this._module = new MfxModule(fwCtx, this.cleaner, id)
+        this._module = new MxModule(fwCtx, this._destructor, id)
         break
     }
   }
 
-  private _module: MfxModule
-  private invalid = false
-  private cleaner = new MfxModuleCleaner()
+  private _module: MxModule
+  private _invalid = false
+  private _destructor = new MxModuleDestructor()
 
   get module() {
     return this._module
   }
 
   unload() {
-    if (this.invalid) return
-    this.invalid = true
-    this.cleaner.clean()
+    if (this._invalid) return
+    this._invalid = true
+    this._destructor.destroy()
   }
 }
 
-export default class MfxModules {
-  constructor(fwCtx: MfxFrameworkContext) {
+export default class MxModules {
+  constructor(fwCtx: MxFrameworkContext) {
     this.fwCtx = fwCtx
   }
 
-  private fwCtx: MfxFrameworkContext
-  private holders: Record<string, MfxModuleHolder> = {}
+  private fwCtx: MxFrameworkContext
+  private holders: Record<string, YoModuleHolder> = {}
 
   getModule(id: string) {
     return this.holders[id]?.module
@@ -49,12 +49,12 @@ export default class MfxModules {
 
   load(id: string) {
     if (!id) return
-    return this.load0(id, MfxModuleType.Module)
+    return this.load0(id, MxModuleType.Module)
   }
 
   loadFrame(id: string, container: HTMLIFrameElement) {
     if (!id) return
-    return this.load0(id, MfxModuleType.Frame, container)
+    return this.load0(id, MxModuleType.Frame, container)
   }
 
   unload(id: string) {
@@ -65,10 +65,10 @@ export default class MfxModules {
     delete this.holders[id]
   }
 
-  private load0(id: string, type: MfxModuleType, ...args: any[]) {
-    let holder: MfxModuleHolder | undefined = undefined
+  private load0(id: string, type: MxModuleType, ...args: any[]) {
+    let holder: YoModuleHolder | undefined = undefined
     if (!this.holders[id]) {
-      holder = new MfxModuleHolder(this.fwCtx, id, type, ...args)
+      holder = new YoModuleHolder(this.fwCtx, id, type, ...args)
       this.holders[id] = holder
     }
     return holder?.module

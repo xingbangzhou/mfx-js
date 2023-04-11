@@ -5,10 +5,10 @@
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"],
-      "@mfx0/base": ["../../packages/mfx-base/src"],
+      "@mfx0/core": ["../../packages/mfx-core/src"],
+      "@mfx0/core/*": ["../../packages/mfx-core/src/*"],
       "@mfx0/framework": ["../../packages/mfx-framework/src"],
-      "@mfx0/material": ["../../packages/mfx-material/src"],
-      "@mfx0/utils": ["../../packages/mfx-utils/src"]
+      "@mfx0/gui": ["../../packages/mfx-gui/src"]
     },
   },
   "exclude": ["mfx-config.js"]

@@ -5,8 +5,8 @@
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"],
-      "@mfx0/base": ["../mfx-base/src"],
-      "@mfx0/utils": ["../mfx-utils/src"]
+      "@mfx0/core": ["../mfx-core/src"],
+      "@mfx0/core/*": ["../mfx-core/src/*"]
     },
   }
 }

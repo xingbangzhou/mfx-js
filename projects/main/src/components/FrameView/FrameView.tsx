@@ -1,9 +1,9 @@
 import {CSSProperties, memo, useCallback, useEffect, useMemo, useRef} from 'react'
 import {uniformUrl} from 'src/utils/urlFns'
-import {MfxFramework} from '@mfx0/framework'
+import {MxFramework} from '@mfx0/framework'
 
 interface FrameViewProps {
-  fw: MfxFramework
+  fw: MxFramework
   url?: string
   className?: string
   style?: CSSProperties

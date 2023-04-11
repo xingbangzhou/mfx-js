@@ -1,4 +1,4 @@
-import {mfxEnv} from '../base'
+import {mfxEnv} from '../core'
 import {RuleSetRule, RuleSetUseItem} from 'webpack'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'

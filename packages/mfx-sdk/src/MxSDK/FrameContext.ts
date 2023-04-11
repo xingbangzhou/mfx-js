@@ -1,6 +1,6 @@
-import ContextEx from './ExtContext'
+import YoExContext from './ExContext'
 
-export default class FrameContext extends ContextEx {
+export default class YoFrameContext extends YoExContext {
   constructor() {
     super()
 
@@ -9,14 +9,14 @@ export default class FrameContext extends ContextEx {
     this.imReady()
   }
 
-  private static instance_?: FrameContext
+  private static instance_?: YoFrameContext
 
   static instance() {
     if (!this.instance_) {
-      FrameContext.instance_ = new FrameContext()
+      YoFrameContext.instance_ = new YoFrameContext()
     }
 
-    return FrameContext.instance_ as FrameContext
+    return YoFrameContext.instance_ as YoFrameContext
   }
 
   protected postMessage(cmd: string, ...args: any[]) {
@@ -27,8 +27,6 @@ export default class FrameContext extends ContextEx {
     const {source, data} = ev
     if (source !== window.top) return
 
-    console.log('YFModule onMessage', data)
-
     try {
       const cmd = data.cmd
       const args = data.args
@@ -36,7 +34,7 @@ export default class FrameContext extends ContextEx {
         this.onCommand(cmd, ...args)
       }
     } catch (error) {
-      console.error('[FrameContext] onMessage, error: ', error)
+      console.error('YoFrameContext', 'onMessage, error: ', error)
     }
   }
 }

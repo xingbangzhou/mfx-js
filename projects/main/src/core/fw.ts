@@ -1,12 +1,12 @@
-import {MfxFrameworkLauncher} from '@mfx0/framework'
+import {MxFrameworkLauncher} from '@mfx0/framework'
 
 class MainFramework {
   constructor() {
-    this.launcher = new MfxFrameworkLauncher()
+    this.launcher = new MxFrameworkLauncher()
     this.launcher.framework.init()
   }
 
-  private launcher: MfxFrameworkLauncher
+  private launcher: MxFrameworkLauncher
 
   get instance() {
     return this.launcher.framework

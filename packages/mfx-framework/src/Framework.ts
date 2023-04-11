@@ -1,55 +1,54 @@
-import MfxModule from './Module'
-import MfxFrameworkContext from './privates/FrameworkContext'
-import MfxModuleCleaner from './privates/ModuleCleaner'
+import MxModule from './Module'
+import MxFrameworkContext from './privates/FrameworkContext'
+import MxModuleDestructor from './privates/ModuleDestructor'
 
-export default class MfxFramework extends MfxModule {
-  constructor(fwCtx: MfxFrameworkContext) {
-    super(fwCtx, new MfxModuleCleaner(), '')
-    this.fwCtx = fwCtx
+export default class MxFramework extends MxModule {
+  constructor(fwCtx: MxFrameworkContext) {
+    super(fwCtx, new MxModuleDestructor(), '')
+    this._fwCtx = fwCtx
   }
 
-  private inited = false
-  private fwCtx: MfxFrameworkContext
+  private _inited = false
+  private _fwCtx: MxFrameworkContext
 
   init() {
-    if (this.inited) return
-    this.ctx.logger.log('MfxFramework:initial.')
-
-    this.inited = true
-    window['_MfxFramework_'] = true
+    if (this._inited) return
+    this._inited = true
+    this.ctx.logger.log('MxFramework', 'init')
+    window['_MxFramework_'] = true
 
     this.init0()
   }
 
   getModule(id: string) {
-    const {fwCtx} = this
+    const {_fwCtx} = this
 
-    return fwCtx.modules?.getModule(id)
+    return _fwCtx.modules?.getModule(id)
   }
 
   loadModule(id: string) {
-    this.ctx.logger.log('MfxFramework:loadModule: ', id)
-    const {fwCtx} = this
+    this.ctx.logger.log('MxFramework', 'loadModule: ', id)
+    const {_fwCtx} = this
 
-    const module = fwCtx.modules.load(id)
+    const yomodule = _fwCtx.modules.load(id)
 
-    return module
+    return yomodule
   }
 
   loadFrameModule(id: string, container: HTMLIFrameElement) {
-    this.ctx.logger.log('MfxFramework:loadFrameModule: ', id, container)
-    const {fwCtx} = this
+    this.ctx.logger.log('MxFramework', 'loadFrameModule: ', id)
+    const {_fwCtx} = this
 
-    const module = fwCtx.modules.loadFrame(id, container)
+    const frameModule = _fwCtx.modules.loadFrame(id, container)
 
-    return module
+    return frameModule
   }
 
   unloadModule(id: string) {
-    this.ctx.logger.log('MfxFramework:unloadModule: ', id)
-    const {fwCtx} = this
+    this.ctx.logger.log('MxFramework', 'unloadModule: ', id)
+    const {_fwCtx} = this
 
-    fwCtx.modules.unload(id)
+    _fwCtx.modules.unload(id)
   }
 
   private init0() {}

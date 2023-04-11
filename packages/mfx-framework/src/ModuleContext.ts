@@ -1,164 +1,188 @@
-import {
-  MfxEventListener,
-  MfxLinkHandler,
-  MfxModuleContextFuncs,
-  MfxService,
-  MfxSignalHandler,
-  MfxContextExecutor,
-} from '@mfx0/base'
-import {Logger} from '@mfx0/utils'
-import MfxModule from './Module'
-import MfxFrameworkContext from './privates/FrameworkContext'
-import MfxModuleCleaner from './privates/ModuleCleaner'
+import {MxEventListener, MxLinkHandler, MxSlotFn, MxModuleContextFuncs} from '@mfx0/core/types'
+import MxService from '@mfx0/core/Service'
+import Logger from '@mfx0/core/Logger'
+import MxModule from './Module'
+import MxFrameworkContext from './privates/FrameworkContext'
+import MxModuleDestructor from './privates/ModuleDestructor'
 
-export default class MfxModuleContext implements MfxModuleContextFuncs {
-  constructor(module: MfxModule, fwCtx: MfxFrameworkContext, cleaner: MfxModuleCleaner) {
-    this.module = module
-    this.fwCtx = fwCtx
-    cleaner.bindClearFn(this.clearAll)
+export default class MxModuleContext implements MxModuleContextFuncs {
+  constructor(module: MxModule, fwCtx: MxFrameworkContext, destructor: MxModuleDestructor) {
+    this._module = module
+    this._fwCtx = fwCtx
+    destructor.bindCleaner(this.clearAll.bind(this))
 
-    this.logger = new Logger('MfxModuleContext', this.module.id)
+    this.logger = new Logger(undefined, this._module.id)
   }
-
-  private module: MfxModule
-  private fwCtx: MfxFrameworkContext
-  private linkers?: [string, MfxLinkHandler][]
-  private slots?: [string, string, MfxSignalHandler][]
-  private listeners?: [string, MfxEventListener][]
-  private executors?: Record<string, MfxContextExecutor | undefined>
 
   readonly logger: Logger
 
+  private _module: MxModule
+  private _fwCtx: MxFrameworkContext
+  private _linkers?: [string, MxLinkHandler][]
+  private _slots?: [string, string, MxSlotFn][]
+  private _listeners?: [string, MxEventListener][]
+
+  // private _exFuncs?: Record<string, YoContextFunction | undefined>
+  // private _thisEmitter?: EventEmitter
+
   get moduleId() {
-    return this.module.id
+    return this._module.id
   }
 
-  register(service: MfxService) {
-    this.logger.log('register: ', service)
-    const {fwCtx} = this
+  register(service: MxService) {
+    this.logger.log('MxModuleContext', 'register: ', service.clazz)
+    const {_fwCtx} = this
 
-    return fwCtx.services.register(this, service)
+    return _fwCtx.services.register(this, service)
   }
 
-  unregister(service: MfxService) {
-    this.logger.log('unregister: ', service)
-    const {fwCtx} = this
+  unregister(service: MxService) {
+    this.logger.log('MxModuleContext', 'unregister: ', service.clazz)
+    const {_fwCtx} = this
 
-    fwCtx.services.unregister(this, service)
+    _fwCtx.services.unregister(this, service)
   }
 
-  link(clazz: string, linker: MfxLinkHandler) {
-    this.logger.log('link: ', clazz, linker)
-    const {fwCtx} = this
+  link(clazz: string, linker: MxLinkHandler) {
+    this.logger.log('MxModuleContext', 'link: ', clazz, linker)
+    const {_fwCtx} = this
 
-    const l = fwCtx.services.link(clazz, linker)
+    const l = _fwCtx.services.link(clazz, linker)
     if (!l) return
 
-    if (!this.linkers) this.linkers = [[clazz, linker]]
-    else if (!this.linkers.find(el => el[0] === clazz && el[1] === linker)) {
-      this.linkers.push([clazz, linker])
+    if (!this._linkers) this._linkers = [[clazz, linker]]
+    else if (!this._linkers.find(el => el[0] === clazz && el[1] === linker)) {
+      this._linkers.push([clazz, linker])
     }
 
-    fwCtx.services.getService(clazz) && linker(true, clazz)
+    _fwCtx.services.getService(clazz) && linker(true, clazz)
   }
 
-  unlink(clazz: string, linker: MfxLinkHandler) {
-    this.logger.log('unlink: ', clazz, linker)
-    const {fwCtx} = this
+  unlink(clazz: string, linker: MxLinkHandler) {
+    this.logger.log('MxModuleContext', 'unlink: ', clazz, linker)
+    const {_fwCtx} = this
 
-    fwCtx.services.unlink(clazz, linker)
+    _fwCtx.services.unlink(clazz, linker)
 
-    this.linkers = this.linkers?.filter(el => !(el[0] === clazz && el[1] === linker))
+    this._linkers = this._linkers?.filter(el => !(el[0] === clazz && el[1] === linker))
   }
 
   async invoke(clazz: string, name: string, ...args: any[]) {
-    this.logger.log('invoke: ', clazz, name, ...args)
-    const {fwCtx} = this
+    this.logger.log('MxModuleContext', 'invoke: ', clazz, name, ...args)
+    const {_fwCtx} = this
 
-    return fwCtx.services.invoke(clazz, name, ...args)
+    return _fwCtx.services.invoke(clazz, name, ...args)
   }
 
-  connectSignal(clazz: string, signal: string, slot: MfxSignalHandler) {
-    this.logger.log('connectSignal: ', clazz, signal, slot)
-    const {fwCtx} = this
+  connectSignal(clazz: string, signal: string, slot: MxSlotFn) {
+    this.logger.log('MxModuleContext', 'connectSignal: ', clazz, signal, slot)
+    const {_fwCtx} = this
 
-    const l = fwCtx.services.connectSignal(clazz, signal, slot)
+    const l = _fwCtx.services.connectSignal(clazz, signal, slot)
     if (!l) return
 
-    if (!this.slots) this.slots = [[clazz, signal, slot]]
-    else if (!this.slots.find(el => el[0] === clazz && el[1] === signal && el[2] === slot)) {
-      this.slots.push([clazz, signal, slot])
+    if (!this._slots) this._slots = [[clazz, signal, slot]]
+    else if (!this._slots.find(el => el[0] === clazz && el[1] === signal && el[2] === slot)) {
+      this._slots.push([clazz, signal, slot])
     }
   }
 
-  disconnectSignal(clazz: string, signal: string, slot: MfxSignalHandler) {
-    this.logger.log('disconnectSignal: ', clazz, signal, slot)
-    const {fwCtx} = this
+  disconnectSignal(clazz: string, signal: string, slot: MxSlotFn) {
+    this.logger.log('MxModuleContext', 'disconnectSignal: ', clazz, signal, slot)
+    const {_fwCtx} = this
 
-    fwCtx.services.disconnectSignal(clazz, signal, slot)
+    _fwCtx.services.disconnectSignal(clazz, signal, slot)
 
-    this.slots = this.slots?.filter(el => !(el[0] === clazz && el[1] === signal && el[2] === slot))
+    this._slots = this._slots?.filter(el => !(el[0] === clazz && el[1] === signal && el[2] === slot))
   }
 
-  addEventListener(event: string, listener: MfxEventListener) {
-    this.logger.log('addEventListener: ', event, listener)
-    const {fwCtx} = this
+  addEventListener(event: string, listener: MxEventListener) {
+    this.logger.log('MxModuleContext', 'addEventListener: ', event, listener)
+    const {_fwCtx} = this
 
-    fwCtx.events.addListener(event, listener)
+    _fwCtx.events.addListener(event, listener)
 
-    if (!this.listeners) this.listeners = [[event, listener]]
-    else if (!this.listeners.find(el => el[0] === event && el[1] === listener)) {
-      this.listeners.push([event, listener])
+    if (!this._listeners) this._listeners = [[event, listener]]
+    else if (!this._listeners.find(el => el[0] === event && el[1] === listener)) {
+      this._listeners.push([event, listener])
     }
   }
 
-  removeEventListener(event: string, listener: MfxEventListener) {
-    this.logger.log('removeEventListener: ', event, listener)
-    const {fwCtx} = this
+  removeEventListener(event: string, listener: MxEventListener) {
+    this.logger.log('MxModuleContext', 'removeEventListener: ', event, listener)
+    const {_fwCtx} = this
 
-    fwCtx.events.removeListener(event, listener)
+    _fwCtx.events.removeListener(event, listener)
 
-    this.listeners = this.listeners?.filter(el => !(el[0] === event && el[1] === listener))
+    this._listeners = this._listeners?.filter(el => !(el[0] === event && el[1] === listener))
   }
 
   postEvent(event: string, ...args: any[]) {
-    this.logger.log('postEvent: ', event, ...args)
-    const {fwCtx} = this
+    this.logger.log('MxModuleContext', 'postEvent: ', event, ...args)
+    const {_fwCtx} = this
 
-    fwCtx.events.postEvent(event, ...args)
+    _fwCtx.events.postEvent(event, ...args)
   }
 
-  setExecutor(name: string, executor?: MfxContextExecutor) {
-    if (!this.executors) this.executors = {[name]: executor}
-    else if (!this.executors[name]) {
-      this.executors[name] = executor
-    }
+  log(name: string, ...args: any) {
+    this.logger.log(name, ...args)
   }
 
-  async execute(name: string, ...args: any[]) {
-    const fn = this.executors?.[name]
-    if (!fn) return undefined
+  // setThisFunc(name: string, fn?: YoContextFunction) {
+  //   if (!this._exFuncs) this._exFuncs = {[name]: fn}
+  //   else if (!this._exFuncs[name]) {
+  //     this._exFuncs[name] = fn
+  //   }
+  // }
 
-    const result = await fn.call(this, ...args)
-    return result
-  }
+  // async callThisFunc(name: string, ...args: any[]) {
+  //   this.logger.log('MxModuleContext', 'callThisFunc: ', name, ...args)
 
-  private clearAll = () => {
-    this.logger.log('clearAll.')
+  //   const fn = this._exFuncs?.[name]
+  //   if (!fn) return undefined
 
-    const {fwCtx} = this
+  //   const result = await fn.call(this, ...args)
+  //   return result
+  // }
 
-    this.listeners?.forEach(el => fwCtx.events.removeListener(el[0], el[1]))
-    this.listeners = undefined
+  // listenThisEvent(event: string, listener: MxEventListener) {
+  //   this.logger.log('MxModuleContext', 'listenThisEvent: ', event)
 
-    this.slots?.forEach(el => fwCtx.services.disconnectSignal(el[0], el[1], el[2]))
-    this.slots = undefined
+  //   if (!this._thisEmitter) this._thisEmitter = new EventEmitter()
 
-    this.linkers?.forEach(el => fwCtx.services.unlink(el[0], el[1]))
-    this.linkers = undefined
+  //   this._thisEmitter.on(event, listener)
+  // }
 
-    fwCtx.services.unregisterAll(this)
+  // unlistenThisEvent(event: string, listener: MxEventListener) {
+  //   this.logger.log('MxModuleContext', 'unlistenThisEvent: ', event)
 
-    this.executors = undefined
+  //   this._thisEmitter?.off(event, listener)
+  // }
+
+  // emitThisEvent(event: string, ...args: any[]) {
+  //   this.logger.log('MxModuleContext', 'emitThisEvent: ', event, ...args)
+
+  //   this._thisEmitter?.emit(event, ...args, event)
+  // }
+
+  private clearAll() {
+    this.logger.log('MxModuleContext', 'clearAll()')
+
+    const {_fwCtx} = this
+
+    this._listeners?.forEach(el => _fwCtx.events.removeListener(el[0], el[1]))
+    this._listeners = undefined
+
+    this._slots?.forEach(el => _fwCtx.services.disconnectSignal(el[0], el[1], el[2]))
+    this._slots = undefined
+
+    this._linkers?.forEach(el => _fwCtx.services.unlink(el[0], el[1]))
+    this._linkers = undefined
+
+    _fwCtx.services.unregisterAll(this)
+
+    // this._exFuncs = undefined
+
+    // this._thisEmitter = undefined
   }
 }

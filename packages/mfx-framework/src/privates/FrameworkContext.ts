@@ -1,25 +1,29 @@
-import MfxFramework from '../Framework'
-import MfxEvents from './Events'
-import MfxModules from './Modules'
-import MfxServices from './Services'
+import YoFramework from '../Framework'
+import YoEvents from './Events'
+import YoModules from './Modules'
+import YoServices from './Services'
 
-export default class MfxFrameworkContext {
+export default class YoFrameworkContext {
   constructor() {
     // 事件
-    this.events = new MfxEvents()
+    this.events = new YoEvents()
     // 模块
-    this.modules = new MfxModules(this)
+    this.modules = new YoModules(this)
     // 服务
-    this.services = new MfxServices(this)
+    this.services = new YoServices(this)
     // 框架实例
-    this.framework = new MfxFramework(this)
+    this.framework = new YoFramework(this)
   }
 
-  readonly events: MfxEvents
+  readonly events: YoEvents
 
-  readonly modules: MfxModules
+  readonly modules: YoModules
 
-  readonly services: MfxServices
+  readonly services: YoServices
 
-  readonly framework: MfxFramework
+  readonly framework: YoFramework
+
+  get logger() {
+    return this.framework.ctx.logger
+  }
 }

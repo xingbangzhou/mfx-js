@@ -1,4 +1,4 @@
-import {mfxEnv} from '../base'
+import {mfxEnv} from '../core'
 import {RuleSetRule} from 'webpack'
 
 class File {

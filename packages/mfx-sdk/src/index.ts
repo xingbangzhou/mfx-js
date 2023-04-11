@@ -1,1 +1,1 @@
-export {default} from './Mfxsdk'
+export {default} from './MxSDK'

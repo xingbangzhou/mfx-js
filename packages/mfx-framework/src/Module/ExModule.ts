@@ -1,31 +1,37 @@
-import MfxFrameworkContext from '../FrameworkContext'
-import MfxModule from '../../Module'
-import MfxModuleCleaner from '../../privates/ModuleCleaner'
+import MxModule from './Module'
+import MxFrameworkContext from '../privates/FrameworkContext'
+import MxModuleDestructor from '../privates/ModuleDestructor'
 
 enum SdkCommand {
-  Ready = 'mfx-sdk:ready',
-  Link = 'mfx-sdk:link',
-  Unlink = 'mfx-sdk:unlink',
-  ConnectSignal = 'mfx-sdk:connect_signal',
-  DisconnectSignal = 'mfx-sdk:disconnect_signal',
-  Invoke = 'mfx-sdk:invoke',
-  Execute = 'mfx-sdk:execute',
-  PostEvent = 'mfx-sdk:post_event',
-  AddEventListener = 'mfx-sdk:add_event_listener',
-  RemoveEventListener = 'mfx-sdk:remove_event_listener',
+  Ready = 'mx-sdk:ready',
+  Link = 'mx-sdk:link',
+  Unlink = 'mx-sdk:unlink',
+  ConnectSignal = 'mx-sdk:connect_signal',
+  DisconnectSignal = 'mx-sdk:disconnect_signal',
+  Invoke = 'mx-sdk:invoke',
+  AddEventListener = 'mx-sdk:add_event_listener',
+  RemoveEventListener = 'mx-sdk:remove_event_listener',
+  PostEvent = 'mx-sdk:post_event',
+  Log = 'mx-sdk:log',
 }
 
 enum FrameworkCommand {
-  Ready = 'mfx-framework:::ready',
-  LinkStatus = 'mfx-framework:::link_status',
-  Result = 'mfx-framework:::result',
-  Signal = 'mfx-framework:::signal',
-  Event = 'mfx-framework:::event',
+  Ready = 'mx-framework:ready',
+  LinkStatus = 'mx-framework:link_status',
+  InvokeResult = 'mx-framework:invole_Result',
+  Signal = 'mx-framework:signal',
+  Event = 'mx-framework:event',
 }
 
-export default abstract class ExtModule extends MfxModule {
-  constructor(fwCtx: MfxFrameworkContext, cleaner: MfxModuleCleaner, id: string) {
-    super(fwCtx, cleaner, id)
+export default abstract class MxExModule extends MxModule {
+  constructor(fwCtx: MxFrameworkContext, destructor: MxModuleDestructor, id: string) {
+    super(fwCtx, destructor, id)
+  }
+
+  private _enabled = false
+
+  get enabled() {
+    return this._enabled
   }
 
   onCommand(cmd: string, ...args: any[]) {
@@ -53,12 +59,6 @@ export default abstract class ExtModule extends MfxModule {
           this.onInvoke(id, clazz, name, ...params)
         }
         break
-      case SdkCommand.Execute:
-        {
-          const [id, name, ...params] = args
-          this.onExecute(id, name, ...params)
-        }
-        break
       case SdkCommand.ConnectSignal:
         {
           const [clazz, signal] = args
@@ -69,12 +69,6 @@ export default abstract class ExtModule extends MfxModule {
         {
           const [clazz, signal] = args
           this.ctx.disconnectSignal(clazz, signal, this.onSignal)
-        }
-        break
-      case SdkCommand.PostEvent:
-        {
-          const [event, ...params] = args
-          this.ctx.postEvent(event, ...params)
         }
         break
       case SdkCommand.AddEventListener:
@@ -89,25 +83,31 @@ export default abstract class ExtModule extends MfxModule {
           this.ctx.removeEventListener(event, this.onEvent)
         }
         break
-      default:
+      case SdkCommand.PostEvent:
+        {
+          const [event, ...params] = args
+          this.ctx.postEvent(event, ...params)
+        }
+        break
+      case SdkCommand.Log:
+        {
+          const [name, ...params] = args
+          this.ctx.log(name, ...params)
+        }
         break
     }
   }
 
   protected imReady() {
     this.postMessage(FrameworkCommand.Ready)
+    this._enabled = true
   }
 
   protected abstract postMessage(cmd: string, ...args: any[]): void
 
   private async onInvoke(id: string, clazz: string, name: string, ...args: any[]) {
     const result = await this.ctx.invoke(clazz, name, ...args)
-    this.postMessage(FrameworkCommand.Result, id, result)
-  }
-
-  private async onExecute(id: string, name: string, ...args: any[]) {
-    const result = await this.ctx.execute(name, ...args)
-    this.postMessage(FrameworkCommand.Result, id, result)
+    this.postMessage(FrameworkCommand.InvokeResult, id, result)
   }
 
   private onLinkStatus = (on: boolean, clazz: string) => {
@@ -119,8 +119,13 @@ export default abstract class ExtModule extends MfxModule {
   }
 
   private onEvent = (...args: any[]) => {
-    this.ctx.logger.log('onEvent: ', ...args)
+    this.ctx.logger.log('ExModule', 'onEvent: ', ...args)
 
     this.postMessage(FrameworkCommand.Event, ...args)
+  }
+
+  protected unload() {
+    super.unload()
+    this._enabled = false
   }
 }

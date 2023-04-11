@@ -1,4 +1,4 @@
-import {mfxEnv} from '../base'
+import {mfxEnv} from '../core'
 
 class Development {
   async setup() {

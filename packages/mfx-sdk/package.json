@@ -1,6 +1,6 @@
 {
   "name": "@mfx0/sdk",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "main": "index.js",
   "types": "index.d.ts",
   "license": "MIT",
@@ -25,11 +25,10 @@
     "release": "yarn build && npm publish build --access public"
   },
   "dependencies": {
-    "@mfx0/base": "^1.0.1",
-    "@mfx0/utils": "^1.0.1"
+    "@mfx0/core": "^1.0.1"
   },
   "peerDependencies": {
-    "@mfx0/base": ">=1.0.1"
+    "@mfx0/core": ">=1.1.0"
   },
   "devDependencies": {
     "@mfx0/tsconfig": "^1.0.0"

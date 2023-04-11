@@ -6,6 +6,13 @@ interface InvokeRejectFn {
   (reason: any): void
 }
 
+interface BlockExecProps {
+  resolve: InvokeResolveFn
+  reject: InvokeRejectFn
+  time: number
+  args: any[]
+}
+
 export default class InvokePool {
   constructor(overMs = 5000) {
     this.overMs = overMs
@@ -17,13 +24,13 @@ export default class InvokePool {
   private overTimerId?: number
   private lastTime: number
   private lastIdx: number
-  private blockExecs?: Record<string, [number, InvokeResolveFn, InvokeRejectFn]>
+  private blockExecs?: Record<string, BlockExecProps>
 
-  invoke() {
+  invoke(...args: any[]) {
     const id = this.getInvokeId()
-    const result = new Promise((resolve, reject) => {
+    const result = new Promise<any>((resolve, reject) => {
       if (!this.blockExecs) this.blockExecs = {}
-      this.blockExecs[id] = [new Date().getTime(), resolve, reject]
+      this.blockExecs[id] = {resolve, reject, time: new Date().getTime(), args}
       if (!this.overTimerId) {
         this.overTimerId = window.setInterval(this.onTimeover, this.overMs)
       }
@@ -36,7 +43,7 @@ export default class InvokePool {
     const exec = this.blockExecs?.[id]
     if (!exec) return
 
-    exec[1](result)
+    exec.resolve(result)
     delete this.blockExecs?.[id]
   }
 
@@ -56,9 +63,9 @@ export default class InvokePool {
     let count = 0
     for (const id in this.blockExecs) {
       count++
-      const inv = this.blockExecs[id]
-      if (curTime - inv[0] < this.overMs) continue
-      inv[2]({id: id, message: 'Error: Invoke over time.'})
+      const exec = this.blockExecs[id]
+      if (curTime - exec.time < this.overMs) continue
+      exec.reject({id: id, message: 'Invoke overtime!', args: exec.args})
       delete this.blockExecs[id]
       count--
     }

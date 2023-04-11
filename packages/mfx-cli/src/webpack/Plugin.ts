@@ -1,4 +1,4 @@
-import {mfxEnv} from '../base'
+import {mfxEnv} from '../core'
 import {EnvironmentPlugin, container} from 'webpack'
 import {CleanWebpackPlugin} from 'clean-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'

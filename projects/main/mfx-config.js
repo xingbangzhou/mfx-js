@@ -9,10 +9,10 @@ module.exports = ({chain, mode, options}) => {
 
   chain.output.set('chunkFormat', 'array-push')
 
-  chain.resolve.alias.set('@mfx0/base', path.resolve(__dirname, '../../packages/mfx-base/src'))
-  chain.resolve.alias.set('@mfx0/framework', path.resolve(__dirname, '../../packages/mfx-framework/src'))
-  chain.resolve.alias.set('@mfx0/material', path.resolve(__dirname, '../../packages/mfx-material/src'))
-  chain.resolve.alias.set('@mfx0/utils', path.resolve(__dirname, '../../packages/mfx-utils/src'))
+  chain.resolve.alias.set('@mfx0/core', path.resolve(rootPath, '../../packages/mfx-core/src'))
+  chain.resolve.alias.set('@mfx0/core/*', path.resolve(rootPath, '../../packages/mfx-core/src/*'))
+  chain.resolve.alias.set('@mfx0/framework', path.resolve(rootPath, '../../packages/mfx-framework/src'))
+  chain.resolve.alias.set('@mfx0/gui', path.resolve(rootPath, '../../packages/mfx-gui/src'))
 
   chain.plugin('html').tap(args => {
     args[0] = {

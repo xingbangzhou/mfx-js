@@ -1,4 +1,4 @@
-import {mfxEnv} from '../base'
+import {mfxEnv} from '../core'
 import Common from './Common'
 import CSS from './CSS'
 import File from './File'

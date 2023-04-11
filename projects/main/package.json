@@ -11,10 +11,9 @@
     "start": "mfx serve"
   },
   "dependencies": {
-    "@mfx0/base": "^1.0.1",
-    "@mfx0/framework": "^1.0.1",
-    "@mfx0/material": "^1.0.1",
-    "@mfx0/utils": "^1.0.1",
+    "@mfx0/core": "^1.1.0",
+    "@mfx0/framework": "^1.1.0",
+    "@mfx0/gui": "^1.1.0",
     "clsx": "^1.1.1",
     "gl-matrix": "^3.4.3",
     "mobx": "^6.6.2",
@@ -26,7 +25,7 @@
   },
   "devDependencies": {
     "@emotion/react": "^11.9.0",
-    "@mfx0/cli": "^1.0.1",
+    "@mfx0/cli": "^1.1.0",
     "@mfx0/tsconfig": "^1.0.0",
     "@types/react": "^17.0.34",
     "@types/react-dom": "^17.0.11",
