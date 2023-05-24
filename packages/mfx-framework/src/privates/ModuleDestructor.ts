@@ -1,17 +1,15 @@
 export default class MxModuleDestructor {
-  private _unloader?: () => void
-  private _cleaner?: () => void
+  private _cleanFns?: Array<() => void>
 
-  bindUnloader(fn: () => void) {
-    this._unloader = fn
+  push(fn: () => void) {
+    if (!this._cleanFns) this._cleanFns = [fn]
+    else if (this._cleanFns.includes(fn)) {
+      this._cleanFns.push(fn)
+    }
   }
 
-  bindCleaner(fn: () => void) {
-    this._cleaner = fn
-  }
-
-  destroy() {
-    this._cleaner?.()
-    this._unloader?.()
+  destruct() {
+    this._cleanFns?.forEach(el => el())
+    this._cleanFns = undefined
   }
 }

@@ -14,10 +14,8 @@ export default class MxFramework extends MxModule {
   init() {
     if (this._inited) return
     this._inited = true
-    this.ctx.logger.log('MxFramework', 'init')
     window['_MxFramework_'] = true
-
-    this.init0()
+    this.ctx.logger.log('MxFramework', 'init()')
   }
 
   getModule(id: string) {
@@ -50,6 +48,4 @@ export default class MxFramework extends MxModule {
 
     _fwCtx.modules.unload(id)
   }
-
-  private init0() {}
 }

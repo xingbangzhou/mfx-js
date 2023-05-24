@@ -1,4 +1,4 @@
-const base64Table = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
+const Base64Table = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
 
 export function encodeUTF8(value: string) {
   try {
@@ -34,7 +34,7 @@ export function encodeBase64(str: string) {
       enc4 = 64
     }
     output =
-      output + base64Table.charAt(enc1) + base64Table.charAt(enc2) + base64Table.charAt(enc3) + base64Table.charAt(enc4)
+      output + Base64Table.charAt(enc1) + Base64Table.charAt(enc2) + Base64Table.charAt(enc3) + Base64Table.charAt(enc4)
   }
   return output
 }
@@ -46,10 +46,10 @@ export function decodeBase64(str: string) {
   let i = 0
   str = str.replace(/[^A-Za-z0-9\+\/\=]/g, '')
   while (i < str.length) {
-    enc1 = base64Table.indexOf(str.charAt(i++))
-    enc2 = base64Table.indexOf(str.charAt(i++))
-    enc3 = base64Table.indexOf(str.charAt(i++))
-    enc4 = base64Table.indexOf(str.charAt(i++))
+    enc1 = Base64Table.indexOf(str.charAt(i++))
+    enc2 = Base64Table.indexOf(str.charAt(i++))
+    enc3 = Base64Table.indexOf(str.charAt(i++))
+    enc4 = Base64Table.indexOf(str.charAt(i++))
     chr1 = (enc1 << 2) | (enc2 >> 4)
     chr2 = ((enc2 & 15) << 4) | (enc3 >> 2)
     chr3 = ((enc3 & 3) << 6) | enc4

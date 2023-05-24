@@ -5,8 +5,9 @@ import MxModuleDestructor from '../privates/ModuleDestructor'
 export default class YoModule {
   constructor(fwCtx: MxFrameworkContext, destructor: MxModuleDestructor, id: string) {
     this._id = id
-    destructor.bindUnloader(() => this.unload())
     this._ctx = new MxModuleContext(this, fwCtx, destructor)
+
+    destructor.push(() => this.unload())
   }
 
   private _id: string

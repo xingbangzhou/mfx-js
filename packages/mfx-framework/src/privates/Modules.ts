@@ -31,7 +31,7 @@ class YoModuleHolder {
   unload() {
     if (this._invalid) return
     this._invalid = true
-    this._destructor.destroy()
+    this._destructor.destruct()
   }
 }
 

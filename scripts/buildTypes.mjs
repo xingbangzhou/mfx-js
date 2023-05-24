@@ -8,20 +8,6 @@ import yargs from 'yargs'
 
 const exec = promisify(childProcess.exec)
 
-/**
- * Fixes a wrong import path caused by https://github.com/microsoft/TypeScript/issues/39117
- * @remarks Paths are hardcoded since it is unclear if all these broken import paths target "public paths".
- * @param {string} importPath - POSIX path
- */
-function rewriteImportPath(importPath) {
-  // const utilsSrcPath = path.posix.join('..', 'mfx-utils', 'src')
-  // if (importPath.startsWith(utilsSrcPath)) {
-  //   return importPath.replace(utilsSrcPath, '@mfx/utils')
-  // }
-
-  throw new Error(`Don't know where to rewrite '${importPath}' to`)
-}
-
 async function main() {
   const packageRoot = process.cwd()
 
@@ -57,7 +43,7 @@ async function main() {
       // First and last character are quotes.
       // TypeScript mixes single and double quotes.
       const importPath = importTypeMatch[1].slice(1, -1)
-      // In filesystem semantics `@mfx/material` is a relative path.
+      // In filesystem semantics `@mfx/core` is a relative path.
       // But when resolving imports these specifiers are considered "bare specifiers" and work differently.
       // We're only interested in imports that are considered "relative path imports".
       const isBareImportSpecifier = !importPath.startsWith('.')

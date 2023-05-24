@@ -9,9 +9,9 @@ export default class MxModuleContext implements MxModuleContextFuncs {
   constructor(module: MxModule, fwCtx: MxFrameworkContext, destructor: MxModuleDestructor) {
     this._module = module
     this._fwCtx = fwCtx
-    destructor.bindCleaner(this.clearAll.bind(this))
+    destructor.push(this.clearAll.bind(this))
 
-    this.logger = new Logger(undefined, this._module.id)
+    this.logger = new Logger(this._module.id)
   }
 
   readonly logger: Logger
@@ -44,7 +44,7 @@ export default class MxModuleContext implements MxModuleContextFuncs {
   }
 
   link(clazz: string, linker: MxLinkHandler) {
-    this.logger.log('MxModuleContext', 'link: ', clazz, linker)
+    this.logger.log('MxModuleContext', 'link: ', clazz)
     const {_fwCtx} = this
 
     const l = _fwCtx.services.link(clazz, linker)
@@ -59,7 +59,7 @@ export default class MxModuleContext implements MxModuleContextFuncs {
   }
 
   unlink(clazz: string, linker: MxLinkHandler) {
-    this.logger.log('MxModuleContext', 'unlink: ', clazz, linker)
+    this.logger.log('MxModuleContext', 'unlink: ', clazz)
     const {_fwCtx} = this
 
     _fwCtx.services.unlink(clazz, linker)
@@ -75,7 +75,7 @@ export default class MxModuleContext implements MxModuleContextFuncs {
   }
 
   connectSignal(clazz: string, signal: string, slot: MxSlotFn) {
-    this.logger.log('MxModuleContext', 'connectSignal: ', clazz, signal, slot)
+    this.logger.log('MxModuleContext', 'connectSignal: ', clazz, signal)
     const {_fwCtx} = this
 
     const l = _fwCtx.services.connectSignal(clazz, signal, slot)
@@ -88,7 +88,7 @@ export default class MxModuleContext implements MxModuleContextFuncs {
   }
 
   disconnectSignal(clazz: string, signal: string, slot: MxSlotFn) {
-    this.logger.log('MxModuleContext', 'disconnectSignal: ', clazz, signal, slot)
+    this.logger.log('MxModuleContext', 'disconnectSignal: ', clazz, signal)
     const {_fwCtx} = this
 
     _fwCtx.services.disconnectSignal(clazz, signal, slot)
@@ -97,7 +97,7 @@ export default class MxModuleContext implements MxModuleContextFuncs {
   }
 
   addEventListener(event: string, listener: MxEventListener) {
-    this.logger.log('MxModuleContext', 'addEventListener: ', event, listener)
+    this.logger.log('MxModuleContext', 'addEventListener: ', event)
     const {_fwCtx} = this
 
     _fwCtx.events.addListener(event, listener)
@@ -109,7 +109,7 @@ export default class MxModuleContext implements MxModuleContextFuncs {
   }
 
   removeEventListener(event: string, listener: MxEventListener) {
-    this.logger.log('MxModuleContext', 'removeEventListener: ', event, listener)
+    this.logger.log('MxModuleContext', 'removeEventListener: ', event)
     const {_fwCtx} = this
 
     _fwCtx.events.removeListener(event, listener)
@@ -128,43 +128,6 @@ export default class MxModuleContext implements MxModuleContextFuncs {
     this.logger.log(name, ...args)
   }
 
-  // setThisFunc(name: string, fn?: YoContextFunction) {
-  //   if (!this._exFuncs) this._exFuncs = {[name]: fn}
-  //   else if (!this._exFuncs[name]) {
-  //     this._exFuncs[name] = fn
-  //   }
-  // }
-
-  // async callThisFunc(name: string, ...args: any[]) {
-  //   this.logger.log('MxModuleContext', 'callThisFunc: ', name, ...args)
-
-  //   const fn = this._exFuncs?.[name]
-  //   if (!fn) return undefined
-
-  //   const result = await fn.call(this, ...args)
-  //   return result
-  // }
-
-  // listenThisEvent(event: string, listener: MxEventListener) {
-  //   this.logger.log('MxModuleContext', 'listenThisEvent: ', event)
-
-  //   if (!this._thisEmitter) this._thisEmitter = new EventEmitter()
-
-  //   this._thisEmitter.on(event, listener)
-  // }
-
-  // unlistenThisEvent(event: string, listener: MxEventListener) {
-  //   this.logger.log('MxModuleContext', 'unlistenThisEvent: ', event)
-
-  //   this._thisEmitter?.off(event, listener)
-  // }
-
-  // emitThisEvent(event: string, ...args: any[]) {
-  //   this.logger.log('MxModuleContext', 'emitThisEvent: ', event, ...args)
-
-  //   this._thisEmitter?.emit(event, ...args, event)
-  // }
-
   private clearAll() {
     this.logger.log('MxModuleContext', 'clearAll()')
 
@@ -180,9 +143,5 @@ export default class MxModuleContext implements MxModuleContextFuncs {
     this._linkers = undefined
 
     _fwCtx.services.unregisterAll(this)
-
-    // this._exFuncs = undefined
-
-    // this._thisEmitter = undefined
   }
 }

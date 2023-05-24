@@ -1,19 +1,22 @@
+import {YoLauncherOption} from '../types'
 import YoFramework from '../Framework'
 import YoEvents from './Events'
 import YoModules from './Modules'
 import YoServices from './Services'
 
 export default class YoFrameworkContext {
-  constructor() {
-    // 事件
+  constructor(options?: YoLauncherOption) {
+    this._options = options
+
     this.events = new YoEvents()
-    // 模块
     this.modules = new YoModules(this)
-    // 服务
     this.services = new YoServices(this)
-    // 框架实例
     this.framework = new YoFramework(this)
+
+    this.init()
   }
+
+  private _options?: YoLauncherOption
 
   readonly events: YoEvents
 
@@ -23,7 +26,15 @@ export default class YoFrameworkContext {
 
   readonly framework: YoFramework
 
+  get options() {
+    return this._options
+  }
+
   get logger() {
     return this.framework.ctx.logger
+  }
+
+  private init() {
+    this.logger.debug = this._options?.debug || false
   }
 }
