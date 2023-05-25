@@ -2461,11 +2461,6 @@
     npmlog "^6.0.2"
     write-file-atomic "^4.0.1"
 
-"@mfx0/utils@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.npmmirror.com/@mfx0/utils/-/utils-1.0.1.tgz#952e9feaea21f96fab02368d130043ef781dec96"
-  integrity sha512-4FxqyrTQmYXBuJdvp9qOYupjJyEFSjB2/engA5KyMhcYF1jrwDG4uTsbRpW8t7mXHc3hah7xAnZIDL1A+AP0UA==
-
 "@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents.3":
   version "2.1.8-no-fsevents.3"
   resolved "https://registry.npmmirror.com/@nicolo-ribaudo/chokidar-2/-/chokidar-2-2.1.8-no-fsevents.3.tgz#323d72dd25103d0c4fbdce89dadf574a787b1f9b"

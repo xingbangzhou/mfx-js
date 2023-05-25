@@ -25,12 +25,12 @@
     "release": "yarn build && npm publish build --access public"
   },
   "dependencies": {
-    "@mfx0/core": "^1.1.0"
   },
   "peerDependencies": {
     "@mfx0/core": ">=1.1.0"
   },
   "devDependencies": {
-    "@mfx0/tsconfig": "^1.0.0"
+    "@mfx0/tsconfig": "^1.0.0",
+    "@mfx0/core": "^1.1.0"
   }
 }

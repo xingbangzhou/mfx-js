@@ -16,7 +16,7 @@ export interface MxEventListener {
   (...args: any[]): void
 }
 
-export interface MxModuleCtxFn {
+export interface MxContextExtender {
   (...args: any[]): Promise<any>
 }
 
@@ -56,13 +56,10 @@ export interface MxModuleContextFuncs {
   // 日志函数
   log(name: string, ...args: any[]): void
 
-  // 上下文扩展
-  // setCtxFn(name: string, fn?: MxModuleCtxFn): void
-  // callCtxFn(name: string, ...args: any[]): Promise<any>
-  // // 监听上下文事件
-  // listenCtxEvent(event: string, listener: MxEventListener): void
-  // // 反监听上下文事件
-  // unlistenCtxEvent(event: string, listener: MxEventListener): void
-  // // 发出上下文事件
-  // emitCtxEvent(event: string, ...args: any[]): void
+  // 扩展
+  setExtender(name: string, extender: MxContextExtender): void
+  invokeEx(name: string, ...args: any[]): Promise<any>
+  onExEvent(event: string, listener: MxContextExtender): void
+  offExEvent(event: string, listener: MxContextExtender): void
+  emitExEvent(event: string, ...args: any[]): void
 }

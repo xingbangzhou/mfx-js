@@ -1,4 +1,4 @@
-import {MxEventListener, MxLinkHandler, MxSlotFn, MxModuleContextFuncs} from '@mfx0/core/types'
+import {MxEventListener, MxLinkHandler, MxSlotFn, MxModuleContextFuncs, MxContextExtender} from '@mfx0/core/types'
 import MxService from '@mfx0/core/Service'
 import InvokePool from './InvokePool'
 
@@ -13,14 +13,19 @@ enum SdkCommand {
   RemoveEventListener = 'mx-sdk:remove_event_listener',
   PostEvent = 'mx-sdk:post_event',
   Log = 'mx-sdk:log',
+  InvokeEx = 'yoy-sdk:invoke_ex',
+  OnExEvent = 'yoy-sdk:on_ex_event',
+  OffExEvent = 'yoy-sdk:off_ex_event',
+  EmitExEvent = 'yoy-sdk:emit_ex_event',
 }
 
 enum FrameworkCommand {
   Ready = 'mx-framework:ready',
   LinkStatus = 'mx-framework:link_status',
-  InvokeResult = 'mx-framework:invole_Result',
+  InvokeResult = 'mx-framework:invole_result',
   Signal = 'mx-framework:signal',
   Event = 'mx-framework:event',
+  ExEvent = 'yoy-framework:ex_event',
 }
 
 export default abstract class MxExContext implements MxModuleContextFuncs {
@@ -31,6 +36,7 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
   private _clazzLinks: Record<string, MxLinkHandler[]> = {}
   private _clazzSlots: [string, string, MxSlotFn[]][] = []
   private _eventListeners: Record<string, MxEventListener[]> = {}
+  private _exeventListeners: Record<string, MxEventListener[]> = {}
 
   private _invokePool = new InvokePool()
   private _ensureFns?: Array<() => void>
@@ -150,6 +156,49 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     this.command(SdkCommand.Log, name, ...args)
   }
 
+  setExtender(name: string, fn?: MxContextExtender) {
+    name
+    fn
+    console.error("[MxExContext]: don't realize setExecutor")
+  }
+
+  async invokeEx(name: string, ...args: any[]) {
+    const fn = (this as any)[name]
+    if (typeof fn === 'function') {
+      return await fn.call(this, ...args)
+    }
+
+    return await this.invoke0(SdkCommand.InvokeEx, name, ...args)
+  }
+
+  onExEvent(event: string, listener: MxEventListener) {
+    const listeners = this._exeventListeners[event]
+    if (listeners?.length) {
+      listeners.push(listener)
+      return
+    }
+
+    this._exeventListeners[event] = [listener]
+    this.command(SdkCommand.OnExEvent, event)
+  }
+
+  offExEvent(event: string, listener: MxEventListener) {
+    const listeners = this._exeventListeners[event]
+    if (!listeners) return
+    const idx = listeners.indexOf(listener)
+    if (idx !== -1) {
+      listeners.splice(idx, 1)
+      if (!listeners.length) {
+        delete this._exeventListeners[event]
+        this.command(SdkCommand.OffExEvent, event)
+      }
+    }
+  }
+
+  emitExEvent(event: string, ...args: any[]) {
+    this.command(SdkCommand.EmitExEvent, event, ...args)
+  }
+
   protected abstract postMessage(cmd: string, ...args: any[]): void
 
   protected imReady() {
@@ -173,7 +222,10 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
         this.onSignal(...args)
         break
       case FrameworkCommand.Event:
-        this.onEvent(...args)
+        this.handleEvent(...args)
+        break
+      case FrameworkCommand.ExEvent:
+        this.handleExEvent(...args)
         break
       default:
         break
@@ -218,9 +270,15 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     slots?.forEach(el => el(...args))
   }
 
-  private onEvent(...args: any[]) {
+  private handleEvent(...args: any[]) {
     const [event] = args.slice(-1)
     const listeners = this._eventListeners[event]
+    listeners?.forEach(el => el(...args))
+  }
+
+  private handleExEvent(...args: any[]) {
+    const [event] = args.slice(-1)
+    const listeners = this._exeventListeners[event]
     listeners?.forEach(el => el(...args))
   }
 

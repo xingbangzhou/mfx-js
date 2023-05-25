@@ -13,14 +13,19 @@ enum SdkCommand {
   RemoveEventListener = 'mx-sdk:remove_event_listener',
   PostEvent = 'mx-sdk:post_event',
   Log = 'mx-sdk:log',
+  InvokeEx = 'yoy-sdk:invoke_ex',
+  OnExEvent = 'yoy-sdk:on_ex_event',
+  OffExEvent = 'yoy-sdk:off_ex_event',
+  EmitExEvent = 'yoy-sdk:emit_ex_event',
 }
 
 enum FrameworkCommand {
   Ready = 'mx-framework:ready',
   LinkStatus = 'mx-framework:link_status',
-  InvokeResult = 'mx-framework:invole_Result',
+  InvokeResult = 'mx-framework:invole_result',
   Signal = 'mx-framework:signal',
   Event = 'mx-framework:event',
+  ExEvent = 'yoy-framework:ex_event',
 }
 
 export default abstract class MxExModule extends MxModule {
@@ -74,13 +79,13 @@ export default abstract class MxExModule extends MxModule {
       case SdkCommand.AddEventListener:
         {
           const [event] = args
-          this.ctx.addEventListener(event, this.onEvent)
+          this.ctx.addEventListener(event, this.handleEvent)
         }
         break
       case SdkCommand.RemoveEventListener:
         {
           const [event] = args
-          this.ctx.removeEventListener(event, this.onEvent)
+          this.ctx.removeEventListener(event, this.handleEvent)
         }
         break
       case SdkCommand.PostEvent:
@@ -93,6 +98,30 @@ export default abstract class MxExModule extends MxModule {
         {
           const [name, ...params] = args
           this.ctx.log(name, ...params)
+        }
+        break
+      case SdkCommand.InvokeEx:
+        {
+          const [id, name, ...params] = args
+          this.onInvokeEx(id, name, ...params)
+        }
+        break
+      case SdkCommand.OnExEvent:
+        {
+          const [event] = args
+          this.ctx.onExEvent(event, this.handleExEvent)
+        }
+        break
+      case SdkCommand.OffExEvent:
+        {
+          const [event] = args
+          this.ctx.offExEvent(event, this.handleExEvent)
+        }
+        break
+      case SdkCommand.EmitExEvent:
+        {
+          const [event, ...params] = args
+          this.ctx.emitExEvent(event, ...params)
         }
         break
     }
@@ -118,10 +147,21 @@ export default abstract class MxExModule extends MxModule {
     this.postMessage(FrameworkCommand.Signal, ...args)
   }
 
-  private onEvent = (...args: any[]) => {
+  private handleEvent = (...args: any[]) => {
     this.ctx.logger.log('ExModule', 'onEvent: ', ...args)
 
     this.postMessage(FrameworkCommand.Event, ...args)
+  }
+
+  private async onInvokeEx(id: string, name: string, ...args: any[]) {
+    const result = await this.ctx.invokeEx(name, ...args)
+    this.postMessage(FrameworkCommand.InvokeResult, id, result)
+  }
+
+  private handleExEvent = (...args: any[]) => {
+    this.ctx.logger.log('ExModule', 'onExEvent: ', ...args)
+
+    this.postMessage(FrameworkCommand.ExEvent, ...args)
   }
 
   protected unload() {

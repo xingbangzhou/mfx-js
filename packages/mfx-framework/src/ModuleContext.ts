@@ -1,9 +1,10 @@
-import {MxEventListener, MxLinkHandler, MxSlotFn, MxModuleContextFuncs} from '@mfx0/core/types'
+import {MxEventListener, MxLinkHandler, MxSlotFn, MxModuleContextFuncs, MxContextExtender} from '@mfx0/core/types'
 import MxService from '@mfx0/core/Service'
 import Logger from '@mfx0/core/Logger'
 import MxModule from './Module'
 import MxFrameworkContext from './privates/FrameworkContext'
 import MxModuleDestructor from './privates/ModuleDestructor'
+import EventEmitter from '@mfx0/core/EventEmitter'
 
 export default class MxModuleContext implements MxModuleContextFuncs {
   constructor(module: MxModule, fwCtx: MxFrameworkContext, destructor: MxModuleDestructor) {
@@ -12,6 +13,7 @@ export default class MxModuleContext implements MxModuleContextFuncs {
     destructor.push(this.clearAll.bind(this))
 
     this.logger = new Logger(this._module.id)
+    this.logger.debug = fwCtx.options?.debug || false
   }
 
   readonly logger: Logger
@@ -21,9 +23,8 @@ export default class MxModuleContext implements MxModuleContextFuncs {
   private _linkers?: [string, MxLinkHandler][]
   private _slots?: [string, string, MxSlotFn][]
   private _listeners?: [string, MxEventListener][]
-
-  // private _exFuncs?: Record<string, YoContextFunction | undefined>
-  // private _thisEmitter?: EventEmitter
+  private _extenders?: Record<string, MxContextExtender | undefined>
+  private _emitterEx?: EventEmitter
 
   get moduleId() {
     return this._module.id
@@ -128,6 +129,43 @@ export default class MxModuleContext implements MxModuleContextFuncs {
     this.logger.log(name, ...args)
   }
 
+  setExtender(name: string, extender: MxContextExtender): void {
+    if (!this._extenders) this._extenders = {[name]: extender}
+    else if (!this._extenders[name]) {
+      this._extenders[name] = extender
+    }
+  }
+
+  async invokeEx(name: string, ...args: any[]) {
+    this.logger.log('MxModuleContext', 'invokeEx: ', name, ...args)
+
+    const fn = this._extenders?.[name]
+    if (!fn) return undefined
+
+    const result = await fn.call(this, ...args)
+    return result
+  }
+
+  onExEvent(event: string, listener: MxEventListener): void {
+    this.logger.log('MxModuleContext', 'onExEvent: ', event)
+
+    if (!this._emitterEx) this._emitterEx = new EventEmitter()
+
+    this._emitterEx.on(event, listener)
+  }
+
+  offExEvent(event: string, listener: MxEventListener): void {
+    this.logger.log('MxModuleContext', 'offExEvent: ', event)
+
+    this._emitterEx?.off(event, listener)
+  }
+
+  emitExEvent(event: string, ...args: any[]): void {
+    this.logger.log('MxModuleContext', 'emitExEvent: ', event, ...args)
+
+    this._emitterEx?.emit(event, ...args, event)
+  }
+
   private clearAll() {
     this.logger.log('MxModuleContext', 'clearAll()')
 
@@ -143,5 +181,8 @@ export default class MxModuleContext implements MxModuleContextFuncs {
     this._linkers = undefined
 
     _fwCtx.services.unregisterAll(this)
+
+    this._extenders = undefined
+    this._emitterEx = undefined
   }
 }
