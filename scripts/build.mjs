@@ -28,7 +28,7 @@ async function run(args) {
   const env = {
     NODE_ENV: 'production',
     BABEL_ENV: bundle,
-    MFX_BUILD_VERBOSE: verbose,
+    BUILD_VERBOSE: verbose,
   }
 
   const babelConfigPath = path.resolve(getWorkspaceRoot(), 'babel.config.js')
@@ -70,7 +70,7 @@ async function run(args) {
 
   const {stderr, stdout} = await exec(command, {env: {...process.env, ...env}})
   if (stderr) {
-    throw new Error(`'${command}' failed with \n${stderr}`)
+    console.warn(`'${command}' failed with \n${stderr}`)
   }
 
   if (verbose) {
