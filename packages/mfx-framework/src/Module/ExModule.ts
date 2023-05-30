@@ -1,6 +1,6 @@
 import MxModule from './Module'
-import MxFrameworkContext from '../privates/FrameworkContext'
-import MxModuleDestructor from '../privates/ModuleDestructor'
+import MxModuleContext from '../ModuleContext'
+import {MxDestructor} from '../types'
 
 enum SdkCommand {
   Ready = 'mx-sdk:ready',
@@ -13,10 +13,10 @@ enum SdkCommand {
   RemoveEventListener = 'mx-sdk:remove_event_listener',
   PostEvent = 'mx-sdk:post_event',
   Log = 'mx-sdk:log',
-  InvokeEx = 'yoy-sdk:invoke_ex',
-  OnExEvent = 'yoy-sdk:on_ex_event',
-  OffExEvent = 'yoy-sdk:off_ex_event',
-  EmitExEvent = 'yoy-sdk:emit_ex_event',
+  InvokeEx = 'mx-sdk:invoke_ex',
+  OnExEvent = 'mx-sdk:on_ex_event',
+  OffExEvent = 'mx-sdk:off_ex_event',
+  EmitExEvent = 'mx-sdk:emit_ex_event',
 }
 
 enum FrameworkCommand {
@@ -25,12 +25,12 @@ enum FrameworkCommand {
   InvokeResult = 'mx-framework:invole_result',
   Signal = 'mx-framework:signal',
   Event = 'mx-framework:event',
-  ExEvent = 'yoy-framework:ex_event',
+  ExEvent = 'mx-framework:ex_event',
 }
 
 export default abstract class MxExModule extends MxModule {
-  constructor(fwCtx: MxFrameworkContext, destructor: MxModuleDestructor, id: string) {
-    super(fwCtx, destructor, id)
+  constructor(ctx: MxModuleContext, destructor: MxDestructor) {
+    super(ctx, destructor)
   }
 
   private _enabled = false
@@ -39,11 +39,12 @@ export default abstract class MxExModule extends MxModule {
     return this._enabled
   }
 
-  onCommand(cmd: string, ...args: any[]) {
+  onCommand(cmd: SdkCommand, ...args: any[]) {
     this.ctx.logger.log('onCommand: ', cmd, ...args)
 
     switch (cmd) {
       case SdkCommand.Ready:
+        this._enabled = true
         this.imReady()
         break
       case SdkCommand.Link:
@@ -129,7 +130,6 @@ export default abstract class MxExModule extends MxModule {
 
   protected imReady() {
     this.postMessage(FrameworkCommand.Ready)
-    this._enabled = true
   }
 
   protected abstract postMessage(cmd: string, ...args: any[]): void

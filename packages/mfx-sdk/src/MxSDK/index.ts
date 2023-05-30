@@ -1,5 +1,5 @@
 import {MxModuleContextFuncs} from '@mfx0/core/types'
-import YoExContext from './ExContext'
+import MxExContext from './ExContext'
 import FrameContext from './FrameContext'
 
 export default class MxSDK {
@@ -39,7 +39,7 @@ export default class MxSDK {
     this._ensureFns = undefined
   }
 
-  private activeEx(ctx: YoExContext) {
+  private activeEx(ctx: MxExContext) {
     ctx.ensure().then(() => {
       this._ctx = ctx
       ctx.log('MxSDK', 'activeEx is successed!')

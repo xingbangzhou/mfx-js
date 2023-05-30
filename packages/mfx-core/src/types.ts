@@ -4,11 +4,11 @@ export interface MxLinkHandler {
   (on: boolean, cl: string): void
 }
 
-export interface MxInvokableFn {
+export interface MxInvoker {
   (...args: any[]): any
 }
 
-export interface MxSlotFn {
+export interface MxSlotHandler {
   (...args: any[]): void
 }
 
@@ -47,15 +47,14 @@ export interface MxModuleContextFuncs {
    * @param signal 信号
    * @param slot 处理函数
    */
-  connectSignal(clazz: string, signal: string, slot: MxSlotFn): void
-  disconnectSignal(clazz: string, signal: string, slot: MxSlotFn): void
+  connectSignal(clazz: string, signal: string, slot: MxSlotHandler): void
+  disconnectSignal(clazz: string, signal: string, slot: MxSlotHandler): void
   // 全局事件
   addEventListener(event: string, listener: MxEventListener): void
   removeEventListener(event: string, listener: MxEventListener): void
   postEvent(event: string, ...args: any[]): void
   // 日志函数
   log(name: string, ...args: any[]): void
-
   // 扩展
   setExtender(name: string, extender: MxContextExtender): void
   invokeEx(name: string, ...args: any[]): Promise<any>

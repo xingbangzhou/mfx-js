@@ -1,5 +1,5 @@
-import MxFrameworkContext from '../privates/FrameworkContext'
-import MxModuleDestructor from '../privates/ModuleDestructor'
+import MxModuleContext from '../ModuleContext'
+import {MxDestructor} from '../types'
 import MxExModule from './ExModule'
 
 class MxFrameChannel {
@@ -33,7 +33,7 @@ class MxFrameChannel {
         frameModule.onCommand(cmd, ...args)
       }
     } catch (error) {
-      frameModule.ctx.logger.error('YoFrameChannel', 'onMesssage, error: ', error)
+      frameModule.ctx.logger.error('MxFrameChannel', 'onMesssage, error: ', error)
     }
   }
 }
@@ -41,8 +41,8 @@ class MxFrameChannel {
 const channel = new MxFrameChannel()
 
 export default class MxFrameModule extends MxExModule {
-  constructor(fwCtx: MxFrameworkContext, destructor: MxModuleDestructor, id: string, container: HTMLIFrameElement) {
-    super(fwCtx, destructor, id)
+  constructor(ctx: MxModuleContext, destructor: MxDestructor, container: HTMLIFrameElement) {
+    super(ctx, destructor)
 
     this._container = container
     channel.attach(this)

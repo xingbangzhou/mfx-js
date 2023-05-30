@@ -1,6 +1,6 @@
-import YoExContext from './ExContext'
+import MxExContext from './ExContext'
 
-export default class YoFrameContext extends YoExContext {
+export default class MxFrameContext extends MxExContext {
   constructor() {
     super()
 
@@ -9,14 +9,14 @@ export default class YoFrameContext extends YoExContext {
     this.imReady()
   }
 
-  private static instance_?: YoFrameContext
+  private static instance_?: MxFrameContext
 
   static instance() {
     if (!this.instance_) {
-      YoFrameContext.instance_ = new YoFrameContext()
+      MxFrameContext.instance_ = new MxFrameContext()
     }
 
-    return YoFrameContext.instance_ as YoFrameContext
+    return MxFrameContext.instance_ as MxFrameContext
   }
 
   protected postMessage(cmd: string, ...args: any[]) {
@@ -34,7 +34,7 @@ export default class YoFrameContext extends YoExContext {
         this.onCommand(cmd, ...args)
       }
     } catch (error) {
-      console.error('YoFrameContext', 'onMessage, error: ', error)
+      console.error('MxFrameContext', 'onMessage, error: ', error)
     }
   }
 }

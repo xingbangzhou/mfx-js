@@ -1,8 +1,8 @@
 import MxFrameworkContext from './privates/FrameworkContext'
-import {YoLauncherOption} from './types'
+import {MxLauncherOption} from './types'
 
-export default class YoFrameworkLauncher {
-  constructor(options?: YoLauncherOption) {
+export default class MxFrameworkLauncher {
+  constructor(options?: MxLauncherOption) {
     this._fwCtx = new MxFrameworkContext(options)
   }
 

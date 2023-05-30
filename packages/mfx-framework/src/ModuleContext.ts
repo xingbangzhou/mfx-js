@@ -1,34 +1,29 @@
-import {MxEventListener, MxLinkHandler, MxSlotFn, MxModuleContextFuncs, MxContextExtender} from '@mfx0/core/types'
+import {MxEventListener, MxLinkHandler, MxSlotHandler, MxModuleContextFuncs, MxContextExtender} from '@mfx0/core/types'
 import MxService from '@mfx0/core/Service'
 import Logger from '@mfx0/core/Logger'
-import MxModule from './Module'
 import MxFrameworkContext from './privates/FrameworkContext'
-import MxModuleDestructor from './privates/ModuleDestructor'
 import EventEmitter from '@mfx0/core/EventEmitter'
+import {MxDestructor} from './types'
 
 export default class MxModuleContext implements MxModuleContextFuncs {
-  constructor(module: MxModule, fwCtx: MxFrameworkContext, destructor: MxModuleDestructor) {
-    this._module = module
+  constructor(moduleId: string, fwCtx: MxFrameworkContext, destructor: MxDestructor) {
+    this.moduleId = moduleId
     this._fwCtx = fwCtx
     destructor.push(this.clearAll.bind(this))
 
-    this.logger = new Logger(this._module.id)
+    this.logger = new Logger(this.moduleId)
     this.logger.debug = fwCtx.options?.debug || false
   }
 
+  readonly moduleId: string
   readonly logger: Logger
 
-  private _module: MxModule
   private _fwCtx: MxFrameworkContext
-  private _linkers?: [string, MxLinkHandler][]
-  private _slots?: [string, string, MxSlotFn][]
+  private _links?: [string, MxLinkHandler][]
+  private _slots?: [string, string, MxSlotHandler][]
   private _listeners?: [string, MxEventListener][]
   private _extenders?: Record<string, MxContextExtender | undefined>
-  private _emitterEx?: EventEmitter
-
-  get moduleId() {
-    return this._module.id
-  }
+  private _exEmitter?: EventEmitter
 
   register(service: MxService) {
     this.logger.log('MxModuleContext', 'register: ', service.clazz)
@@ -51,9 +46,9 @@ export default class MxModuleContext implements MxModuleContextFuncs {
     const l = _fwCtx.services.link(clazz, linker)
     if (!l) return
 
-    if (!this._linkers) this._linkers = [[clazz, linker]]
-    else if (!this._linkers.find(el => el[0] === clazz && el[1] === linker)) {
-      this._linkers.push([clazz, linker])
+    if (!this._links) this._links = [[clazz, linker]]
+    else if (!this._links.find(el => el[0] === clazz && el[1] === linker)) {
+      this._links.push([clazz, linker])
     }
 
     _fwCtx.services.getService(clazz) && linker(true, clazz)
@@ -65,7 +60,7 @@ export default class MxModuleContext implements MxModuleContextFuncs {
 
     _fwCtx.services.unlink(clazz, linker)
 
-    this._linkers = this._linkers?.filter(el => !(el[0] === clazz && el[1] === linker))
+    this._links = this._links?.filter(el => !(el[0] === clazz && el[1] === linker))
   }
 
   async invoke(clazz: string, name: string, ...args: any[]) {
@@ -75,7 +70,7 @@ export default class MxModuleContext implements MxModuleContextFuncs {
     return _fwCtx.services.invoke(clazz, name, ...args)
   }
 
-  connectSignal(clazz: string, signal: string, slot: MxSlotFn) {
+  connectSignal(clazz: string, signal: string, slot: MxSlotHandler) {
     this.logger.log('MxModuleContext', 'connectSignal: ', clazz, signal)
     const {_fwCtx} = this
 
@@ -88,7 +83,7 @@ export default class MxModuleContext implements MxModuleContextFuncs {
     }
   }
 
-  disconnectSignal(clazz: string, signal: string, slot: MxSlotFn) {
+  disconnectSignal(clazz: string, signal: string, slot: MxSlotHandler) {
     this.logger.log('MxModuleContext', 'disconnectSignal: ', clazz, signal)
     const {_fwCtx} = this
 
@@ -149,21 +144,21 @@ export default class MxModuleContext implements MxModuleContextFuncs {
   onExEvent(event: string, listener: MxEventListener): void {
     this.logger.log('MxModuleContext', 'onExEvent: ', event)
 
-    if (!this._emitterEx) this._emitterEx = new EventEmitter()
+    if (!this._exEmitter) this._exEmitter = new EventEmitter()
 
-    this._emitterEx.on(event, listener)
+    this._exEmitter.on(event, listener)
   }
 
   offExEvent(event: string, listener: MxEventListener): void {
     this.logger.log('MxModuleContext', 'offExEvent: ', event)
 
-    this._emitterEx?.off(event, listener)
+    this._exEmitter?.off(event, listener)
   }
 
   emitExEvent(event: string, ...args: any[]): void {
     this.logger.log('MxModuleContext', 'emitExEvent: ', event, ...args)
 
-    this._emitterEx?.emit(event, ...args, event)
+    this._exEmitter?.emit(event, ...args, event)
   }
 
   private clearAll() {
@@ -177,12 +172,12 @@ export default class MxModuleContext implements MxModuleContextFuncs {
     this._slots?.forEach(el => _fwCtx.services.disconnectSignal(el[0], el[1], el[2]))
     this._slots = undefined
 
-    this._linkers?.forEach(el => _fwCtx.services.unlink(el[0], el[1]))
-    this._linkers = undefined
+    this._links?.forEach(el => _fwCtx.services.unlink(el[0], el[1]))
+    this._links = undefined
 
     _fwCtx.services.unregisterAll(this)
 
     this._extenders = undefined
-    this._emitterEx = undefined
+    this._exEmitter = undefined
   }
 }

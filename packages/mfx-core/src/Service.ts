@@ -1,5 +1,5 @@
 import EventEmitter from './EventEmitter'
-import {MxInvokableFn, MxSlotFn} from './types'
+import {MxInvoker, MxSlotHandler} from './types'
 
 export default class MxService {
   constructor(clazz: string) {
@@ -7,17 +7,18 @@ export default class MxService {
   }
 
   readonly clazz: string
-  private _invokes?: Record<string, MxInvokableFn>
+  private _invokers?: Record<string, MxInvoker>
   private _emitter = new EventEmitter()
 
-  // Invoke
-  invokable(name: string, func: MxInvokableFn) {
-    if (!this._invokes) this._invokes = {}
-    this._invokes[name] = func
+  // Set invokable fn
+  setInvoker(name: string, invoker: MxInvoker) {
+    if (!this._invokers) this._invokers = {}
+    this._invokers[name] = invoker
   }
 
+  // Execute invoker
   async invoke(name: string, ...args: any[]) {
-    const fn = this._invokes?.[name]
+    const fn = this._invokers?.[name]
     if (!fn) return undefined
 
     const result = await fn.call(this, ...args)
@@ -25,12 +26,12 @@ export default class MxService {
   }
 
   // Signal
-  connectSignal(signal: string, slot: MxSlotFn) {
+  connectSignal(signal: string, slot: MxSlotHandler) {
     if (!signal) return
     return this._emitter.on(signal, slot)
   }
 
-  disconnectSignal(signal: string, slot: MxSlotFn) {
+  disconnectSignal(signal: string, slot: MxSlotHandler) {
     this._emitter.off(signal, slot)
   }
 

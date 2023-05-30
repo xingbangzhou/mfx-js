@@ -1,40 +1,36 @@
-import {YoLauncherOption} from '../types'
-import YoFramework from '../Framework'
-import YoEvents from './Events'
-import YoModules from './Modules'
-import YoServices from './Services'
+import {MxLauncherOption} from '../types'
+import MxFramework from '../Framework'
+import MxEvents from './Events'
+import MxModules from './Modules'
+import MxServices from './Services'
 
-export default class YoFrameworkContext {
-  constructor(options?: YoLauncherOption) {
-    this._options = options
+export default class MxFrameworkContext {
+  constructor(options?: MxLauncherOption) {
+    this.options = options
 
-    this.events = new YoEvents()
-    this.modules = new YoModules(this)
-    this.services = new YoServices(this)
-    this.framework = new YoFramework(this)
+    this.events = new MxEvents()
+    this.modules = new MxModules(this)
+    this.services = new MxServices(this)
+    this.framework = new MxFramework(this)
 
     this.init()
   }
 
-  private _options?: YoLauncherOption
+  readonly options?: MxLauncherOption
 
-  readonly events: YoEvents
+  readonly events: MxEvents
 
-  readonly modules: YoModules
+  readonly modules: MxModules
 
-  readonly services: YoServices
+  readonly services: MxServices
 
-  readonly framework: YoFramework
-
-  get options() {
-    return this._options
-  }
+  readonly framework: MxFramework
 
   get logger() {
     return this.framework.ctx.logger
   }
 
   private init() {
-    this.logger.debug = this._options?.debug || false
+    this.logger.debug = this.options?.debug || false
   }
 }

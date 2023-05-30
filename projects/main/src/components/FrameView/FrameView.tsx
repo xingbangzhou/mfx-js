@@ -1,16 +1,17 @@
 import {CSSProperties, memo, useCallback, useEffect, useMemo, useRef} from 'react'
 import {uniformUrl} from 'src/utils/urlFns'
-import {MxFramework} from '@mfx0/framework'
+import {MxFramework, MxModuleContext} from '@mfx0/framework'
 
 interface FrameViewProps {
-  fw: MxFramework
+  mxFw: MxFramework
   url?: string
   className?: string
   style?: CSSProperties
+  onLoaded?: (ctx?: MxModuleContext) => void
 }
 
 const FrameView = memo(function FrameView(props: FrameViewProps) {
-  const {fw, url, className, style} = props
+  const {mxFw, url, className, style, onLoaded: onLoadedProp} = props
 
   const rootRef = useRef<HTMLIFrameElement>(null)
 
@@ -25,15 +26,18 @@ const FrameView = memo(function FrameView(props: FrameViewProps) {
     if (!rootRef.current) return
     if (!moduleId) return
 
-    fw.loadFrameModule(moduleId, rootRef.current)
+    mxFw.loadFrameModule(moduleId, rootRef.current)
 
     return () => {
-      fw.unloadModule(moduleId)
+      mxFw.unloadModule(moduleId)
     }
-  }, [moduleId, rootRef.current])
+  }, [moduleId])
 
   const onLoaded = useCallback(() => {
-    console.log('[FrameView] loaded', moduleId)
+    console.log('[FrameView]', 'loaded: ', moduleId)
+    if (!moduleId) return
+    const ctx = mxFw.getModule(moduleId)?.ctx
+    onLoadedProp?.(ctx)
   }, [moduleId])
 
   return (

@@ -1,22 +1,22 @@
 import MxFrameworkContext from './FrameworkContext'
-import {MxLinkHandler, MxSlotFn} from '@mfx0/core/types'
+import {MxLinkHandler, MxSlotHandler} from '@mfx0/core/types'
 import MxService from '@mfx0/core/Service'
 import MxModuleContext from '../ModuleContext'
 import EventEmitter from '@mfx0/core/EventEmitter'
 
-interface Registration {
+interface MxRegistration {
   ctx: MxModuleContext
   service: MxService
 }
 
-export default class YoServices {
+export default class MxServices {
   constructor(fwCtx: MxFrameworkContext) {
     fwCtx
   }
 
   private _emitter = new EventEmitter()
-  private _regns?: Record<string, Registration>
-  private _slots?: Record<string, [string, MxSlotFn][]>
+  private _regns?: Record<string, MxRegistration>
+  private _slots?: Record<string, [string, MxSlotHandler][]>
 
   getService(clazz: string) {
     return this._regns?.[clazz]?.service
@@ -88,7 +88,7 @@ export default class YoServices {
     return result
   }
 
-  connectSignal(clazz: string, signal: string, slot: MxSlotFn) {
+  connectSignal(clazz: string, signal: string, slot: MxSlotHandler) {
     if (!this._slots) this._slots = {}
     const ss = this._slots[clazz] || []
     if (!ss.find(el => el[0] === signal && el[1] === slot)) {
@@ -104,7 +104,7 @@ export default class YoServices {
     return true
   }
 
-  disconnectSignal(clazz: string, signal: string, slot: MxSlotFn) {
+  disconnectSignal(clazz: string, signal: string, slot: MxSlotHandler) {
     const ss = this._slots?.[clazz]
     if (!ss) return
 

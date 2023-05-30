@@ -1,5 +1,5 @@
 import childProcess from 'child_process'
-import glob from 'fast-glob'
+import chalk from 'chalk'
 import path from 'path'
 import {promisify} from 'util'
 import yargs from 'yargs'
@@ -70,7 +70,7 @@ async function run(args) {
 
   const {stderr, stdout} = await exec(command, {env: {...process.env, ...env}})
   if (stderr) {
-    console.warn(`'${command}' failed with \n${stderr}`)
+    console.log(chalk.red.bold(`'${command}' failed with \n${stderr}`))
   }
 
   if (verbose) {

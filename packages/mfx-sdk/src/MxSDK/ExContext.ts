@@ -1,4 +1,4 @@
-import {MxEventListener, MxLinkHandler, MxSlotFn, MxModuleContextFuncs, MxContextExtender} from '@mfx0/core/types'
+import {MxEventListener, MxLinkHandler, MxSlotHandler, MxModuleContextFuncs, MxContextExtender} from '@mfx0/core/types'
 import MxService from '@mfx0/core/Service'
 import InvokePool from './InvokePool'
 
@@ -13,10 +13,10 @@ enum SdkCommand {
   RemoveEventListener = 'mx-sdk:remove_event_listener',
   PostEvent = 'mx-sdk:post_event',
   Log = 'mx-sdk:log',
-  InvokeEx = 'yoy-sdk:invoke_ex',
-  OnExEvent = 'yoy-sdk:on_ex_event',
-  OffExEvent = 'yoy-sdk:off_ex_event',
-  EmitExEvent = 'yoy-sdk:emit_ex_event',
+  InvokeEx = 'mx-sdk:invoke_ex',
+  OnExEvent = 'mx-sdk:on_ex_event',
+  OffExEvent = 'mx-sdk:off_ex_event',
+  EmitExEvent = 'mx-sdk:emit_ex_event',
 }
 
 enum FrameworkCommand {
@@ -25,7 +25,7 @@ enum FrameworkCommand {
   InvokeResult = 'mx-framework:invole_result',
   Signal = 'mx-framework:signal',
   Event = 'mx-framework:event',
-  ExEvent = 'yoy-framework:ex_event',
+  ExEvent = 'mx-framework:ex_event',
 }
 
 export default abstract class MxExContext implements MxModuleContextFuncs {
@@ -34,7 +34,7 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
   private _fwReady = false
   private _blockCmds?: [string, any[]][]
   private _clazzLinks: Record<string, MxLinkHandler[]> = {}
-  private _clazzSlots: [string, string, MxSlotFn[]][] = []
+  private _clazzSlots: [string, string, MxSlotHandler[]][] = []
   private _eventListeners: Record<string, MxEventListener[]> = {}
   private _exeventListeners: Record<string, MxEventListener[]> = {}
 
@@ -91,7 +91,7 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     return result
   }
 
-  connectSignal(clazz: string, signal: string, slot: MxSlotFn) {
+  connectSignal(clazz: string, signal: string, slot: MxSlotHandler) {
     const slots = this._clazzSlots.find(el => el[0] === clazz && el[1] === signal)?.[2]
     if (slots?.length) {
       slots.push(slot)
@@ -102,8 +102,8 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     this.command(SdkCommand.ConnectSignal, clazz, signal)
   }
 
-  disconnectSignal(clazz: string, signal: string, slot: MxSlotFn) {
-    const clazzSlots: [string, string, MxSlotFn[]][] = []
+  disconnectSignal(clazz: string, signal: string, slot: MxSlotHandler) {
+    const clazzSlots: [string, string, MxSlotHandler[]][] = []
 
     for (let i = 0, l = this._clazzSlots.length; i < l; i++) {
       const si = this._clazzSlots[i]
@@ -245,7 +245,7 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     if (this._fwReady) return
     this._fwReady = true
 
-    this.log('Yosdk', 'MxExContext.onFwReady is runned')
+    this.log('MxSDK', 'MxExContext.onFwReady is runned')
 
     // handle ensures
     this._ensureFns?.forEach(el => el())

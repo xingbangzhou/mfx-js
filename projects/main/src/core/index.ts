@@ -1,1 +1,1 @@
-export {default as mainFw} from './fw'
+export {default as bizCore} from './bizCore'
