@@ -1,4 +1,4 @@
-import {MxFramework, MxModule} from '@mfx0/framework'
+import {MxFramework, MxModule} from '@mfx-js/framework'
 import {uniformUrl} from 'src/utils/urlFns'
 import {loadMicroApp, MicroApp} from 'qiankun'
 import {CSSProperties, memo, useEffect, useMemo, useRef} from 'react'

@@ -1,15 +1,15 @@
 # TSConfig
 
 ## Install
-+ `yarn add @mfx0/tsconfig -D`
++ `yarn add @mfx-js/tsconfig -D`
 
 ## Config
 + `tsconfig.json`
 ```js
 module.exports = {
-  "extends": "@mfx0/tsconfig",
+  "extends": "@mfx-js/tsconfig",
   "compilerOptions": {
-    "types": ["node", "react", "@mfx0/tsconfig"],
+    "types": ["node", "react", "@mfx-js/tsconfig"],
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {

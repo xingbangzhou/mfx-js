@@ -1,4 +1,4 @@
-import Mfxsdk from '@mfx0/sdk'
+import Mfxsdk from '@mfx-js/sdk'
 
 const mfx = new Mfxsdk()
 

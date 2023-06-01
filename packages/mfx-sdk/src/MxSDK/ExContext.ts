@@ -1,5 +1,5 @@
-import {MxEventListener, MxLinkHandler, MxSlotHandler, MxModuleContextFuncs, MxContextExtender} from '@mfx0/core/types'
-import MxService from '@mfx0/core/Service'
+import {MxEventListener, MxLinkHandler, MxSlotHandler, MxModuleContextFuncs, MxContextExtender} from '@mfx-js/core/types'
+import MxService from '@mfx-js/core/Service'
 import InvokePool from './InvokePool'
 
 enum SdkCommand {

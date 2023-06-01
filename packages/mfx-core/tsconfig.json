@@ -1,5 +1,5 @@
 {
-  "extends": "@mfx0/tsconfig",
+  "extends": "@mfx-js/tsconfig",
   "compilerOptions": {
     "types": ["node"],
     "baseUrl": ".",

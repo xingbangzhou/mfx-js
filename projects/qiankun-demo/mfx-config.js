@@ -9,10 +9,10 @@ module.exports = ({chain, mode, options}) => {
 
   chain.output.set('chunkFormat', 'array-push')
 
-  chain.resolve.alias.set('@mfx0/base', path.resolve(__dirname, '../../packages/mfx-base/src'))
-  chain.resolve.alias.set('@mfx0/sdk', path.resolve(__dirname, '../../packages/mfx-sdk/src'))
-  chain.resolve.alias.set('@mfx0/material', path.resolve(__dirname, '../../packages/mfx-material/src'))
-  chain.resolve.alias.set('@mfx0/utils', path.resolve(__dirname, '../../packages/mfx-utils/src'))
+  chain.resolve.alias.set('@mfx-js/base', path.resolve(__dirname, '../../packages/mfx-base/src'))
+  chain.resolve.alias.set('@mfx-js/sdk', path.resolve(__dirname, '../../packages/mfx-sdk/src'))
+  chain.resolve.alias.set('@mfx-js/material', path.resolve(__dirname, '../../packages/mfx-material/src'))
+  chain.resolve.alias.set('@mfx-js/utils', path.resolve(__dirname, '../../packages/mfx-utils/src'))
 
   chain.output.publicPath('/')
   chain.output.set('library', `${name}-[name]`)

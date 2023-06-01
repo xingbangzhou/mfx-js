@@ -8,7 +8,7 @@
     }
   },
   "scripts": {
-    "release": "lerna run --parallel --scope \"@mfx0/*\" release"
+    "release": "lerna run --parallel --scope \"@mfx-js/*\" release"
   },
   "devDependencies": {
     "@babel/cli": "^7.19.3",

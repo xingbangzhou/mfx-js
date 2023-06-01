@@ -1,4 +1,4 @@
-import {MxFrameworkLauncher} from '@mfx0/framework'
+import {MxFrameworkLauncher} from '@mfx-js/framework'
 
 class BizCore extends MxFrameworkLauncher {
   constructor() {

@@ -1,4 +1,4 @@
-import {MxModuleContextFuncs} from '@mfx0/core/types'
+import {MxModuleContextFuncs} from '@mfx-js/core/types'
 import MxExContext from './ExContext'
 import FrameContext from './FrameContext'
 

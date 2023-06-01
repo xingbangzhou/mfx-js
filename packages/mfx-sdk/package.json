@@ -1,6 +1,6 @@
 {
-  "name": "@mfx0/sdk",
-  "version": "1.1.0",
+  "name": "@mfx-js/sdk",
+  "version": "1.0.0",
   "main": "index.js",
   "types": "index.d.ts",
   "license": "MIT",
@@ -27,11 +27,11 @@
   "dependencies": {
   },
   "peerDependencies": {
-    "@mfx0/core": ">=1.1.0"
+    "@mfx-js/core": ">=1.0.0"
   },
   "devDependencies": {
-    "@mfx0/tsconfig": "^1.0.0",
-    "@mfx0/core": "^1.1.0"
+    "@mfx-js/tsconfig": "^1.0.0",
+    "@mfx-js/core": "^1.0.0"
   },
   "publishConfig": {
     "access": "public"

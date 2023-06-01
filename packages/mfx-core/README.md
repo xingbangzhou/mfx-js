@@ -1,4 +1,4 @@
-# @mfx0/core
+# @mfx-js/core
 
 
 ## Installation

@@ -1,5 +1,5 @@
 {
-  "name": "@mfx0/eslint-config-react",
+  "name": "@mfx-js/eslint-config-react",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",

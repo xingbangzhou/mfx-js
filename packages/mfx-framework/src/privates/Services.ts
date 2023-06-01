@@ -1,8 +1,8 @@
 import MxFrameworkContext from './FrameworkContext'
-import {MxLinkHandler, MxSlotHandler} from '@mfx0/core/types'
-import MxService from '@mfx0/core/Service'
+import {MxLinkHandler, MxSlotHandler} from '@mfx-js/core/types'
+import MxService from '@mfx-js/core/Service'
 import MxModuleContext from '../ModuleContext'
-import EventEmitter from '@mfx0/core/EventEmitter'
+import EventEmitter from '@mfx-js/core/EventEmitter'
 
 interface MxRegistration {
   ctx: MxModuleContext

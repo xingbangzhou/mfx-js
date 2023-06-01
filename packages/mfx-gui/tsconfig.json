@@ -1,7 +1,7 @@
 {
-  "extends": "@mfx0/tsconfig",
+  "extends": "@mfx-js/tsconfig",
   "compilerOptions": {
-    "types": ["node", "react", "@mfx0/tsconfig"],
+    "types": ["node", "react", "@mfx-js/tsconfig"],
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"]

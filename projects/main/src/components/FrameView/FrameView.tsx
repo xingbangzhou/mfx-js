@@ -1,6 +1,6 @@
 import {CSSProperties, memo, useCallback, useEffect, useMemo, useRef} from 'react'
 import {uniformUrl} from 'src/utils/urlFns'
-import {MxFramework, MxModuleContext} from '@mfx0/framework'
+import {MxFramework, MxModuleContext} from '@mfx-js/framework'
 
 interface FrameViewProps {
   mxFw: MxFramework

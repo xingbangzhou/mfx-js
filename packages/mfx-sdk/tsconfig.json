@@ -1,12 +1,12 @@
 {
-  "extends": "@mfx0/tsconfig",
+  "extends": "@mfx-js/tsconfig",
   "compilerOptions": {
     "types": ["node"],
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"],
-      "@mfx0/core": ["../mfx-core/src"],
-      "@mfx0/core/*": ["../mfx-core/src/*"],
+      "@mfx-js/core": ["../mfx-core/src"],
+      "@mfx-js/core/*": ["../mfx-core/src/*"],
     },
   }
 }

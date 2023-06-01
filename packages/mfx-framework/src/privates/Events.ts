@@ -1,5 +1,5 @@
-import {MxEventListener} from '@mfx0/core/types'
-import EventEmitter from '@mfx0/core/EventEmitter'
+import {MxEventListener} from '@mfx-js/core/types'
+import EventEmitter from '@mfx-js/core/EventEmitter'
 
 export default class MxEvents {
   constructor() {}

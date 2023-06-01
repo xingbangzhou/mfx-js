@@ -1,13 +1,13 @@
 {
-  "extends": "@mfx0/tsconfig",
+  "extends": "@mfx-js/tsconfig",
   "compilerOptions": {
-    "types": ["node", "react", "@mfx0/tsconfig"],
+    "types": ["node", "react", "@mfx-js/tsconfig"],
     "baseUrl": ".",
     "paths": {
       "src/*": ["src/*"],
-      "@mfx0/core": ["../../packages/mfx-core/src"],
-      "@mfx0/sdk": ["../../packages/mfx-sdk/src"],
-      "@mfx0/gui": ["../../packages/mfx-gui/src"]
+      "@mfx-js/core": ["../../packages/mfx-core/src"],
+      "@mfx-js/sdk": ["../../packages/mfx-sdk/src"],
+      "@mfx-js/gui": ["../../packages/mfx-gui/src"]
     },
   },
   "exclude": ["mfx-config.js"]

@@ -1,5 +1,5 @@
 import {memo, useCallback, useMemo, useRef, useState} from 'react'
-import {DraggableCore, DraggableData} from '@mfx0/gui'
+import {DraggableCore, DraggableData} from '@mfx-js/gui'
 import styles from './index.module.scss'
 import Content from './Content'
 

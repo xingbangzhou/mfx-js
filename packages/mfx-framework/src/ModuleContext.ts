@@ -1,8 +1,8 @@
-import {MxEventListener, MxLinkHandler, MxSlotHandler, MxModuleContextFuncs, MxContextExtender} from '@mfx0/core/types'
-import MxService from '@mfx0/core/Service'
-import Logger from '@mfx0/core/Logger'
+import {MxEventListener, MxLinkHandler, MxSlotHandler, MxModuleContextFuncs, MxContextExtender} from '@mfx-js/core/types'
+import MxService from '@mfx-js/core/Service'
+import Logger from '@mfx-js/core/Logger'
 import MxFrameworkContext from './privates/FrameworkContext'
-import EventEmitter from '@mfx0/core/EventEmitter'
+import EventEmitter from '@mfx-js/core/EventEmitter'
 import {MxDestructor} from './types'
 
 export default class MxModuleContext implements MxModuleContextFuncs {
