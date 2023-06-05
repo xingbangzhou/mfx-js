@@ -3,8 +3,8 @@ import {uniformUrl} from 'src/utils/urlFns'
 import {loadMicroApp, MicroApp} from 'qiankun'
 import {CSSProperties, memo, useEffect, useMemo, useRef} from 'react'
 
-interface QKunViewProps {
-  fw: MxFramework
+interface KunqViewProps {
+  mxFw: MxFramework
   name?: string
   url?: string
   className?: string
@@ -12,8 +12,8 @@ interface QKunViewProps {
   [key: string]: any
 }
 
-const QKunView = memo(function QKunView(props: QKunViewProps) {
-  const {fw, name, url, className, style, ...other} = props
+const KunqView = memo(function KunqView(props: KunqViewProps) {
+  const {mxFw, name, url, className, style, ...other} = props
   const rootRef = useRef<HTMLDivElement>(null)
   const microApp = useRef<MicroApp>()
   const mxModule = useRef<MxModule>()
@@ -27,7 +27,7 @@ const QKunView = memo(function QKunView(props: QKunViewProps) {
     if (rootRef.current && entry) {
       const mId = name || entry
 
-      mxModule.current = fw.loadModule(mId)
+      mxModule.current = mxFw.loadModule(mId)
       microApp.current = loadMicroApp(
         {
           name: mId,
@@ -49,7 +49,7 @@ const QKunView = memo(function QKunView(props: QKunViewProps) {
     return () => {
       microApp.current?.unmount()
       microApp.current?.unmountPromise.then(() => {
-        mxModule.current && fw.unloadModule(mxModule.current.id)
+        mxModule.current && mxFw.unloadModule(mxModule.current.id)
       })
       microApp.current = undefined
     }
@@ -58,4 +58,4 @@ const QKunView = memo(function QKunView(props: QKunViewProps) {
   return <div ref={rootRef} className={className} style={style} {...other} />
 })
 
-export default QKunView
+export default KunqView

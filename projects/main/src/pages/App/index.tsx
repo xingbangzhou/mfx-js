@@ -3,9 +3,14 @@ import TitleBar from './TitleBar'
 import {memo, useEffect} from 'react'
 import LeftBar from './LeftBar'
 import MainView from './MainView'
+import {useNavigate} from 'react-router'
 
-function App() {
-  useEffect(() => {}, [])
+const App = memo(function App() {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    navigate('/login')
+  }, [])
 
   return (
     <div className="app">
@@ -16,6 +21,6 @@ function App() {
       </div>
     </div>
   )
-}
+})
 
-export default memo(App)
+export default App

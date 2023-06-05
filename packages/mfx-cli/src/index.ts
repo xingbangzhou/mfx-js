@@ -10,7 +10,7 @@ const exec = async function (cmd: string, mode: MfxModeType, options: MfxOptions
   // 项目自定义配置
   await mfxEnv.loadConf()
   // 执行cli脚本
-  const {default: cli} = await import(`./cmds/${cmd}`)
+  const {default: cli} = await import(`./cmd/${cmd}`)
   await cli.start()
 }
 

@@ -1,4 +1,4 @@
-import React, {createRef} from 'react'
+import React, {createRef, ReactNode} from 'react'
 import {matchesSelector, offsetXYFromParent, addDomEvent, removeDomEvent} from './domFns'
 
 export interface DraggableData {
@@ -206,7 +206,7 @@ export default class DraggableCore extends React.Component<DraggableCoreProps, D
   }
 
   render() {
-    return React.cloneElement(React.Children.only(this.props.children), {
+    return React.cloneElement(React.Children.only(this.props.children as any), {
       onMouseDown: this.onMouseDown,
       onMouseUp: this.onMouseUp,
       ref: this.contentRef,

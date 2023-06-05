@@ -1,4 +1,10 @@
-import {MxEventListener, MxLinkHandler, MxSlotHandler, MxModuleContextFuncs, MxContextExtender} from '@mfx-js/core/types'
+import {
+  MxEventListener,
+  MxLinkHandler,
+  MxSlotHandler,
+  MxModuleContextFuncs,
+  MxContextExtender,
+} from '@mfx-js/core/types'
 import MxService from '@mfx-js/core/Service'
 import InvokePool from './InvokePool'
 
@@ -32,14 +38,13 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
   constructor() {}
 
   private _fwReady = false
-  private _blockCmds?: [string, any[]][]
+  private _ensureFns?: Array<() => void>
+
   private _clazzLinks: Record<string, MxLinkHandler[]> = {}
   private _clazzSlots: [string, string, MxSlotHandler[]][] = []
   private _eventListeners: Record<string, MxEventListener[]> = {}
   private _exeventListeners: Record<string, MxEventListener[]> = {}
-
   private _invokePool = new InvokePool()
-  private _ensureFns?: Array<() => void>
 
   async ensure() {
     return new Promise<void>(resolve => {
@@ -237,8 +242,6 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
       this.postMessage(cmd, ...args)
       return
     }
-    if (!this._blockCmds) this._blockCmds = [[cmd, args]]
-    else this._blockCmds.push([cmd, args])
   }
 
   private onFwReady() {
@@ -250,9 +253,6 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     // handle ensures
     this._ensureFns?.forEach(el => el())
     this._ensureFns = undefined
-    // handle blocks
-    this._blockCmds?.forEach(([cmd, args]) => this.postMessage(cmd, ...args))
-    this._blockCmds = undefined
   }
 
   private onLinkStatus(on: boolean, clazz: string) {
