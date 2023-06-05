@@ -70,7 +70,7 @@ async function run(args) {
 
   const {stderr, stdout} = await exec(command, {env: {...process.env, ...env}})
   if (stderr) {
-    console.log(chalk.red.bold(`'${command}' failed with \n${stderr}`))
+    console.log(chalk.yellowBright.bold(`'${command}' failed with \n${stderr}`))
   }
 
   if (verbose) {
