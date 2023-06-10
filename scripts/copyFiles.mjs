@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import path from 'path'
 import fse from 'fs-extra'
 import glob from 'fast-glob'
@@ -111,7 +110,7 @@ async function prepend(file, string) {
 }
 
 async function addLicense(packageData) {
-  const license = `/** @license MFX v${packageData.version}
+  const license = `/** @license MFX-JS v${packageData.version}
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.

@@ -14,7 +14,7 @@
     "directory": "packages/mfx-sdk"
   },
   "scripts": {
-    "build": "yarn run prebuild && yarn build:node && yarn build:modern && yarn build:stable && yarn build:legacy && yarn run build:types && yarn run build:copy-files",
+    "build": "pnpm prebuild && pnpm build:node && pnpm build:modern && pnpm build:stable && pnpm build:legacy && pnpm build:types && pnpm build:copy-files",
     "build:node": "node ../../scripts/build.mjs node",
     "build:modern": "node ../../scripts/build.mjs modern",
     "build:stable": "node ../../scripts/build.mjs stable",
@@ -22,7 +22,7 @@
     "build:types": "node ../../scripts/buildTypes.mjs",
     "build:copy-files": "node ../../scripts/copyFiles.mjs",
     "prebuild": "rimraf build tsconfig.build.tsbuildinfo",
-    "release": "yarn build && npm publish build --access public"
+    "release": "pnpm build && npm publish build --access public"
   },
   "dependencies": {
   },
@@ -30,8 +30,8 @@
     "@mfx-js/core": ">=1.0.0"
   },
   "devDependencies": {
-    "@mfx-js/tsconfig": "^1.0.0",
-    "@mfx-js/core": "^1.0.0-beta.0"
+    "@mfx-js/tsconfig": "workspace:^",
+    "@mfx-js/core": "workspace:^"
   },
   "publishConfig": {
     "access": "public"

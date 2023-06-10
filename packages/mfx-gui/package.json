@@ -1,7 +1,7 @@
 {
   "name": "@mfx-js/gui",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.ts",
   "license": "MIT",
   "keywords": [
     "mfx",
@@ -11,30 +11,25 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/xingbangzhou/mfx.git",
+    "url": "https://github.com/xingbangzhou/mfx-js.git",
     "directory": "packages/mfx-gui"
   },
-  "scripts": {
-    "build": "yarn run prebuild && yarn build:node && yarn build:modern && yarn build:stable && yarn build:legacy && yarn run build:types && yarn run build:copy-files",
-    "build:node": "node ../../scripts/build.mjs node",
-    "build:modern": "node ../../scripts/build.mjs modern",
-    "build:stable": "node ../../scripts/build.mjs stable",
-    "build:legacy": "node ../../scripts/build.mjs legacy",
-    "build:types": "node ../../scripts/buildTypes.mjs",
-    "build:copy-files": "node ../../scripts/copyFiles.mjs",
-    "prebuild": "rimraf build tsconfig.build.tsbuildinfo",
-    "release": "yarn build && npm publish build --access public"
-  },
+  "scripts": {},
   "dependencies": {
-    "@emotion/styled": "^11.10.4"
+    "@babel/runtime": "^7.16.3",
+    "@emotion/styled": "^11.10.4",
+    "@types/react-transition-group": "^4.4.4",
+    "clsx": "^1.1.1"
   },
   "peerDependencies": {
-    "react": ">= 17.0.2",
-    "react-dom": ">= 17.0.2"
+    "react": ">=17.0.2",
+    "react-dom": ">=17.0.2"
   },
   "devDependencies": {
+    "@mfx-js/tsconfig": "workspace:^",
+    "@types/react": "^17.0.34",
+    "@types/react-dom": "^17.0.11",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "@mfx-js/tsconfig": "^1.0.0"
+    "react-dom": "^17.0.2"
   }
 }

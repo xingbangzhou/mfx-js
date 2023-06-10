@@ -11,9 +11,11 @@
     "start": "mfx serve"
   },
   "dependencies": {
-    "@mfx-js/core": "^1.0.0-beta.0",
-    "@mfx-js/framework": "^1.0.0-beta.0",
-    "@mfx-js/gui": "^1.0.0",
+    "@babel/runtime": "^7.16.3",
+    "@emotion/styled": "^11.10.4",
+    "@mfx-js/core": "workspace:^",
+    "@mfx-js/framework": "workspace:^",
+    "@mfx-js/gui": "workspace:^",
     "clsx": "^1.1.1",
     "gl-matrix": "^3.4.3",
     "mobx": "^6.6.2",
@@ -21,13 +23,14 @@
     "qiankun": "^2.8.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-router": "^6.12.1",
     "react-router-dom": "^6.11.2",
     "react-transition-group": "^4.4.2"
   },
   "devDependencies": {
     "@emotion/react": "^11.9.0",
-    "@mfx-js/cli": "^1.0.0-beta.0",
-    "@mfx-js/tsconfig": "^1.0.0",
+    "@mfx-js/cli": "workspace:^",
+    "@mfx-js/tsconfig": "workspace:^",
     "@types/react": "^17.0.34",
     "@types/react-dom": "^17.0.11",
     "@types/react-transition-group": "^4.4.4",
