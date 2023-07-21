@@ -8,7 +8,7 @@ import chalk from 'chalk'
 import https from 'https'
 import formatUrl from '../utils/formatUrl'
 
-class ServeRunner {
+class ServeCli {
   async start() {
     const app = express()
     app.use(compression())
@@ -50,4 +50,4 @@ class ServeRunner {
   }
 }
 
-export default new ServeRunner()
+export default new ServeCli()

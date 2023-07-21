@@ -1,31 +1,15 @@
-import {mfxEnv} from '../core'
-import Common from './Common'
-import CSS from './CSS'
-import File from './File'
-import Module from './Module'
-import Plugin from './Plugin'
-import Development from './Development'
-import Production from './Production'
+import WPCommon from './common'
 
-export default class MfxWebpack {
-  common = new Common()
-  css = new CSS()
-  file = new File()
-  module = new Module()
-  plugin = new Plugin()
-  development = new Development()
-  production = new Production()
+class MfxWebpack {
+  constructor() {}
+
+  readonly common = new WPCommon()
 
   async setup() {
-    await Promise.all([
-      this.common.setup(),
-      this.css.setup(),
-      this.file.setup(),
-      this.module.setup(),
-      this.plugin.setup(),
-    ])
-
-    if (mfxEnv.mode === 'development' || mfxEnv.mode === 'serve') await this.development.setup()
-    else if (mfxEnv.mode === 'production') await this.production.setup()
+    await this.common.setup()
   }
 }
+
+const mfxWebpack = new MfxWebpack()
+
+export default mfxWebpack

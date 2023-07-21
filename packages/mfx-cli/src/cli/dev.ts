@@ -2,7 +2,7 @@ import {mfxEnv} from '../core'
 import {webpack} from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 
-class DevRunner {
+class DevCli {
   async start() {
     const {wpChain} = mfxEnv
     const config = wpChain.toConfig()
@@ -13,4 +13,4 @@ class DevRunner {
   }
 }
 
-export default new DevRunner()
+export default new DevCli()

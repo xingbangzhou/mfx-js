@@ -3,7 +3,7 @@ import {webpack} from 'webpack'
 import chalk from 'chalk'
 import fs from 'fs-extra'
 
-class BuildRunner {
+class BuildCli {
   async start() {
     const {wpChain, cacheFiles} = mfxEnv
     const config = wpChain.toConfig()
@@ -51,4 +51,4 @@ class BuildRunner {
   }
 }
 
-export default new BuildRunner()
+export default new BuildCli()

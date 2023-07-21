@@ -1,89 +1,79 @@
-import {mfxEnv} from '../core'
+import {mfxConfig, mfxEnv} from 'src/core'
 import {Configuration} from 'webpack'
+import wpChain from './chain'
 
-const {version} = require('../../package.json')
+export default class WPCommon {
+  constructor() {}
 
-class Common {
   async setup() {
-    const {wpChain} = mfxEnv
+    const {target, cache, entry, output, resolve, experiments, stats} = this
 
-    wpChain?.merge({
-      cache: this.cache,
-      optimization: this.optimization,
-      entry: this.entry,
-      output: this.output,
-      resolve: this.resolve,
-      experiments: this.experiments,
+    wpChain.merge({
+      target,
+      cache,
+      entry,
+      output,
+      resolve,
+      experiments,
+      stats,
     })
   }
 
-  private get cache(): Configuration['cache'] {
-    const {options, cacheFiles, conf} = mfxEnv
+  get target(): Configuration['target'] {
+    const cfg = mfxConfig.build?.target || 'es5'
+    return ['web'].concat(cfg)
+  }
 
+  get cache(): Configuration['cache'] {
     const buildDependenciesConfigs = [__filename]
-    if (conf) {
-      buildDependenciesConfigs.push(conf)
+    if (mfxConfig.configFile) {
+      buildDependenciesConfigs.push(mfxConfig.configFile)
     }
 
+    const name = `${mfxEnv.mode}-${mfxEnv.appPackage?.version}-${mfxEnv.options?.env}`
+
     return {
-      version: `${version}-${options?.env}`,
+      name: name,
       type: 'filesystem',
-      cacheDirectory: cacheFiles.webpack, //默认路径是 node_modules/.cache/webpack
-      // 缓存依赖，当缓存依赖修改时，缓存失效
+      cacheDirectory: mfxEnv.cacheDirRealPath,
       buildDependencies: {
-        // 将你的配置添加依赖，更改配置时，使得缓存失效
         config: buildDependenciesConfigs,
       },
     }
   }
 
-  private get optimization(): Configuration['optimization'] {
-    const {isDev} = mfxEnv
-
+  get entry(): Configuration['entry'] {
     return {
-      chunkIds: 'named',
-      minimize: !isDev,
-      emitOnErrors: true,
+      index: mfxConfig.build?.entry || mfxEnv.defaultEntry,
     }
   }
 
-  private get entry(): Configuration['entry'] {
-    const {entry} = mfxEnv
-
-    return (
-      entry && {
-        index: entry,
-      }
-    )
-  }
-
-  private get output(): Configuration['output'] {
-    const {dist} = mfxEnv
+  get output(): Configuration['output'] {
+    const environment = {
+      arrowFunction: false,
+      bigIntLiteral: false,
+      const: false,
+      destructuring: false,
+      forOf: false,
+      dynamicImport: false,
+      module: false,
+    }
 
     return {
-      path: dist,
+      clean: true,
+      path: mfxConfig.build?.dist || mfxEnv.defultDist,
       publicPath: 'auto',
       filename: 'static/js/[name].[contenthash:8].js',
       assetModuleFilename: 'static/asset/[name].[contenthash:8][ext][query]',
-      environment: {
-        arrowFunction: false,
-        bigIntLiteral: false,
-        const: false,
-        destructuring: false,
-        forOf: false,
-        dynamicImport: false,
-        module: false,
-      },
+      environment,
     }
   }
 
-  private get resolve(): Configuration['resolve'] {
-    const {src = ''} = mfxEnv
-
+  get resolve(): Configuration['resolve'] {
     return {
-      modules: ['node_modules', mfxEnv.resolve('node_modules'), src],
+      modules: ['node_modules', mfxEnv.resolve('node_modules'), mfxEnv.src],
       alias: {
-        src: src,
+        src: mfxEnv.src,
       },
       extensions: [
         '.js',
@@ -103,14 +93,18 @@ class Common {
     }
   }
 
-  private get experiments(): Configuration['experiments'] {
+  get experiments(): Configuration['experiments'] {
     return {
-      backCompat: true,
       topLevelAwait: true,
+      backCompat: true,
       asyncWebAssembly: true,
       syncWebAssembly: true,
     }
   }
-}
 
-export default Common
+  get stats(): Configuration['stats'] {
+    return {
+      preset: 'errors-warnings',
+    }
+  }
+}

@@ -1,4 +1,4 @@
 import ReactDOM from 'react-dom'
-import Index from './pages/Index'
+import App from './pages/App'
 
-ReactDOM.render(<Index></Index>, document.querySelector('#root'), () => {})
+ReactDOM.render(<App></App>, document.querySelector('#root'), () => {})

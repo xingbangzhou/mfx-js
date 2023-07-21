@@ -1,19 +1,17 @@
-import {mfxEnv} from './core'
-import {MfxOptions, MfxModeType} from './types'
-import MfxWebpack from './webpack'
+import mfxCore from './core'
+import {WpMode, MfxOptions} from './types'
+import mfxWebpack from './webpack'
 
-const exec = async function (cmd: string, mode: MfxModeType, options: MfxOptions) {
-  // 初始化
-  await mfxEnv.init(mode, options)
-  // Webpack配置
-  await new MfxWebpack().setup()
-  // 项目自定义配置
-  await mfxEnv.loadConf()
+const mfx = async function (cmd: string, mode: WpMode, options: MfxOptions) {
+  await mfxCore.init(mode, options)
+
+  await mfxWebpack.setup()
+
   // 执行cli脚本
-  const {default: cli} = await import(`./cmd/${cmd}`)
+  const {default: cli} = await import(`./cli/${cmd}`)
   await cli.start()
 }
 
 export default {
-  exec,
+  mfx,
 }

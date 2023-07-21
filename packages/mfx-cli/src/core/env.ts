@@ -1,43 +1,48 @@
 import path from 'path'
 import fs from 'fs-extra'
-import WebpackConfig from 'webpack-chain'
-import type {MfxOptions, MfxModeType} from '../types'
+import type {MfxOptions, WpMode} from '../types'
 
 class MfxEnv {
-  // 项目根目录路径
-  readonly root: string
-  // 缓存路径
-  readonly cacheFiles: Record<string, string>
-  // webpack-chain实例
-  readonly wpChain = new WebpackConfig()
-  // 生产模式
-  mode?: MfxModeType
-  // 用户选项
+  constructor() {}
+
+  // 项目目录
+  root = fs.realpathSync(process.cwd())
+  // 缓存目录
+  cacheDir = 'node_modules/.mfx-cache'
+  // 模式
+  mode?: WpMode
+  // 命令行选项
   options?: MfxOptions
   // 源码目录
-  src?: string
-  // 打包路径
-  dist?: string
-  // 入口文件路径
-  entry?: string
-  // 静态文件路径
-  public?: string
+  src = ''
+  // 静态文件目录
+  public = ''
+  // 默认入口文件
+  defaultEntry = ''
+  // 默认输出目录
+  defultDist = ''
   // 图标文件路径
   favicon?: string
   // HTML模板文件路径
   template?: string
   // 项目pkg信息
-  pkg?: Record<string, any>
-  // 项目配置文件路径
-  conf?: string
+  appPackage?: Record<string, string>
 
-  constructor() {
-    this.root = fs.realpathSync(process.cwd())
-    this.cacheFiles = {
-      eslint: this.resolve('node_modules/.cache/.eslintcache'),
-      webpack: this.resolve('node_modules/.cache/webpack'),
-      buildConfig: this.resolve('node_modules/.cache/.buildConfigCache.json'),
-    }
+  async init(mode: WpMode, options: MfxOptions) {
+    this.mode = mode
+    this.options = options
+    this.src = this.resolve('src')
+    this.public = this.resolve('public')
+    this.defaultEntry = this.getDefaultEntry()
+    this.defultDist = this.resolve('dist')
+
+    const favicon = path.join(this.public, 'favicon.ico')
+    const template = path.join(this.public, 'index.html')
+    this.favicon = fs.existsSync(favicon) ? favicon : path.join(__dirname, '../../template/public/favicon.ico')
+    this.template = fs.existsSync(template) ? template : path.join(__dirname, '../../template/public/index.html')
+
+    const packageFile = this.resolve('package.json')
+    this.appPackage = fs.existsSync(packageFile) ? require(packageFile) : undefined
   }
 
   resolve(relativePath: string) {
@@ -52,33 +57,11 @@ class MfxEnv {
     return this.mode === 'development'
   }
 
-  async init(mode: MfxModeType, options: MfxOptions) {
-    this.mode = mode
-    this.options = options
-    this.src = this.resolve('src')
-    this.dist = this.resolve('dist')
-    this.entry = this.getEntry()
-    this.public = this.resolve('public')
-    const favicon = path.join(this.public, 'favicon.ico')
-    const template = path.join(this.public, 'index.html')
-    this.favicon = fs.existsSync(favicon) ? favicon : path.join(__dirname, '../../template/public/favicon.ico')
-    this.template = fs.existsSync(template) ? template : path.join(__dirname, '../../template/public/index.html')
-    const packageFile = this.resolve('package.json')
-    this.pkg = fs.existsSync(packageFile) ? require(packageFile) : undefined
-    const configFile = this.resolve('mfx-config.js')
-    this.conf = fs.existsSync(configFile) ? configFile : undefined
+  get cacheDirRealPath() {
+    return this.resolve(this.cacheDir)
   }
 
-  async loadConf() {
-    if (this.conf) {
-      const configExport = require(this.conf)
-      if (typeof configExport === 'function') {
-        await configExport({chain: this.wpChain, mode: this.mode, options: this.options})
-      }
-    }
-  }
-
-  private getEntry() {
+  private getDefaultEntry() {
     if (this.isFileExist('src/index.ts')) return this.resolve('src/index.ts')
     if (this.isFileExist('src/index.tsx')) return this.resolve('src/index.tsx')
     return this.resolve('src/index.js')

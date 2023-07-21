@@ -17,7 +17,7 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "bin": {
-    "mfx": "./bin/cli.js"
+    "mfx": "./bin/mfx.js"
   },
   "files": [
     "bin",
