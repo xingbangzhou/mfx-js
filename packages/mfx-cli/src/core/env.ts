@@ -26,14 +26,16 @@ class MfxEnv {
   // HTML模板文件路径
   template?: string
   // 项目pkg信息
-  appPackage?: Record<string, string>
+  appPackage?: Record<string, any>
+
+  // 环境变量
+  envVars: Record<string, any> = {}
 
   async init(mode: WpMode, options: MfxOptions) {
     this.mode = mode
     this.options = options
     this.src = this.resolve('src')
     this.public = this.resolve('public')
-    this.defaultEntry = this.getDefaultEntry()
     this.defultDist = this.resolve('dist')
 
     const favicon = path.join(this.public, 'favicon.ico')
@@ -43,6 +45,9 @@ class MfxEnv {
 
     const packageFile = this.resolve('package.json')
     this.appPackage = fs.existsSync(packageFile) ? require(packageFile) : undefined
+
+    this.initEntry()
+    this.initEnvVars()
   }
 
   resolve(relativePath: string) {
@@ -61,10 +66,38 @@ class MfxEnv {
     return this.resolve(this.cacheDir)
   }
 
-  private getDefaultEntry() {
+  get reactVersion() {
+    return this.appPackage?.dependencies?.react
+  }
+
+  get buildEnv() {
+    return this.options?.env
+  }
+
+  private initEntry() {
     if (this.isFileExist('src/index.ts')) return this.resolve('src/index.ts')
     if (this.isFileExist('src/index.tsx')) return this.resolve('src/index.tsx')
-    return this.resolve('src/index.js')
+    this.defaultEntry = this.resolve('src/index.js')
+  }
+
+  private initEnvVars() {
+    this.envVars.__PROD__ = false
+    this.envVars.env.__TEST__ = false
+    this.envVars.env.__DEV__ = false
+
+    switch (this.buildEnv) {
+      case 'prod':
+        this.envVars.__PROD__ = true
+        break
+      case 'test':
+        this.envVars.__TEST__ = true
+        break
+      case 'dev':
+        this.envVars.__DEV__ = true
+        break
+      default:
+        break
+    }
   }
 }
 

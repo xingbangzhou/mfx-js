@@ -7,7 +7,6 @@ class MfxConfig {
 
   // 配置文件
   configFile?: string
-
   // 构建配置
   build?: BuildConfig
   // 全局变量
@@ -18,6 +17,18 @@ class MfxConfig {
   alias?: ResolveAliasConfig
   // WebpackChain扩展
   chainExtender?: ChainExtender
+
+  get target() {
+    return this.build?.target || 'es5'
+  }
+
+  get entry() {
+    return this.build?.entry || mfxEnv.defaultEntry
+  }
+
+  get assetsDir() {
+    return this.build?.assets || 'assets'
+  }
 
   async load() {
     this.configFile = mfxEnv.resolve('mfx-config.js')
@@ -36,14 +47,14 @@ class MfxConfig {
 
         const {build, define, alias, devServer, chainExtender} = await configFn(configArgv)
 
+        // 加载build真实数据
         this.build = build
+        this.loadBuild()
+
         this.define = define
         this.alias = alias
         this.devServer = devServer
         this.chainExtender = chainExtender
-
-        // 加载build真实数据
-        this.loadBuild()
       }
     }
   }

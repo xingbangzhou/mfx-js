@@ -21,6 +21,8 @@ export interface BuildConfig {
   entry?: string
   // 出书目录
   dist?: string
+  // 静态资源目录
+  assets?: string
 }
 
 export interface ResolveAliasConfig {

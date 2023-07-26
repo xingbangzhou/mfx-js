@@ -2,7 +2,7 @@ import {mfxConfig, mfxEnv} from 'src/core'
 import {Configuration} from 'webpack'
 import wpChain from './chain'
 
-export default class WPCommon {
+export default class WpCommon {
   constructor() {}
 
   async setup() {
@@ -20,7 +20,7 @@ export default class WPCommon {
   }
 
   get target(): Configuration['target'] {
-    const cfg = mfxConfig.build?.target || 'es5'
+    const cfg = mfxConfig.target
     return ['web'].concat(cfg)
   }
 
@@ -44,7 +44,7 @@ export default class WPCommon {
 
   get entry(): Configuration['entry'] {
     return {
-      index: mfxConfig.build?.entry || mfxEnv.defaultEntry,
+      index: mfxConfig.entry,
     }
   }
 
@@ -58,13 +58,14 @@ export default class WPCommon {
       dynamicImport: false,
       module: false,
     }
+    const {assetsDir} = mfxConfig
 
     return {
       clean: true,
       path: mfxConfig.build?.dist || mfxEnv.defultDist,
       publicPath: 'auto',
-      filename: 'static/js/[name].[contenthash:8].js',
-      assetModuleFilename: 'static/asset/[name].[contenthash:8][ext][query]',
+      filename: `${assetsDir}/js/[name].[contenthash:8].js`,
+      assetModuleFilename: `${assetsDir}/[name].[contenthash:8][ext][query]`,
       environment,
     }
   }
@@ -89,6 +90,7 @@ export default class WPCommon {
         '.wasm',
         '.vue',
         '.svg',
+        '.svga',
       ],
     }
   }
