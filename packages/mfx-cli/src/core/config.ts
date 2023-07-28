@@ -26,6 +26,10 @@ class MfxConfig {
     return this.build?.entry || mfxEnv.defaultEntry
   }
 
+  get dist() {
+    return this.build?.dist || mfxEnv.defultDist
+  }
+
   get assetsDir() {
     return this.build?.assets || 'assets'
   }
