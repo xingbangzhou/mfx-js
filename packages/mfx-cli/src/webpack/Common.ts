@@ -1,4 +1,4 @@
-import {mfxConfig, mfxEnv} from 'src/core'
+import {mfxConfig, mfxEnv} from '../core'
 import {Configuration} from 'webpack'
 import wpChain from './chain'
 
@@ -62,7 +62,7 @@ export default class WpCommon {
 
     return {
       clean: true,
-      path: mfxConfig.build?.dist || mfxEnv.defultDist,
+      path: mfxConfig.dist,
       publicPath: 'auto',
       filename: `${assetsDir}/js/[name].[contenthash:8].js`,
       assetModuleFilename: `${assetsDir}/[name].[contenthash:8][ext][query]`,

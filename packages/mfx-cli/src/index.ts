@@ -1,4 +1,4 @@
-import mfxCore from './core'
+import mfxCore, {mfxConfig} from './core'
 import {WpMode, MfxOptions} from './types'
 import mfxWebpack from './webpack'
 
@@ -6,6 +6,8 @@ const mfx = async function (cmd: string, mode: WpMode, options: MfxOptions) {
   await mfxCore.init(mode, options)
 
   await mfxWebpack.setup()
+
+  await mfxConfig.setupEx()
 
   // 执行cli脚本
   const {default: cli} = await import(`./cli/${cmd}`)

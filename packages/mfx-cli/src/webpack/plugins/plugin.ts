@@ -22,7 +22,7 @@ export default class WpPlugin {
         plugin: require.resolve('webpackbar'),
         args: [
           {
-            name: '[Mfx]',
+            name: '[MFX]',
             color: 'green',
             profile: true,
           },
@@ -126,7 +126,7 @@ export default class WpPlugin {
       plugin: HtmlWebpackPlugin,
       args: [
         {
-          title: 'MCO',
+          title: 'MFX',
           template: template,
           favicon: favicon,
           files: {

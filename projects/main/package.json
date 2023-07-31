@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "mfx dev --env dev --hot",
+    "dev": "mfx dev --env dev",
     "build": "mfx build",
     "build:dev": "mfx build --env dev",
     "build:analyze": "mfx build --analyze",

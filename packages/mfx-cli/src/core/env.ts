@@ -17,10 +17,6 @@ class MfxEnv {
   src = ''
   // 静态文件目录
   public = ''
-  // 默认入口文件
-  defaultEntry = ''
-  // 默认输出目录
-  defultDist = ''
   // 图标文件路径
   favicon?: string
   // HTML模板文件路径
@@ -36,7 +32,6 @@ class MfxEnv {
     this.options = options
     this.src = this.resolve('src')
     this.public = this.resolve('public')
-    this.defultDist = this.resolve('dist')
 
     const favicon = path.join(this.public, 'favicon.ico')
     const template = path.join(this.public, 'index.html')
@@ -46,7 +41,6 @@ class MfxEnv {
     const packageFile = this.resolve('package.json')
     this.appPackage = fs.existsSync(packageFile) ? require(packageFile) : undefined
 
-    this.initEntry()
     this.initEnvVars()
   }
 
@@ -74,16 +68,10 @@ class MfxEnv {
     return this.options?.env
   }
 
-  private initEntry() {
-    if (this.isFileExist('src/index.ts')) return this.resolve('src/index.ts')
-    if (this.isFileExist('src/index.tsx')) return this.resolve('src/index.tsx')
-    this.defaultEntry = this.resolve('src/index.js')
-  }
-
   private initEnvVars() {
     this.envVars.__PROD__ = false
-    this.envVars.env.__TEST__ = false
-    this.envVars.env.__DEV__ = false
+    this.envVars.__TEST__ = false
+    this.envVars.__DEV__ = false
 
     switch (this.buildEnv) {
       case 'prod':

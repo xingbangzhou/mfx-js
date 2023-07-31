@@ -1,6 +1,7 @@
 import fs from 'fs-extra'
 import mfxEnv from './env'
-import {ResolveAliasConfig, MfxConfigFunc, MfxConfigArgv, DevServerConfig, ChainExtender, BuildConfig} from 'src/types'
+import {ResolveAliasConfig, MfxConfigFn, MfxConfigParams, DevServerConfig, ChainExtender, BuildConfig} from '../types'
+import {wpChain} from 'src/webpack'
 
 class MfxConfig {
   constructor() {}
@@ -12,29 +13,42 @@ class MfxConfig {
   // 全局变量
   define?: Record<string, any>
   // 本地服务配置
-  devServer?: DevServerConfig
+  devServer: DevServerConfig = {
+    host: '0.0.0.0',
+    port: 3000,
+    // https: false,
+    open: false,
+    // proxy: false,
+    hot: true,
+  }
   // 别名配置
   alias?: ResolveAliasConfig
   // WebpackChain扩展
   chainExtender?: ChainExtender
+
+  private _defaultEntry = ''
+  private _defaultDist = ''
 
   get target() {
     return this.build?.target || 'es5'
   }
 
   get entry() {
-    return this.build?.entry || mfxEnv.defaultEntry
+    return this.build?.entry || this._defaultEntry
   }
 
   get dist() {
-    return this.build?.dist || mfxEnv.defultDist
+    return this.build?.dist || this._defaultDist
   }
 
   get assetsDir() {
     return this.build?.assets || 'assets'
   }
 
-  async load() {
+  async setup() {
+    this.initEntry()
+    this._defaultDist = mfxEnv.resolve('dist')
+
     this.configFile = mfxEnv.resolve('mfx-config.js')
     this.configFile = fs.existsSync(this.configFile) ? this.configFile : undefined
 
@@ -42,9 +56,9 @@ class MfxConfig {
     if (this.configFile) {
       const configExport = require(this.configFile)
       if (typeof configExport === 'function') {
-        const configFn = configExport as MfxConfigFunc
+        const configFn = configExport as MfxConfigFn
 
-        const configArgv: MfxConfigArgv = {
+        const configArgv: MfxConfigParams = {
           mode: mfxEnv.mode,
           ...mfxEnv.options,
         }
@@ -57,10 +71,17 @@ class MfxConfig {
 
         this.define = define
         this.alias = alias
-        this.devServer = devServer
+        Object.assign(this.devServer, devServer)
         this.chainExtender = chainExtender
       }
     }
+  }
+
+  async setupEx() {
+    await this.chainExtender?.(wpChain, {
+      mode: mfxEnv.mode,
+      ...mfxEnv.options,
+    })
   }
 
   private loadBuild() {
@@ -71,6 +92,14 @@ class MfxConfig {
     if (this.build.entry) {
       this.build.entry = mfxEnv.resolve(this.build.entry)
     }
+  }
+
+  private initEntry() {
+    if (mfxEnv.isFileExist('src/index.ts')) {
+      this._defaultEntry = mfxEnv.resolve('src/index.ts')
+    } else if (mfxEnv.isFileExist('src/index.tsx')) {
+      this._defaultEntry = mfxEnv.resolve('src/index.tsx')
+    } else this._defaultEntry = mfxEnv.resolve('src/index.js')
   }
 }
 

@@ -116,6 +116,7 @@ importers:
       mini-css-extract-plugin: 2.7.2
       postcss-loader: ^6.2.0
       react-refresh: ^0.11.0
+      rimraf: ^3.0.2
       sass: ^1.43.4
       sass-loader: ^12.3.0
       style-loader: ^3.3.1
@@ -182,6 +183,7 @@ importers:
       '@types/fs-extra': 9.0.13
       '@types/webpack-bundle-analyzer': 4.6.0
       '@types/webpack-dev-server': 4.7.2_webpack@5.86.0
+      rimraf: 3.0.2
       ts-transform-paths: 2.0.3
       ttypescript: 1.5.15_6qtx7vkbdhwvdm4crzlegk4mvi
 

@@ -1,10 +1,9 @@
-import {mfxEnv} from '../core'
+import {wpChain} from 'src/webpack'
 import {webpack} from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 
 class DevCli {
   async start() {
-    const {wpChain} = mfxEnv
     const config = wpChain.toConfig()
 
     const compiler = webpack(config)

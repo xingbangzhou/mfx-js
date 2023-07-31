@@ -52,13 +52,13 @@ export interface DevServerConfig {
   hot?: DSConfiguration['hot']
 }
 
-export interface ChainExtender {
-  (chain: WpChain): Promise<void>
-}
-
-export type MfxConfigArgv = {
+export type MfxConfigParams = {
   mode?: WpMode
 } & MfxOptions
+
+export interface ChainExtender {
+  (chain: WpChain, argv: MfxConfigParams): Promise<void>
+}
 
 export interface MfxConfigResult {
   build?: BuildConfig
@@ -72,6 +72,6 @@ export interface MfxConfigResult {
   chainExtender?: ChainExtender
 }
 
-export interface MfxConfigFunc {
-  (argv: MfxConfigArgv): Promise<MfxConfigResult>
+export interface MfxConfigFn {
+  (params: MfxConfigParams): Promise<MfxConfigResult>
 }

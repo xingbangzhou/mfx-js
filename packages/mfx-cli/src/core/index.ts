@@ -12,7 +12,7 @@ class MfxCore {
     // 初始化环境
     await mfxEnv.init(mode, options)
     // 加载配置
-    await mfxConfig.load()
+    await mfxConfig.setup()
   }
 }
 
