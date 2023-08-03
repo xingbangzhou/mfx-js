@@ -35,8 +35,8 @@ class BuildCli {
       console.log(chalk.green.bold('\n=== MFX Compiled successfully.===\n'))
       console.log(
         status?.toString({
-          colors: true,
           all: false,
+          colors: true,
           assets: true,
         }),
       )

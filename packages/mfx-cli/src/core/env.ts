@@ -5,6 +5,7 @@ import type {MfxOptions, WpMode} from '../types'
 class MfxEnv {
   constructor() {}
 
+  version = require(`${path.resolve(__dirname, '../../')}/package.json`).version
   // 项目目录
   root = fs.realpathSync(process.cwd())
   // 缓存目录
