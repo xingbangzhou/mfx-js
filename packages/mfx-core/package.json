@@ -1,6 +1,6 @@
 {
   "name": "@mfx-js/core",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.1",
   "main": "index.js",
   "types": "index.d.ts",
   "license": "MIT",
@@ -23,10 +23,6 @@
     "build:copy-files": "node ../../scripts/copyFiles.mjs",
     "prebuild": "rimraf build tsconfig.build.tsbuildinfo",
     "release": "pnpm build && npm publish build --access public"
-  },
-  "dependencies": {
-  },
-  "peerDependencies": {
   },
   "devDependencies": {
     "@mfx-js/tsconfig": "workspace:^"

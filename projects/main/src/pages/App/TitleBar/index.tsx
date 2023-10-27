@@ -1,6 +1,6 @@
 import {memo} from 'react'
-import {Button} from '@mfx-js/gui'
 import styles from './index.module.scss'
+import Button from '@mui/material/Button'
 
 const TitleBar = memo(function TitleBar() {
   return (

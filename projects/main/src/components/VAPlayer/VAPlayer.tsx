@@ -1,7 +1,7 @@
 import React, {forwardRef, HTMLAttributes, memo, useEffect, useImperativeHandle, useRef} from 'react'
 import VAPRender from './VAPRender'
 import {VAPOptions} from './types'
-import {useForkRef} from '@mfx-js/gui'
+import useForkRef from 'src/hooks/useForkRef'
 
 export interface VAPlayerHandler {
   play(opts: Omit<VAPOptions, 'container'>): void

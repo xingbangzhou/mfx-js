@@ -34,6 +34,28 @@ export class ListenerHolder {
   }
 }
 
+export class EventObject<Type extends ListenerFn> {
+  constructor(ctx: EventEmitter, name = '') {
+    this._ctx = ctx
+    this._name = name
+  }
+
+  private _ctx: EventEmitter
+  private _name: string
+
+  get name() {
+    return this._name
+  }
+
+  on(fn: Type, context?: any, prepend = false) {
+    return this._ctx?.on(this.name, fn, context, prepend)
+  }
+
+  off(fn: Type, context?: any, once?: boolean) {
+    return this._ctx?.off(this.name, fn, context, once)
+  }
+}
+
 export default class EventEmitter {
   private _events: Record<string, EE | EE[]> = {}
   private _eventCount = 0
@@ -83,6 +105,41 @@ export default class EventEmitter {
       if (Object.prototype.hasOwnProperty.call(this._events, name)) names.push(name)
     }
     return names
+  }
+
+  /**
+   * 分发事件
+   * @param event 事件对象
+   * @param args 参数列表
+   */
+  emitEvent<Type extends ListenerFn>(event: EventObject<Type>, ...args: Parameters<Type>) {
+    const eventName = event.name
+
+    this.emit(eventName, ...args)
+  }
+  /**
+   * 创建事件对象（分发1个参数）
+   * @param name 事件名
+   * @returns 事件对象
+   */
+  createEvent<P1>(name = '') {
+    return new EventObject<(p1: P1) => void>(this, name)
+  }
+  /**
+   * 创建事件对象（分发2个参数）
+   * @param name 事件名
+   * @returns 分发两个参数的信号对象
+   */
+  createEvent2<P1, P2>(name = '') {
+    return new EventObject<(p1: P1, p2: P2) => void>(this, name)
+  }
+  /**
+   * 创建事件对象（分发3个参数）
+   * @param name 事件名
+   * @returns 分发三个参数的信号对象
+   */
+  createEvent3<P1, P2, P3>(name = '') {
+    return new EventObject<(p1: P1, p2: P2, p3: P3) => void>(this, name)
   }
 
   private addListener(type: string, fn: ListenerFn, context?: any, once?: boolean, prepend = false) {

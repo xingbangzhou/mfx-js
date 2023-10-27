@@ -12,7 +12,6 @@ module.exports = ({mode, env, progress, analyze}) => ({
     '@mfx-js/core': path.resolve(rootPath, '../../packages/mfx-core/src'),
     '@mfx-js/core/*': path.resolve(rootPath, '../../packages/mfx-core/src/*'),
     '@mfx-js/framework': path.resolve(rootPath, '../../packages/mfx-framework/src'),
-    '@mfx-js/gui': path.resolve(rootPath, '../../packages/mfx-gui/src'),
   },
 
   chainExtender: wpChain => {

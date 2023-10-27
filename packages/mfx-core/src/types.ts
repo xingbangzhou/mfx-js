@@ -1,10 +1,8 @@
-import type MxService from './Service'
-
 export interface MxLinkHandler {
   (on: boolean, cl: string): void
 }
 
-export interface MxInvoker {
+export interface MxInvokeHandler {
   (...args: any[]): any
 }
 
@@ -16,8 +14,19 @@ export interface MxEventListener {
   (...args: any[]): void
 }
 
-export interface MxContextExtender {
+export interface MxContextHandler {
   (...args: any[]): Promise<any>
+}
+
+export interface MxService {
+  // 服务ID
+  readonly clazz: string
+  // 导出接口
+  invoke(name: string, ...args: any[]): Promise<any>
+  // 监听信号
+  connectSignal(signal: string, slot: MxSlotHandler): unknown
+  // 取消监听信号
+  disconnectSignal(signal: string, slot: MxSlotHandler): unknown
 }
 
 export interface MxModuleContextFuncs {
@@ -55,10 +64,14 @@ export interface MxModuleContextFuncs {
   postEvent(event: string, ...args: any[]): void
   // 日志函数
   log(name: string, ...args: any[]): void
-  // 扩展
-  setExtender(name: string, extender: MxContextExtender): void
-  invokeEx(name: string, ...args: any[]): Promise<any>
-  onExEvent(event: string, listener: MxContextExtender): void
-  offExEvent(event: string, listener: MxContextExtender): void
-  emitExEvent(event: string, ...args: any[]): void
+  // 设置上下文扩展接口
+  setCtxHandler(name: string, extender: MxContextHandler): void
+  // 调用上下文扩展接口
+  invokeCtx(name: string, ...args: any[]): Promise<any>
+  // 监听上下文事件
+  onCtxEvent(event: string, listener: MxEventListener): void
+  // 取消监听上下文事件
+  offCtxEvent(event: string, listener: MxEventListener): void
+  // 发出上下文事件
+  emitCtxEvent(event: string, ...args: any[]): void
 }

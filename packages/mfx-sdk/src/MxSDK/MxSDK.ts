@@ -5,7 +5,7 @@ import FrameContext from './FrameContext'
 export default class MxSDK {
   constructor() {
     // 主应用启动框架标志
-    if ((window as any)['__MxFramework__']) return
+    if ((window as any)['_MxFramework_']) return
     // Auto active IFrame
     if (window.top !== window) {
       this.activeEx(FrameContext)

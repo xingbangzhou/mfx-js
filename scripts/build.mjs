@@ -62,7 +62,7 @@ async function run(args) {
     babelArgs.push('--compact false')
   }
 
-  const command = ['yarn babel', ...babelArgs].join(' ')
+  const command = ['pnpm babel', ...babelArgs].join(' ')
 
   if (verbose) {
     console.log(`running '${command}' with ${JSON.stringify(env)}`)

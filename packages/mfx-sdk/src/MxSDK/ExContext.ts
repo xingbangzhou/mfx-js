@@ -2,10 +2,10 @@ import {
   MxEventListener,
   MxLinkHandler,
   MxSlotHandler,
+  MxContextHandler,
+  MxService,
   MxModuleContextFuncs,
-  MxContextExtender,
 } from '@mfx-js/core/types'
-import MxService from '@mfx-js/core/Service'
 import InvokePool from './InvokePool'
 
 enum SdkCommand {
@@ -19,10 +19,10 @@ enum SdkCommand {
   RemoveEventListener = 'mx-sdk:remove_event_listener',
   PostEvent = 'mx-sdk:post_event',
   Log = 'mx-sdk:log',
-  InvokeEx = 'mx-sdk:invoke_ex',
-  OnExEvent = 'mx-sdk:on_ex_event',
-  OffExEvent = 'mx-sdk:off_ex_event',
-  EmitExEvent = 'mx-sdk:emit_ex_event',
+  InvokeCtx = 'mx-sdk:invoke_ctx',
+  OnCtxEvent = 'mx-sdk:on_ctx_event',
+  OffCtxEvent = 'mx-sdk:off_ctx_event',
+  EmitCtxEvent = 'mx-sdk:emit_ctx_event',
 }
 
 enum FrameworkCommand {
@@ -31,7 +31,7 @@ enum FrameworkCommand {
   InvokeResult = 'mx-framework:invole_result',
   Signal = 'mx-framework:signal',
   Event = 'mx-framework:event',
-  ExEvent = 'mx-framework:ex_event',
+  CtxEvent = 'mx-framework:ex_event',
 }
 
 export default abstract class MxExContext implements MxModuleContextFuncs {
@@ -43,7 +43,7 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
   private _clazzLinks: Record<string, MxLinkHandler[]> = {}
   private _clazzSlots: [string, string, MxSlotHandler[]][] = []
   private _eventListeners: Record<string, MxEventListener[]> = {}
-  private _exeventListeners: Record<string, MxEventListener[]> = {}
+  private _ctxEventListeners: Record<string, MxEventListener[]> = {}
   private _invokePool = new InvokePool()
 
   async ensure() {
@@ -161,47 +161,47 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     this.command(SdkCommand.Log, name, ...args)
   }
 
-  setExtender(name: string, fn?: MxContextExtender) {
+  setCtxHandler(name: string, fn?: MxContextHandler) {
     name
     fn
     console.error("[MxExContext]: don't realize setExecutor")
   }
 
-  async invokeEx(name: string, ...args: any[]) {
+  async invokeCtx(name: string, ...args: any[]) {
     const fn = (this as any)[name]
     if (typeof fn === 'function') {
       return await fn.call(this, ...args)
     }
 
-    return await this.invoke0(SdkCommand.InvokeEx, name, ...args)
+    return await this.invoke0(SdkCommand.InvokeCtx, name, ...args)
   }
 
-  onExEvent(event: string, listener: MxEventListener) {
-    const listeners = this._exeventListeners[event]
+  onCtxEvent(event: string, listener: MxEventListener) {
+    const listeners = this._ctxEventListeners[event]
     if (listeners?.length) {
       listeners.push(listener)
       return
     }
 
-    this._exeventListeners[event] = [listener]
-    this.command(SdkCommand.OnExEvent, event)
+    this._ctxEventListeners[event] = [listener]
+    this.command(SdkCommand.OnCtxEvent, event)
   }
 
-  offExEvent(event: string, listener: MxEventListener) {
-    const listeners = this._exeventListeners[event]
+  offCtxEvent(event: string, listener: MxEventListener) {
+    const listeners = this._ctxEventListeners[event]
     if (!listeners) return
     const idx = listeners.indexOf(listener)
     if (idx !== -1) {
       listeners.splice(idx, 1)
       if (!listeners.length) {
-        delete this._exeventListeners[event]
-        this.command(SdkCommand.OffExEvent, event)
+        delete this._ctxEventListeners[event]
+        this.command(SdkCommand.OffCtxEvent, event)
       }
     }
   }
 
-  emitExEvent(event: string, ...args: any[]) {
-    this.command(SdkCommand.EmitExEvent, event, ...args)
+  emitCtxEvent(event: string, ...args: any[]) {
+    this.command(SdkCommand.EmitCtxEvent, event, ...args)
   }
 
   protected abstract postMessage(cmd: string, ...args: any[]): void
@@ -229,8 +229,8 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
       case FrameworkCommand.Event:
         this.handleEvent(...args)
         break
-      case FrameworkCommand.ExEvent:
-        this.handleExEvent(...args)
+      case FrameworkCommand.CtxEvent:
+        this.handleCtxEvent(...args)
         break
       default:
         break
@@ -276,9 +276,9 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     listeners?.forEach(el => el(...args))
   }
 
-  private handleExEvent(...args: any[]) {
+  private handleCtxEvent(...args: any[]) {
     const [event] = args.slice(-1)
-    const listeners = this._exeventListeners[event]
+    const listeners = this._ctxEventListeners[event]
     listeners?.forEach(el => el(...args))
   }
 

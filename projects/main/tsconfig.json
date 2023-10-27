@@ -7,8 +7,7 @@
       "src/*": ["src/*"],
       "@mfx-js/core": ["../../packages/mfx-core/src"],
       "@mfx-js/core/*": ["../../packages/mfx-core/src/*"],
-      "@mfx-js/framework": ["../../packages/mfx-framework/src"],
-      "@mfx-js/gui": ["../../packages/mfx-gui/src"]
+      "@mfx-js/framework": ["../../packages/mfx-framework/src"]
     },
   },
   "exclude": ["mfx-config.js"]

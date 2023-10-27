@@ -1,12 +1,13 @@
 {
   "name": "mfx-js",
   "version": "1.0.0",
-  "description": "mfx workspace",
+  "description": "MFX Workspace",
   "repository": "https://github.com/xingbangzhou/mfx-js.git",
   "author": "zhouxingbang <zhouxingbang92@163.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
+    "tsc": "tsc -v",
     "release": "lerna run --parallel --scope \"@mfx-js/*\" release",
     "prepare": "husky install"
   },
@@ -20,7 +21,7 @@
     "pnpm": ">=7"
   },
   "devDependencies": {
-    "@babel/cli": "^7.19.3",
+    "@babel/cli": "^7.23.0",
     "@babel/core": "^7.20.5",
     "@babel/node": "^7.20.5",
     "@babel/plugin-transform-runtime": "^7.19.6",
@@ -33,6 +34,7 @@
     "@rollup/plugin-commonjs": "^23.0.2",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-terser": "^0.1.0",
+    "@types/node": "^20.8.9",
     "chalk": "^4.1.2",
     "cross-env": "^7.0.3",
     "fast-glob": "^3.2.12",
