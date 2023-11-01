@@ -13,6 +13,9 @@
     "url": "https://github.com/xingbangzhou/mfx.git",
     "directory": "packages/mfx-sdk"
   },
+  "maintainers": [
+    "xingbangzhou"
+  ],
   "scripts": {
     "build": "pnpm prebuild && pnpm build:node && pnpm build:modern && pnpm build:stable && pnpm build:legacy && pnpm build:types && pnpm build:copy-files",
     "build:node": "node ../../scripts/build.mjs node",

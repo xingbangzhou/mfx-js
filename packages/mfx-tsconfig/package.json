@@ -4,6 +4,14 @@
   "main": "",
   "license": "MIT",
   "types": "types/mfx-react.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xingbangzhou/mfx.git",
+    "directory": "packages/mfx-tsconfig"
+  },
+  "maintainers": [
+    "xingbangzhou"
+  ],
   "dependencies": {
     "typescript-plugin-css-modules": "^3.4.0"
   },

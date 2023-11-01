@@ -14,6 +14,9 @@
     "url": "https://github.com/xingbangzhou/mfx-js.git",
     "directory": "packages/mfx-cli"
   },
+  "maintainers": [
+    "xingbangzhou"
+  ],
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "bin": {
@@ -27,7 +30,7 @@
   "scripts": {
     "dev": "rimraf dist && ttsc -w",
     "build": "rimraf build && ttsc",
-    "release": "pnpm build && npm publish --access public"
+    "release": "pnpm build && pnpm publish --access public"
   },
   "dependencies": {
     "@babel/core": "^7.20.5",
