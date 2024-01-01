@@ -1,6 +1,6 @@
 import {webpack} from 'webpack'
 import chalk from 'chalk'
-import {wpChain} from 'src/webpack'
+import {wpChain} from '../webpack'
 
 class BuildCli {
   async start() {

@@ -1,6 +1,6 @@
 {
   "name": "@mfx-js/tsconfig",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "main": "",
   "license": "MIT",
   "types": "types/mfx-react.d.ts",
@@ -13,7 +13,7 @@
     "xingbangzhou"
   ],
   "dependencies": {
-    "typescript-plugin-css-modules": "^3.4.0"
+    "typescript-plugin-css-modules": "^5.0.2"
   },
   "scripts": {
     "release": "npm publish --access public"

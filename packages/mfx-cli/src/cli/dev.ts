@@ -1,4 +1,4 @@
-import {wpChain} from 'src/webpack'
+import {wpChain} from '../webpack'
 import {webpack} from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 

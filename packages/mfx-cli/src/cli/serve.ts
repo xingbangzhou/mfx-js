@@ -7,7 +7,6 @@ import chalk from 'chalk'
 import https from 'https'
 import {mfxConfig, mfxEnv} from '../core'
 import formatUrl from '../utils/formatUrl'
-import {wpChain} from '../webpack'
 
 class ServeCli {
   async start() {

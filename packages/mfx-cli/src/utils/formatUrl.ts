@@ -1,7 +1,7 @@
 import url from 'url'
 import chalk from 'chalk'
-import address from 'address'
-import defaultGateway from 'default-gateway'
+import {ip} from 'address'
+import {gateway4sync} from 'default-gateway'
 
 export default function formatUrl(protocol: string, host: string, port: number, pathname = '/') {
   const format = (hostname: string) =>
@@ -27,8 +27,8 @@ export default function formatUrl(protocol: string, host: string, port: number, 
     prettyHost = 'localhost'
     try {
       // This can only return an IPv4 address
-      const result = defaultGateway.v4.sync()
-      lanUrlForConfig = address.ip(result && result.interface)
+      const gw4 = gateway4sync()
+      lanUrlForConfig = gw4.int ? ip(gw4.int) : null
       if (lanUrlForConfig) {
         // Check if the address is a private ip
         // https://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces

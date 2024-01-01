@@ -1,6 +1,12 @@
 #!/usr/bin/env node
+// const moduleAlias = require('module-alias')
+const path = require('path')
 const program = require('commander')
 const package = require('../package.json')
+
+// Register alias
+// moduleAlias.addAlias('src', __dirname + '/../src')
+// moduleAlias({base: path.resolve(__dirname, '..') + '/package.json'})
 
 const {mfx} = require(`../dist/index.js`).default
 

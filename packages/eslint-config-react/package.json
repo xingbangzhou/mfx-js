@@ -1,6 +1,6 @@
 {
   "name": "@mfx-js/eslint-config-react",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "main": "index.js",
   "license": "MIT",
   "repository": {
@@ -22,7 +22,7 @@
     "prettier": "^3.1.1"
   },
   "scripts": {
-    "release": "pnpm publish --access public"
+    "release": "pnpm publish --access public --no-git-checks"
   },
   "publishConfig": {
     "access": "public"

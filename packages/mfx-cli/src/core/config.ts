@@ -1,7 +1,7 @@
 import fs from 'fs-extra'
 import mfxEnv from './env'
 import {ResolveAliasConfig, MfxConfigFn, MfxConfigParams, DevServerConfig, ChainExtender, BuildConfig} from '../types'
-import {wpChain} from 'src/webpack'
+import {wpChain} from '../webpack'
 
 class MfxConfig {
   constructor() {}
