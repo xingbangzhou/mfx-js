@@ -1,4 +1,6 @@
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom/client'
 import App from './pages/App'
 
-ReactDOM.render(<App></App>, document.querySelector('#root'), () => {})
+const root = document.querySelector('#root')
+
+root ? ReactDOM.createRoot(root).render(<App />) : console.error('Bootstrap Has Error: No Root Div')

@@ -5,7 +5,7 @@ const {name} = require(path.join(rootPath, 'package.json'))
 
 module.exports = ({mode, env, progress, analyze}) => ({
   devServer: {
-    port: 5002,
+    port: 5001,
   },
 
   alias: {

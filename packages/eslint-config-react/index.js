@@ -4,8 +4,8 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:@typescript-eslint/recommended',
-    'prettier/@typescript-eslint',
     'plugin:prettier/recommended',
+    'prettier',
   ], //使用推荐的React代码检测规范
   plugins: ['@typescript-eslint'],
   env: {
