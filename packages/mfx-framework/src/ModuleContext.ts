@@ -130,15 +130,15 @@ export default class MxModuleContext implements MxModuleContextFuncs {
     this.logger.log(name, ...args)
   }
 
-  setCtxHandler(name: string, handler: MxContextHandler): void {
+  ctxSetHandler(name: string, handler: MxContextHandler): void {
     if (!this._ctxHandlers) this._ctxHandlers = {[name]: handler}
     else if (!this._ctxHandlers[name]) {
       this._ctxHandlers[name] = handler
     }
   }
 
-  async invokeCtx(name: string, ...args: any[]) {
-    this.logger.log('MxModuleContext', 'invokeCtx: ', name, ...args)
+  async ctxInvoke(name: string, ...args: any[]) {
+    this.logger.log('MxModuleContext', 'ctxInvoke: ', name, ...args)
 
     const fn = this._ctxHandlers?.[name]
     if (!fn) return undefined
@@ -147,22 +147,22 @@ export default class MxModuleContext implements MxModuleContextFuncs {
     return result
   }
 
-  onCtxEvent(event: string, listener: MxEventListener): void {
-    this.logger.log('MxModuleContext', 'onCtxEvent: ', event)
+  ctxOnEvent(event: string, listener: MxEventListener): void {
+    this.logger.log('MxModuleContext', 'ctxOnEvent: ', event)
 
     if (!this._ctxEmitter) this._ctxEmitter = new EventEmitter()
 
     this._ctxEmitter.on(event, listener)
   }
 
-  offCtxEvent(event: string, listener: MxEventListener): void {
-    this.logger.log('MxModuleContext', 'offCtxEvent: ', event)
+  ctxOffEvent(event: string, listener: MxEventListener): void {
+    this.logger.log('MxModuleContext', 'ctxOffEvent: ', event)
 
     this._ctxEmitter?.off(event, listener)
   }
 
-  emitCtxEvent(event: string, ...args: any[]): void {
-    this.logger.log('MxModuleContext', 'emitCtxEvent: ', event, ...args)
+  ctxEmitEvent(event: string, ...args: any[]): void {
+    this.logger.log('MxModuleContext', 'ctxEmitEvent: ', event, ...args)
 
     this._ctxEmitter?.emit(event, ...args, event)
   }

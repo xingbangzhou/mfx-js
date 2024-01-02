@@ -64,14 +64,15 @@ export interface MxModuleContextFuncs {
   postEvent(event: string, ...args: any[]): void
   // 日志函数
   log(name: string, ...args: any[]): void
-  // 设置上下文扩展接口
-  setCtxHandler(name: string, extender: MxContextHandler): void
-  // 调用上下文扩展接口
-  invokeCtx(name: string, ...args: any[]): Promise<any>
+  /** 模块上下文扩展 */
+  // 设置上下文接口
+  ctxSetHandler(name: string, extender: MxContextHandler): void
+  // 调用上下文接口
+  ctxInvoke(name: string, ...args: any[]): Promise<any>
   // 监听上下文事件
-  onCtxEvent(event: string, listener: MxEventListener): void
-  // 取消监听上下文事件
-  offCtxEvent(event: string, listener: MxEventListener): void
+  ctxOnEvent(event: string, listener: MxEventListener): void
+  // 取监上下文事件
+  ctxOffEvent(event: string, listener: MxEventListener): void
   // 发出上下文事件
-  emitCtxEvent(event: string, ...args: any[]): void
+  ctxEmitEvent(event: string, ...args: any[]): void
 }

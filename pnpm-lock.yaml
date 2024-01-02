@@ -283,11 +283,13 @@ importers:
         specifier: workspace:^
         version: link:../mfx-tsconfig
 
+  packages/mfx-core/build: {}
+
   packages/mfx-framework:
     devDependencies:
       '@mfx-js/core':
         specifier: workspace:^
-        version: link:../mfx-core
+        version: link:../mfx-core/build
       '@mfx-js/tsconfig':
         specifier: workspace:^
         version: link:../mfx-tsconfig
@@ -296,7 +298,7 @@ importers:
     devDependencies:
       '@mfx-js/core':
         specifier: workspace:^
-        version: link:../mfx-core
+        version: link:../mfx-core/build
       '@mfx-js/tsconfig':
         specifier: workspace:^
         version: link:../mfx-tsconfig
@@ -317,7 +319,7 @@ importers:
         version: 11.11.0(@emotion/react@11.11.3)(@types/react@18.2.46)(react@18.2.0)
       '@mfx-js/core':
         specifier: workspace:^
-        version: link:../../packages/mfx-core
+        version: link:../../packages/mfx-core/build
       '@mfx-js/framework':
         specifier: workspace:^
         version: link:../../packages/mfx-framework
@@ -5034,7 +5036,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001498
+      caniuse-lite: 1.0.30001572
       electron-to-chromium: 1.4.427
       node-releases: 2.0.12
       update-browserslist-db: 1.0.11(browserslist@4.21.7)
@@ -5124,10 +5126,6 @@ packages:
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: false
-
-  /caniuse-lite@1.0.30001498:
-    resolution: {integrity: sha512-LFInN2zAwx3ANrGCDZ5AKKJroHqNKyjXitdV5zRIVIaQlXKj3GmxUKagoKsjqUfckpAObPCEWnk5EeMlyMWcgw==}
-    dev: true
 
   /caniuse-lite@1.0.30001572:
     resolution: {integrity: sha512-1Pbh5FLmn5y4+QhNyJE9j3/7dK44dGB83/ZMjv/qJk86TvDbjk0LosiZo0i0WB0Vx607qMX9jYrn1VLHCkN4rw==}

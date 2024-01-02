@@ -13,10 +13,10 @@ enum SdkCommand {
   RemoveEventListener = 'mx-sdk:remove_event_listener',
   PostEvent = 'mx-sdk:post_event',
   Log = 'mx-sdk:log',
-  InvokeCtx = 'mx-sdk:invoke_ctx',
-  OnCtxEvent = 'mx-sdk:on_ctx_event',
-  OffCtxEvent = 'mx-sdk:off_ctx_event',
-  EmitCtxEvent = 'mx-sdk:emit_ctx_event',
+  CtxInvoke = 'mx-sdk:ctx_invoke',
+  CtxOnEvent = 'mx-sdk:ctx_on_event',
+  CtxOffEvent = 'mx-sdk:ctx_off_event',
+  CtxEmitEvent = 'mx-sdk:ctx_emit_event',
 }
 
 enum FrameworkCommand {
@@ -25,7 +25,7 @@ enum FrameworkCommand {
   InvokeResult = 'mx-framework:invole_result',
   Signal = 'mx-framework:signal',
   Event = 'mx-framework:event',
-  CtxEvent = 'mx-framework:ex_event',
+  CtxEvent = 'mx-framework:ctx_event',
 }
 
 export default abstract class MxExModule extends MxModule {
@@ -101,28 +101,28 @@ export default abstract class MxExModule extends MxModule {
           this.ctx.log(name, ...params)
         }
         break
-      case SdkCommand.InvokeCtx:
+      case SdkCommand.CtxInvoke:
         {
           const [id, name, ...params] = args
           this.onInvokeCtx(id, name, ...params)
         }
         break
-      case SdkCommand.OnCtxEvent:
+      case SdkCommand.CtxOnEvent:
         {
           const [event] = args
-          this.ctx.onCtxEvent(event, this.handleCtxEvent)
+          this.ctx.ctxOnEvent(event, this.handleCtxEvent)
         }
         break
-      case SdkCommand.OffCtxEvent:
+      case SdkCommand.CtxOffEvent:
         {
           const [event] = args
-          this.ctx.offCtxEvent(event, this.handleCtxEvent)
+          this.ctx.ctxOffEvent(event, this.handleCtxEvent)
         }
         break
-      case SdkCommand.EmitCtxEvent:
+      case SdkCommand.CtxEmitEvent:
         {
           const [event, ...params] = args
-          this.ctx.emitCtxEvent(event, ...params)
+          this.ctx.ctxEmitEvent(event, ...params)
         }
         break
     }
@@ -154,7 +154,7 @@ export default abstract class MxExModule extends MxModule {
   }
 
   private async onInvokeCtx(id: string, name: string, ...args: any[]) {
-    const result = await this.ctx.invokeCtx(name, ...args)
+    const result = await this.ctx.ctxInvoke(name, ...args)
     this.postMessage(FrameworkCommand.InvokeResult, id, result)
   }
 

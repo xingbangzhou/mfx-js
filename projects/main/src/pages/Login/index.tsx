@@ -13,7 +13,6 @@ const Login = memo(function Login() {
           <h2>Sign in</h2>
           <div>Fill in the fields below to sign into your account.</div>
         </div>
-        {/*https://tokyo-nextjs.bloomui.com/auth/login/cover?backTo=%2Fdashboards%2Freports*/}
       </div>
     </div>
   )

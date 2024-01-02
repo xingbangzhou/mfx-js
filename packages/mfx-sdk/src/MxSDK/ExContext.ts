@@ -19,10 +19,10 @@ enum SdkCommand {
   RemoveEventListener = 'mx-sdk:remove_event_listener',
   PostEvent = 'mx-sdk:post_event',
   Log = 'mx-sdk:log',
-  InvokeCtx = 'mx-sdk:invoke_ctx',
-  OnCtxEvent = 'mx-sdk:on_ctx_event',
-  OffCtxEvent = 'mx-sdk:off_ctx_event',
-  EmitCtxEvent = 'mx-sdk:emit_ctx_event',
+  CtxInvoke = 'mx-sdk:ctx_invoke',
+  CtxOnEvent = 'mx-sdk:ctx_on_event',
+  CtxOffEvent = 'mx-sdk:ctx_off_event',
+  CtxEmitEvent = 'mx-sdk:ctx_emit_event',
 }
 
 enum FrameworkCommand {
@@ -31,7 +31,7 @@ enum FrameworkCommand {
   InvokeResult = 'mx-framework:invole_result',
   Signal = 'mx-framework:signal',
   Event = 'mx-framework:event',
-  CtxEvent = 'mx-framework:ex_event',
+  CtxEvent = 'mx-framework:ctx_event',
 }
 
 export default abstract class MxExContext implements MxModuleContextFuncs {
@@ -161,22 +161,22 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     this.command(SdkCommand.Log, name, ...args)
   }
 
-  setCtxHandler(name: string, fn?: MxContextHandler) {
+  ctxSetHandler(name: string, fn?: MxContextHandler) {
     name
     fn
-    console.error("[MxExContext]: don't realize setExecutor")
+    console.error("[MxExContext]: don't realize ctxSetHandler")
   }
 
-  async invokeCtx(name: string, ...args: any[]) {
+  async ctxInvoke(name: string, ...args: any[]) {
     const fn = (this as any)[name]
     if (typeof fn === 'function') {
       return await fn.call(this, ...args)
     }
 
-    return await this.invoke0(SdkCommand.InvokeCtx, name, ...args)
+    return await this.invoke0(SdkCommand.CtxInvoke, name, ...args)
   }
 
-  onCtxEvent(event: string, listener: MxEventListener) {
+  ctxOnEvent(event: string, listener: MxEventListener) {
     const listeners = this._ctxEventListeners[event]
     if (listeners?.length) {
       listeners.push(listener)
@@ -184,10 +184,10 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     }
 
     this._ctxEventListeners[event] = [listener]
-    this.command(SdkCommand.OnCtxEvent, event)
+    this.command(SdkCommand.CtxOnEvent, event)
   }
 
-  offCtxEvent(event: string, listener: MxEventListener) {
+  ctxOffEvent(event: string, listener: MxEventListener) {
     const listeners = this._ctxEventListeners[event]
     if (!listeners) return
     const idx = listeners.indexOf(listener)
@@ -195,13 +195,13 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
       listeners.splice(idx, 1)
       if (!listeners.length) {
         delete this._ctxEventListeners[event]
-        this.command(SdkCommand.OffCtxEvent, event)
+        this.command(SdkCommand.CtxOffEvent, event)
       }
     }
   }
 
-  emitCtxEvent(event: string, ...args: any[]) {
-    this.command(SdkCommand.EmitCtxEvent, event, ...args)
+  ctxEmitEvent(event: string, ...args: any[]) {
+    this.command(SdkCommand.CtxEmitEvent, event, ...args)
   }
 
   protected abstract postMessage(cmd: string, ...args: any[]): void

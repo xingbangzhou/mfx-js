@@ -1,6 +1,6 @@
 {
   "name": "@mfx-js/sdk",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "main": "index.js",
   "types": "index.d.ts",
   "license": "MIT",
@@ -25,12 +25,12 @@
     "build:types": "node ../../scripts/buildTypes.mjs",
     "build:copy-files": "node ../../scripts/copyFiles.mjs",
     "prebuild": "rimraf build tsconfig.build.tsbuildinfo",
-    "release": "pnpm build && npm publish build --access public"
+    "release": "pnpm build && pnpm publish build --access public --no-git-checks"
   },
   "dependencies": {
   },
   "peerDependencies": {
-    "@mfx-js/core": ">=1.0.0"
+    "@mfx-js/core": ">=1.0.4"
   },
   "devDependencies": {
     "@mfx-js/tsconfig": "workspace:^",

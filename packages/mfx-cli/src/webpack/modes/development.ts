@@ -43,6 +43,7 @@ export default class WpDevelopment {
           warnings: true,
         },
       },
+      open: true,
       ...mfxConfig.devServer,
     }
 
