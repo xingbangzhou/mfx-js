@@ -5,6 +5,7 @@ const {name} = require(path.join(rootPath, 'package.json'))
 
 module.exports = ({mode, env, progress, analyze}) => ({
   devServer: {
+    open: true,
     port: 5001,
   },
 

@@ -52,7 +52,7 @@ export default class MxModules {
     ...args: any[]
   ) {
     if (!id) return
-    return this.load0(className, id)
+    return this.load0(className, id, ...args)
   }
 
   loadFrame(id: string, container: HTMLIFrameElement) {
