@@ -1,13 +1,13 @@
 {
   "name": "mfx-js",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "MFX Workspace",
   "repository": "https://github.com/xingbangzhou/mfx-js.git",
   "author": "zhouxingbang <zhouxingbang92@163.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "release": "lerna run --parallel --scope \"@mfx-js/*\" release",
+    "release": "pnpm --filter \"@mfx-js/*\" release",
     "prepare": "husky install",
     "lint": "eslint --fix --ext .ts,.tsx ."
   },
