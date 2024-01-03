@@ -116,3 +116,18 @@ export function invokable<T extends EventService>(prototype: T, propertyKey: str
 
   return descriptor
 }
+
+export function invokable5(originalMethod: any, context: ClassMemberDecoratorContext) {
+  const methodName = context.name
+  if (context.private) {
+    throw new Error(`'invokable5' cannot decorate private properties like ${methodName as string}.`)
+  }
+
+  context.addInitializer(function (this: any) {
+    if (!this[storedInvokableSymbol]) {
+      this[storedInvokableSymbol] = {}
+    }
+
+    this[storedInvokableSymbol][methodName] = originalMethod
+  })
+}

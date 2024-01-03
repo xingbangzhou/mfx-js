@@ -2,17 +2,29 @@ const Base64Table = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456
 
 export function encodeUTF8(value: string) {
   try {
-    return unescape(encodeURIComponent(value))
-  } catch (e) {
-    return value
+    const content = unescape(encodeURIComponent(value))
+    return {code: 0, content}
+  } catch (err) {
+    console.error('encodeUTF8, error: ', err)
+    return {
+      code: 1,
+      content: value,
+      error: err,
+    }
   }
 }
 
 export function decodeUTF8(value: string) {
   try {
-    return decodeURIComponent(escape(value))
-  } catch (e) {
-    return value
+    const content = decodeURIComponent(escape(value))
+    return {code: 0, content}
+  } catch (err) {
+    console.error('decodeUTF8, error: ', err)
+    return {
+      code: 1,
+      content: value,
+      error: err,
+    }
   }
 }
 
@@ -64,28 +76,38 @@ export function decodeBase64(str: string) {
   return output
 }
 
+export function decodeBase64UTF8(value: string) {
+  try {
+    const content = decodeURIComponent(escape(decodeBase64(value)))
+    return {code: 0, content}
+  } catch (err) {
+    console.error('decodeBase64UTF8, error: ', err)
+    return {
+      code: 1,
+      content: value,
+      error: err,
+    }
+  }
+}
+
+export function encodeBase64UTF8(value: string) {
+  try {
+    const content = encodeBase64(unescape(encodeURIComponent(value)))
+    return {code: 0, content}
+  } catch (err) {
+    console.error('encodeBase64UTF8, error: ', err)
+    return {
+      code: 1,
+      content: value,
+      error: err,
+    }
+  }
+}
+
 export function toLatin1String(buffer: Uint8Array) {
   let result = ''
   for (let i = 0; i < buffer.length; i++) {
     result += String.fromCharCode(buffer[i])
   }
   return result
-}
-
-export function decodeBase64UTF8(value: string) {
-  try {
-    return decodeURIComponent(escape(decodeBase64(value)))
-  } catch (error) {
-    console.error('decodeBase64UTF8, error: ', error)
-    return value
-  }
-}
-
-export function encodeBase64UTF8(value: string) {
-  try {
-    return encodeBase64(unescape(encodeURIComponent(value)))
-  } catch (error) {
-    console.error('encodeBase64UTF8, error: ', error)
-    return value
-  }
 }

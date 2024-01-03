@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "plugins": [{ "transform": "ts-transform-paths" }],
+    "plugins": [{ "transform": "ts-transform-paths", "after": true }],
     "types": ["webpack/module"],
     "target": "es2018",
     "module": "commonjs",
