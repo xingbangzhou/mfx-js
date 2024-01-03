@@ -22,7 +22,8 @@
     "sourceMap": true,
     "jsx": "preserve",
     "suppressImplicitAnyIndexErrors": true,
-    "importsNotUsedAsValues": "preserve"
+    "importsNotUsedAsValues": "preserve",
+    "ignoreDeprecations": "5.0"
   },
   "exclude": ["**/.*/", "**/dist", "**/build", "**/node_modules", "docs/export", "mfx-config.js"]
 }
