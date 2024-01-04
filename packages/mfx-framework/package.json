@@ -17,15 +17,15 @@
     "xingbangzhou"
   ],
   "scripts": {
-    "build": "pnpm build:legacy && pnpm build:modern && pnpm build:node && pnpm build:stable && pnpm build:types && pnpm build:copy-files",
+    "build": "pnpm prebuild && pnpm build:legacy && pnpm build:modern && pnpm build:node && pnpm build:stable && pnpm build:types && pnpm build:copy-files",
     "build:node": "node ../../scripts/build.mjs node",
     "build:modern": "node ../../scripts/build.mjs modern",
     "build:stable": "node ../../scripts/build.mjs stable",
     "build:legacy": "node ../../scripts/build.mjs legacy",
     "build:types": "node ../../scripts/buildTypes.mjs",
     "build:copy-files": "node ../../scripts/copyFiles.mjs",
-    "prebuild": "rimraf build tsconfig.build.tsbuildinfo",
-    "release": "pnpm build && pnpm publish build --access public --no-git-checks"
+    "prebuild": "rimraf dist tsconfig.build.tsbuildinfo",
+    "release": "pnpm build && pnpm publish dist --access public --no-git-checks"
   },
   "dependencies": {
   },

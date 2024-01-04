@@ -24,8 +24,8 @@
     "build:legacy": "node ../../scripts/build.mjs legacy",
     "build:types": "node ../../scripts/buildTypes.mjs",
     "build:copy-files": "node ../../scripts/copyFiles.mjs",
-    "prebuild": "rimraf build tsconfig.build.tsbuildinfo",
-    "release": "pnpm build && pnpm publish build --access public --no-git-checks"
+    "prebuild": "rimraf dist tsconfig.build.tsbuildinfo",
+    "release": "pnpm build && pnpm publish dist --access public --no-git-checks"
   },
   "dependencies": {
   },

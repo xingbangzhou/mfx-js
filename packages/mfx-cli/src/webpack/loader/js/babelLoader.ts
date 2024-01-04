@@ -10,14 +10,6 @@ interface BabelLoaderRule {
 }
 
 export default function babelLoader() {
-  const reactVersion = mfxEnv.reactVersion
-  let reactRuntime: string | undefined = undefined
-
-  if (reactVersion) {
-    const hasReact17 = compareVersion(reactVersion, '17') === 1
-    reactRuntime = hasReact17 ? 'automatic' : 'classic'
-  }
-
   const loaderRule: BabelLoaderRule = {
     loader: require.resolve('babel-loader'),
     options: {
@@ -43,6 +35,7 @@ export default function babelLoader() {
             version: require(require.resolve('@babel/runtime/package.json')).version,
             regenerator: true,
             useESModules: false,
+            absoluteRuntime: false,
           },
         ],
         [require.resolve('@babel/plugin-proposal-decorators'), {legacy: true}],
@@ -51,7 +44,9 @@ export default function babelLoader() {
     },
   }
 
-  if (reactRuntime) {
+  const reactVersion = mfxEnv.reactVersion
+  if (reactVersion) {
+    const reactRuntime = compareVersion(reactVersion, '17') === 1 ? 'automatic' : 'classic'
     loaderRule.options.presets.push([
       require.resolve('@babel/preset-react'),
       {

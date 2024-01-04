@@ -24,7 +24,7 @@
   },
   "files": [
     "bin",
-    "build",
+    "dist",
     "template"
   ],
   "scripts": {
@@ -90,8 +90,5 @@
   },
   "engines": {
     "node": ">=14.0.0"
-  },
-  "_moduleAliases": {
-    "src": "src/"
   }
 }

@@ -22,7 +22,7 @@ async function main() {
 
   await exec(['pnpm', 'tsc', '-b', tsconfigPath].join(' '))
 
-  const publishDir = path.join(packageRoot, 'build')
+  const publishDir = path.join(packageRoot, 'dist')
   const declarationFiles = await glob('**/*.d.ts', {absolute: true, cwd: publishDir})
   if (declarationFiles.length === 0) {
     throw new Error(`Unable to find declaration files in '${publishDir}'`)

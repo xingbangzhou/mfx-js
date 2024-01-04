@@ -93,7 +93,7 @@ yargs(process.argv.slice(2))
           default: false,
           describe: 'Set to `true` if you know you are transpiling large files.',
         })
-        .option('out-dir', {default: './build', type: 'string'})
+        .option('out-dir', {default: './dist', type: 'string'})
         .option('verbose', {type: 'boolean'})
     },
     handler: run,

@@ -25,5 +25,5 @@
     "importsNotUsedAsValues": "preserve",
     "ignoreDeprecations": "5.0"
   },
-  "exclude": ["**/.*/", "**/dist", "**/build", "**/node_modules", "docs/export", "mfx-config.js"]
+  "exclude": ["**/.*/", "dist", "**/dist", "**/node_modules", "docs/export", "mfx-config.js"]
 }

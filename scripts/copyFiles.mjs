@@ -3,12 +3,12 @@ import fse from 'fs-extra'
 import glob from 'fast-glob'
 
 const packagePath = process.cwd()
-const buildPath = path.join(packagePath, './build')
+const distPath = path.join(packagePath, './dist')
 const srcPath = path.join(packagePath, './src')
 
 async function includeFileInBuild(file) {
   const sourcePath = path.resolve(packagePath, file)
-  const targetPath = path.resolve(buildPath, path.basename(file))
+  const targetPath = path.resolve(distPath, path.basename(file))
   await fse.copy(sourcePath, targetPath)
   console.log(`Copied ${sourcePath} to ${targetPath}`)
 }
@@ -91,12 +91,12 @@ async function createPackageFile() {
       : {}),
   }
 
-  const typeDefinitionsFilePath = path.resolve(buildPath, './index.d.ts')
+  const typeDefinitionsFilePath = path.resolve(distPath, './index.d.ts')
   if (await fse.pathExists(typeDefinitionsFilePath)) {
     newPackageData.types = './index.d.ts'
   }
 
-  const targetPath = path.resolve(buildPath, './package.json')
+  const targetPath = path.resolve(distPath, './package.json')
 
   await fse.writeFile(targetPath, JSON.stringify(newPackageData, null, 2), 'utf8')
   console.log(`Created package.json in ${targetPath}`)
@@ -119,7 +119,7 @@ async function addLicense(packageData) {
   await Promise.all(
     ['./index.js'].map(async file => {
       try {
-        await prepend(path.resolve(buildPath, file), license)
+        await prepend(path.resolve(distPath, file), license)
       } catch (err) {
         if (err.code === 'ENOENT') {
           console.log(`Skipped license for ${file}`)
@@ -134,7 +134,7 @@ async function addLicense(packageData) {
 async function run() {
   try {
     // TypeScript
-    await typescriptCopy({from: srcPath, to: buildPath})
+    await typescriptCopy({from: srcPath, to: distPath})
 
     const packageData = await createPackageFile()
 
@@ -142,7 +142,7 @@ async function run() {
 
     await addLicense(packageData)
 
-    await createModulePackages({from: srcPath, to: buildPath})
+    await createModulePackages({from: srcPath, to: distPath})
   } catch (err) {
     console.error(err)
     process.exit(1)

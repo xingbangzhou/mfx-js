@@ -26,10 +26,12 @@ module.exports = function (api) {
       '@babel/plugin-transform-runtime',
       {
         useESModules,
-        version: '^7.16.4',
+        version: require('@babel/runtime/package.json').version,
       },
     ],
   ]
+
+  console.log('fffffffffff', require('@babel/runtime/package.json').version)
 
   if (process.env.NODE_ENV === 'production') {
   }
