@@ -30,7 +30,7 @@
   "dependencies": {
   },
   "peerDependencies": {
-    "@mfx-js/core": ">=1.0.4"
+    "@mfx-js/core": ">=1.1.0"
   },
   "devDependencies": {
     "@mfx-js/tsconfig": "workspace:^",
