@@ -3,6 +3,8 @@ import MxModule, {MxExModule} from './Module'
 import MxFrameworkContext from './privates/FrameworkContext'
 import {MxDestructor} from './types'
 
+const ctx = self as any
+
 export default class MxFramework extends MxModule {
   constructor(fwCtx: MxFrameworkContext) {
     const destructor = new MxDestructor()
@@ -16,7 +18,7 @@ export default class MxFramework extends MxModule {
   init() {
     if (this._inited) return
     this._inited = true
-    window['_MxFramework_'] = true
+    ctx['_MxFramework_'] = true
     this.ctx.logger.log('MxFramework', 'init()')
   }
 

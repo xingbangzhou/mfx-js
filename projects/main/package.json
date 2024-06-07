@@ -15,6 +15,7 @@
     "@emotion/styled": "^11.10.4",
     "@mfx-js/core": "workspace:^",
     "@mfx-js/framework": "workspace:^",
+    "@mfx-js/player": "workspace:^",
     "@mui/icons-material": "^5.14.8",
     "@mui/material": "^5.14.8",
     "@mui/system": "^5.14.8",

@@ -1,0 +1,35 @@
+.animView {
+  position: relative;
+  width: 100%;
+
+  .contentWrap {
+    position: relative;
+    height: 500px;
+
+    .animWrap {
+      width: 450px;
+      height: 100%;
+
+      .anim {
+        width: 100%;
+        height: 100%;
+        background:
+          0 0/15px 15px,
+          0 0/15px 15px,
+          0 0/75px 75px,
+          0 0/75px 75px rgb(0, 0, 0);
+        background-image: linear-gradient(
+            hsla(0, 0%, 100%, 0.2) 1px,
+            transparent 0
+          ),
+          linear-gradient(90deg, hsla(0, 0%, 100%, 0.2) 1px, transparent 0);
+        background-color: black;
+
+        canvas {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}

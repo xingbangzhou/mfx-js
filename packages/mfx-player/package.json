@@ -1,0 +1,28 @@
+{
+  "name": "@mfx-js/player",
+  "version": "1.0.0",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "license": "MIT",
+  "keywords": [
+    "typescript",
+    "mfx",
+    "player"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xingbangzhou/mfx-js.git",
+    "directory": "packages/mfx-player"
+  },
+  "maintainers": [
+    "xingbangzhou"
+  ],
+  "scripts": {
+  },
+  "devDependencies": {
+    "@mfx-js/tsconfig": "workspace:^"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

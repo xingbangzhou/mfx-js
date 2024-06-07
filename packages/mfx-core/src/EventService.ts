@@ -2,7 +2,7 @@ import EventEmitter, {EventObject} from './EventEmitter'
 import {addHiddenProp, hasProp} from './shims'
 import {MxInvokeHandler, MxService, MxSlotHandler} from './types'
 
-const storedInvokableSymbol = Symbol('mxservice-invokable')
+const storedInvokableSymbol = Symbol('invokable')
 
 export class EventSignal<Type extends MxSlotHandler> extends EventObject<Type> {}
 
@@ -32,7 +32,8 @@ export default class EventService implements MxService {
    * @returns 返回值
    */
   async invoke(name: string, ...args: any[]) {
-    const fn = this._invokes?.[name] || this[storedInvokableSymbol][name]
+    const self = this as any
+    const fn = this._invokes?.[name] || self[storedInvokableSymbol][name]
     if (!fn || typeof fn !== 'function') return undefined
 
     const result = await fn.call(this, ...args)
@@ -111,13 +112,13 @@ export function invokable<T extends EventService>(prototype: T, propertyKey: str
   }
 
   if (typeof descriptor.value === 'function') {
-    prototype[storedInvokableSymbol][propertyKey] = descriptor.value
+    ;(prototype as any)[storedInvokableSymbol][propertyKey] = descriptor.value
   }
 
   return descriptor
 }
 
-export function invokable5(originalMethod: any, context: ClassMemberDecoratorContext) {
+export function invokable5<T extends EventService>(originalMethod: any, context: ClassMethodDecoratorContext<T>) {
   const methodName = context.name
   if (context.private) {
     throw new Error(`'invokable5' cannot decorate private properties like ${methodName as string}.`)

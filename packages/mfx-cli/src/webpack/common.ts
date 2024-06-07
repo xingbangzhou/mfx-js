@@ -75,6 +75,7 @@ export default class WpCommon {
       modules: ['node_modules', mfxEnv.resolve('node_modules'), mfxEnv.src],
       alias: {
         src: mfxEnv.src,
+        ...mfxConfig.alias,
       },
       extensions: [
         '.js',

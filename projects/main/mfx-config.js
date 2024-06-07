@@ -6,13 +6,15 @@ const {name} = require(path.join(rootPath, 'package.json'))
 module.exports = ({mode, env, progress, analyze}) => ({
   devServer: {
     open: true,
-    port: 5001,
+    port: 5002,
   },
 
   alias: {
     '@mfx-js/core': path.resolve(rootPath, '../../packages/mfx-core/src'),
     '@mfx-js/core/*': path.resolve(rootPath, '../../packages/mfx-core/src/*'),
     '@mfx-js/framework': path.resolve(rootPath, '../../packages/mfx-framework/src'),
+    '@mfx-js/player': path.resolve(rootPath, '../../packages/mfx-player/src'),
+    '@mfx-js/player/*': path.resolve(rootPath, '../../packages/mfx-player/src/*'),
   },
 
   chainExtender: wpChain => {
