@@ -69,8 +69,6 @@ export default class TextDrawer extends AbstractDrawer<LayerTextProps> {
   }
 
   async init(gl: ThisWebGLContext) {
-    this.store.addKeyInfo(this.props)
-
     const canvas = new OffscreenCanvas(0, 0)
     let ctx = canvas.getContext('2d')
     if (ctx && this.props.textDocAttr) {
@@ -129,8 +127,9 @@ export default class TextDrawer extends AbstractDrawer<LayerTextProps> {
     gl.bindTexture(gl.TEXTURE_2D, null)
   }
 
-  destroy(gl?: ThisWebGLContext | undefined) {
-    super.destroy(gl)
+  destroy() {
+    super.destroy()
+
     this.texture?.destroy()
     this.texture = undefined
   }

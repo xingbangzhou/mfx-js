@@ -1,9 +1,10 @@
-import {KeyItemInfo, KeyValue, PlayOptions, PlayProps, PlayState} from '../../types'
+import {MfxKeyInfo, MfxKeyValue, PlayerOptions, PlayState, MfxPlayProps, MfxPlayInfo} from '../../types'
 import {InvokeParameterMap, CallbackParameterMap} from './types'
 
+/**
+ * @brief Render对象映射id
+ */
 let lastRenderId = 0
-const mapRenderObjs: Record<number, WorkerRender> = {}
-
 function createRenderId() {
   lastRenderId++
   if (lastRenderId >= 2100000000) {
@@ -12,7 +13,20 @@ function createRenderId() {
   return lastRenderId
 }
 
+/**
+ * @brief 异步回调映射id
+ */
+let lastResolveId = 0
+function createResolveId() {
+  lastResolveId++
+  if (lastResolveId >= 2100000000) {
+    lastResolveId = 1
+  }
+  return lastResolveId
+}
+
 let _worker: Worker | undefined = undefined
+const mapRenderObjs: Record<number, WorkerRender> = {}
 
 function worker() {
   if (_worker) return _worker
@@ -30,7 +44,7 @@ function onWorkerCallback<M extends keyof CallbackParameterMap>(
   const renderObj = mapRenderObjs[eventData.id]
   if (!renderObj) return
 
-  renderObj.onCallback(eventData.message, eventData.params)
+  renderObj.onWorkerCallback(eventData.message, eventData.params)
 }
 
 function invokeWorker<F extends keyof InvokeParameterMap>(
@@ -42,7 +56,7 @@ function invokeWorker<F extends keyof InvokeParameterMap>(
 }
 
 export default class WorkerRender {
-  constructor(container: HTMLElement, opts?: PlayOptions) {
+  constructor(container: HTMLElement, opts?: PlayerOptions) {
     this.id = createRenderId()
     mapRenderObjs[this.id] = this
 
@@ -50,28 +64,34 @@ export default class WorkerRender {
     container.appendChild(this._canvas)
     const offscreenCanvas = this._canvas.transferControlToOffscreen()
 
-    invokeWorker('instance', {id: this.id, canvas: offscreenCanvas, opts}, [offscreenCanvas])
+    invokeWorker('instance', {id: this.id, canvas: offscreenCanvas, opts}, [offscreenCanvas as any])
   }
 
   readonly id: number
   private _canvas?: HTMLCanvasElement
 
   private _playState = PlayState.None
-
-  private _resolveId = 0
   private _resolveFns?: Record<number, any>
 
-  async load(props: PlayProps, keys?: KeyValue | KeyValue[]) {
+  async load(props: MfxPlayProps, keys?: MfxKeyValue | MfxKeyValue[]) {
     if (this._playState === PlayState.Destory) return undefined
 
-    const resolveId = this.createResolveId()
+    const resolveId = createResolveId()
 
     invokeWorker('load', {id: this.id, resolveId, props, keys})
 
-    return new Promise<KeyItemInfo[] | undefined>(resolve => {
+    this.resizeCanvasToDisplaySize()
+
+    return new Promise<{keys: MfxKeyInfo[]; info?: MfxPlayInfo} | undefined>(resolve => {
       this._resolveFns = this._resolveFns || {}
       this._resolveFns[resolveId] = resolve
     })
+  }
+
+  setKeys(keys: MfxKeyValue | MfxKeyValue[]) {
+    if (this._playState === PlayState.Destory) return
+
+    invokeWorker('setKeys', {id: this.id, keys})
   }
 
   play() {
@@ -92,13 +112,12 @@ export default class WorkerRender {
     invokeWorker('pause', {id: this.id})
   }
 
-  resizeCanvasToDisplaySize(multiplier?: number) {
+  resizeCanvasToDisplaySize() {
     const canvas = this._canvas
     if (!canvas) return
 
-    multiplier = multiplier || 1
-    const width = (canvas.clientWidth * multiplier) | 0
-    const height = (canvas.clientHeight * multiplier) | 0
+    const width = canvas.clientWidth | 0
+    const height = canvas.clientHeight | 0
 
     invokeWorker('resizeCanvasToDisplaySize', {id: this.id, width, height})
   }
@@ -110,13 +129,13 @@ export default class WorkerRender {
   }
 
   // Worker回调消息处理
-  onCallback<M extends keyof CallbackParameterMap>(message: M, params: CallbackParameterMap[M]) {
+  onWorkerCallback<M extends keyof CallbackParameterMap>(message: M, params: CallbackParameterMap[M]) {
     switch (message) {
       case 'loaded':
         {
           if (!this._resolveFns) return
-          const {resolveId, keyInfos} = params as CallbackParameterMap['loaded']
-          this._resolveFns[resolveId](keyInfos)
+          const {resolveId, keys, info} = params as CallbackParameterMap['loaded']
+          this._resolveFns[resolveId]({keys, info})
           delete this._resolveFns[resolveId]
         }
         return
@@ -132,28 +151,30 @@ export default class WorkerRender {
         this._playState = PlayState.End
         return
       case 'destroy':
-        this._playState = PlayState.Destory
-        this.clear(true)
+        {
+          this.clear(true)
+        }
         return
     }
   }
 
-  protected createResolveId() {
-    this._resolveId++
-    if (this._resolveId >= 2100000000) {
-      this._resolveId = 1
-    }
-    return this._resolveId
-  }
-
   private clear(del?: boolean) {
+    this._playState = PlayState.Destory
     this._canvas?.parentNode?.removeChild(this._canvas)
     this._canvas = undefined
 
-    this._resolveFns = undefined
-
     if (del) {
       delete mapRenderObjs[this.id]
+    }
+
+    // 清理Resolve
+    const resolveFns = this._resolveFns
+    this._resolveFns = undefined
+    if (resolveFns) {
+      for (const id in resolveFns) {
+        const fn = resolveFns[id]
+        fn?.(undefined)
+      }
     }
   }
 }

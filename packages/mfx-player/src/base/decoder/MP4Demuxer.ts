@@ -1,14 +1,14 @@
 import MP4Box, {ISOFile, DataStream} from './mp4box.all'
 
-export interface MP4DemuxConfig {
+export interface MP4Config {
   codec: string
   codedWidth: number
   codedHeight: number
-  description: any
+  description?: Uint8Array
 }
 
-export interface MP4DemuxHandles {
-  onConfig(config: MP4DemuxConfig): void
+export interface DemuxerHandles {
+  onConfig(config: MP4Config): void
   onChunk(chunk: EncodedVideoChunk): void
   setStatus(type: string, message: any): void
 }
@@ -39,7 +39,7 @@ class MP4FileSink {
 }
 
 export default class MP4Demuxer {
-  constructor(uri: string, handles: MP4DemuxHandles) {
+  constructor(url: string | Blob, handles: DemuxerHandles) {
     this.handles = handles
 
     this._file = MP4Box.createFile()
@@ -48,20 +48,31 @@ export default class MP4Demuxer {
     this._file.onSamples = this.onSamples
 
     const fileSink = new MP4FileSink(this._file)
-    fetch(uri).then(response => {
-      this._respBody = response.body
-      this._respBody?.pipeTo(new WritableStream(fileSink, {highWaterMark: 2}))
-    })
+    if (url instanceof Blob) {
+      this._biteStream = url.stream()
+      this._biteStream.pipeTo(new WritableStream(fileSink, {highWaterMark: 2}))
+    } else {
+      fetch(url)
+        .then(response => {
+          this._biteStream = response.body
+          this._biteStream?.pipeTo(new WritableStream(fileSink, {highWaterMark: 2}))
+        })
+        .catch(err => {
+          console.error(err)
+          this.handles?.setStatus('demux', `fetch, error: ${String(err)}`)
+        })
+    }
   }
 
-  private handles: MP4DemuxHandles | null = null
+  private handles: DemuxerHandles | null = null
   private _file: ISOFile
-  private _respBody: ReadableStream<Uint8Array> | null = null
+  private _biteStream: ReadableStream<Uint8Array> | null = null
 
   destroy() {
     this.handles = null
-    this._respBody?.cancel()
-    this._respBody = null
+    this._biteStream?.cancel()
+    this._biteStream = null
+    this._file.stop()
   }
 
   private description(track: any) {

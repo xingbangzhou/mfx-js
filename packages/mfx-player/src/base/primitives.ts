@@ -59,33 +59,35 @@ export function drawVideo(
   gl.drawArrays(primitiveType, 0, count)
 }
 
-export function drawSimpleTexture(attribBuffer: AttribBuffer) {
+export function drawSimpleTexture(
+  attribBuffer: AttribBuffer,
+  vcoord?: {lx: number; ly: number; rx: number; ry: number},
+  tcoord?: {lx: number; ly: number; rx: number; ry: number},
+) {
   const gl = attribBuffer.gl as ThisWebGLContext
 
   {
-    const x1 = -1.0
-    const y1 = -1.0
-    const x2 = 1.0
-    const y2 = 1.0
-
-    const gl = attribBuffer.gl as ThisWebGLContext
+    const x1 = vcoord?.lx ?? -1.0
+    const y1 = vcoord?.ly ?? -1.0
+    const x2 = vcoord?.rx ?? 1.0
+    const y2 = vcoord?.ry ?? 1.0
 
     attribBuffer.setArribInfo(gl.attribs.position, {
       data: [x1, y1, x2, y1, x1, y2, x1, y2, x2, y1, x2, y2],
     })
   }
 
-  const tx1 = 0
-  const ty1 = 0
-  const tx2 = 1
-  const ty2 = 1
+  const tx1 = tcoord?.lx ?? 0
+  const ty1 = tcoord?.ly ?? 0
+  const tx2 = tcoord?.rx ?? 1
+  const ty2 = tcoord?.ry ?? 1
+
   attribBuffer.setArribInfo(gl.attribs.texcoord, {
     data: [tx1, ty1, tx2, ty1, tx1, ty2, tx1, ty2, tx2, ty1, tx2, ty2],
   })
 
   const primitiveType = gl.TRIANGLES
-  const count = 6
-  gl.drawArrays(primitiveType, 0, count)
+  gl.drawArrays(primitiveType, 0, 6)
 }
 
 export function drawLineRect(attribBuffer: AttribBuffer, w: number, h: number) {

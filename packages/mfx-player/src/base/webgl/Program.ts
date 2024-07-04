@@ -26,8 +26,10 @@ export default class Program {
 
     gl.linkProgram(program)
 
-    if (!gl.getProgramParameter(this.program, gl.LINK_STATUS)) {
-      console.error(`An error occurred linkProgram: ${gl.getProgramInfoLog(this.program)}`, this)
+    const status = gl.getProgramParameter(this.program, gl.LINK_STATUS)
+    if (!status) {
+      console.error(`An error occurred linkProgram: ${gl.getProgramInfoLog(this.program)}`, status)
+      this.destroy()
     }
   }
 
@@ -37,6 +39,10 @@ export default class Program {
   fragmentShader: WebGLShader | null
   readonly vertexGlsl: string
   readonly fragmentGlsl: string
+
+  get valid() {
+    return !!this.program
+  }
 
   use() {
     const gl = this.gl
@@ -53,12 +59,18 @@ export default class Program {
       matrix: gl.getUniformLocation(program, 'u_matrix') as WebGLUniformLocation,
       opacity: gl.getUniformLocation(program, 'u_opacity') as WebGLUniformLocation,
       isAlpha: gl.getUniformLocation(program, 'u_isAlpha') as WebGLUniformLocation,
+      blendMode: gl.getUniformLocation(program, 'u_blendMode') as WebGLUniformLocation,
+      maskMode: gl.getUniformLocation(program, 'u_maskMode') as WebGLUniformLocation,
     }
     const uTextureLocation = gl.getUniformLocation(program, 'u_texture')
     gl.uniform1i(uTextureLocation, 0)
+    const uMaskTextureLocation = gl.getUniformLocation(program as WebGLProgram, 'u_dstTexture')
+    gl.uniform1i(uMaskTextureLocation, 1)
   }
 
   destroy() {
+    this.gl?.deleteShader(this.vertexShader)
+    this.gl?.deleteShader(this.fragmentShader)
     this.gl?.deleteProgram(this.program)
     this.gl = null
     this.program = null

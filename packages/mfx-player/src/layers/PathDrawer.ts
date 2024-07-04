@@ -2,19 +2,18 @@ import {ThisWebGLContext} from '../base'
 import {LayerPathProps} from '../types'
 import ElementDrawer from './ElementDrawer'
 
+// Notice: Path的width和height和Shape一致
 export default class PathDrawer extends ElementDrawer<LayerPathProps> {
   private points: Array<[number, number]> = []
 
   async init(gl: ThisWebGLContext) {
     super.init(gl)
 
-    const width = this.width
-    const height = this.height
-    const cx = width * 0.5
-    const cy = height * 0.5
-    this.setAnchorOffXY(cx, cy)
-
+    const cx = this.width * 0.5
+    const cy = this.height * 0.5
     this.points = this.props.elements.shapeInfo.points.map(el => [cx + el[0], cy + el[1]])
+
+    this.setMatrixCache()
   }
 
   protected getDrawPath(ctx: OffscreenCanvasRenderingContext2D) {

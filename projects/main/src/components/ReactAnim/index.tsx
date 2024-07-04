@@ -1,9 +1,9 @@
 import React, {HTMLAttributes, Ref, memo, useEffect, useImperativeHandle, useRef} from 'react'
-import MfxPlayer, {PlayOptions, PlayProps} from '@mfx-js/player'
+import MfxPlayer, {PlayerOptions, MfxPlayProps, MfxKeyValue} from '@mfx-js/player'
 import {useForkRef} from '@mui/material/utils'
 
 export interface PlayerHandler {
-  play(props: PlayProps): void
+  play(props: MfxPlayProps, keys?: MfxKeyValue | MfxKeyValue[]): void
 }
 
 type ReactAnimProps = {
@@ -18,20 +18,20 @@ const ReactAnim = memo(function ReactAnim(props: ReactAnimProps) {
   const forkRef = useForkRef(rootRef, rootRefProp)
 
   useImperativeHandle(handlerRef, () => ({
-    play: (props: PlayProps, opts?: PlayOptions) => {
+    play: (props: MfxPlayProps, keys?: MfxKeyValue | MfxKeyValue[], opts?: PlayerOptions) => {
       if (!rootRef.current) return
 
       playerRef.current = new MfxPlayer(rootRef.current, opts)
-      playerRef.current.load(props).then(keyInfos => {
-        console.log('ReactAnim', 'loaded: ', keyInfos)
+      playerRef.current.load(props, keys).then(info => {
+        console.log('ReactAnim', 'loaded: ', info)
       })
-      playerRef.current.play()
+      playerRef.current?.play()
     },
   }))
 
   useEffect(() => {
     return () => {
-      playerRef.current?.detroy()
+      playerRef.current?.destroy()
     }
   }, [])
 

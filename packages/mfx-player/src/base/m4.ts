@@ -35,6 +35,8 @@ export function identity(dst?: Mat4) {
   return dst
 }
 
+export const DefaultMatrix = identity()
+
 // 透视投影 fieldOfViewInRadians: 0~360
 export function perspective(fieldOfViewInRadians: number, aspect: number, near: number, far: number, dst?: Mat4) {
   dst = dst || new Float32Array(16)
@@ -549,8 +551,8 @@ export function axisRotate(m: Mat4, axis: Vec3, angleInRadians: number, dst?: Ma
   return dst
 }
 
-// 世界坐标系 (摄像机+透视矩阵)
-export function perspectiveCamera(width: number, height: number, fieldOfViewDeg = 40) {
+// 中心相机坐标系 (摄像机+透视矩阵)
+export function centerCamera(width: number, height: number, fieldOfViewDeg = 40) {
   // 透视矩阵
   const fieldOfViewRadians = degToRad(fieldOfViewDeg)
   const aspect = width / height
@@ -560,8 +562,8 @@ export function perspectiveCamera(width: number, height: number, fieldOfViewDeg 
 
   // 相机坐标矩阵
   const zFlat = (height / Math.tan(fieldOfViewRadians * 0.5)) * 0.5
-  const cameraPosition: Vec3 = [width * 0.5, -height * 0.5, zFlat]
-  const target: Vec3 = [width * 0.5, -height * 0.5, 0]
+  const cameraPosition: Vec3 = [0, 0, zFlat]
+  const target: Vec3 = [0, 0, 0]
   const up: Vec3 = [0, 1, 0]
   const cameraMatrix = lookAt(cameraPosition, target, up)
   // 当前视图矩阵

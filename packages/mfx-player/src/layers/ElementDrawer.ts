@@ -1,3 +1,4 @@
+import Store from '../Store'
 import {drawTexture, m4, rgba, ThisWebGLContext} from '../base'
 import {Property} from '../base/transforms'
 import Texture from '../base/webgl/Texture'
@@ -11,7 +12,6 @@ export default abstract class ElementDrawer<
   Props extends LayerRectProps | LayerEllipseProps | LayerPathProps,
 > extends AbstractDrawer<Props> {
   private texture?: Texture
-  // private _ctx: CanvasRenderingContext2D | null = null
   private _ctx: OffscreenCanvasRenderingContext2D | null = null
   private _lineDashOffset?: Property<number>
   private _lastDashOffset = 0
@@ -41,25 +41,22 @@ export default abstract class ElementDrawer<
     gl.bindTexture(gl.TEXTURE_2D, null)
   }
 
-  destroy(gl?: ThisWebGLContext | undefined): void {
-    super.destroy(gl)
+  destroy(): void {
+    super.destroy()
+
     this.texture?.destroy()
+    this.texture = undefined
     this._ctx = null
   }
 
-  protected abstract getDrawPath(ctx: OffscreenCanvasRenderingContext2D): Path2D
+  protected abstract getDrawPath(ctx: OffscreenCanvasRenderingContext2D): Path2D | null
 
   private drawShape(gl: ThisWebGLContext, frameInfo: FrameInfo) {
     const width = this.width
     const height = this.height
     let hasTexture = true
-
     if (!this._ctx) {
-      // const canvas = document.createElement('canvas')
-      // canvas.width = width
-      // canvas.height = height
       const canvas = new OffscreenCanvas(width, height)
-
       this._ctx = canvas.getContext('2d')
       hasTexture = false
     }
@@ -92,13 +89,13 @@ export default abstract class ElementDrawer<
 
       const path = this.getDrawPath(this._ctx)
       if (fillInfo) {
-        this._ctx.fill(path)
+        path ? this._ctx.fill(path) : this._ctx.fill()
       }
       if (strokeInfo) {
-        this._ctx.stroke(path)
+        path ? this._ctx.stroke(path) : this._ctx.stroke()
       }
 
-      this.texture?.texImage2D(this._ctx.canvas)
+      this.texture?.texImage2D(this._ctx.canvas as any)
     }
   }
 }

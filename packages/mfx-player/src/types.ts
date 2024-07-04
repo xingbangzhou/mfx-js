@@ -1,9 +1,6 @@
 import {Framebuffer} from './base/webgl'
 
 export enum LayerType {
-  // 预合成组件
-  PreComposition = 'precomposition',
-  // 图层
   Image = 'image',
   Video = 'video',
   Text = 'text',
@@ -12,6 +9,10 @@ export enum LayerType {
   Ellipse = 'Ellipse',
   Rect = 'Rect',
   Path = 'Path',
+  // 预合成组件
+  PreComposition = 'precomposition',
+  // 相机节点
+  Camera = 'camera',
 }
 
 export enum PlayState {
@@ -20,6 +21,12 @@ export enum PlayState {
   Pause,
   End,
   Destory,
+}
+
+export enum MfxFillMode {
+  LongSide = 0, // 默认长边对齐
+  ShortSide, // 短边对齐
+  Fill, // 填充
 }
 
 export interface FrameInfo {
@@ -31,19 +38,16 @@ export interface FrameInfo {
   framebuffer: Framebuffer
 }
 
-export interface KeyItemInfo {
-  type: LayerType.Image | LayerType.Video | LayerType.Text
-  key: string
-  value?: string
-  inFrame?: number
-  outFrame?: number
-  content?: string
-}
-
-export interface KeyValue {
+export interface MfxKeyValue {
   key: string
   type?: LayerType.Image | LayerType.Video | LayerType.Text
   value?: string
+}
+
+export type MfxKeyInfo = MfxKeyValue & {
+  inFrame?: number
+  outFrame?: number
+  content?: string
 }
 
 export interface TransformProps {
@@ -118,6 +122,7 @@ export interface LayerBaseProps {
   trackMatteLayer?: number
   trackMatteType?: TrackMatteType
   blendMode?: BlendMode
+  is3D?: boolean
 }
 
 export type LayerImageProps = {
@@ -220,6 +225,16 @@ export type LayerVectorProps = {
   layers: LayerProps[]
 } & LayerBaseProps
 
+export type LayerCameraProps = {
+  options?: {
+    zoom?: {
+      inFrame: number
+      value: number
+      timeFunc?: number
+    }[]
+  }
+} & LayerBaseProps
+
 export type LayerProps =
   | LayerImageProps
   | LayerVideoProps
@@ -230,7 +245,7 @@ export type LayerProps =
   | LayerEllipseProps
   | LayerPathProps
 
-export interface PlayProps {
+export interface MfxPlayProps {
   width: number
   height: number
   duration: number // 秒
@@ -241,6 +256,29 @@ export interface PlayProps {
   comps: LayerProps[]
 }
 
-export interface PlayOptions {
+export interface PlayerOptions {
+  /**
+   * 是否循环播放，默认为false
+   */
   loop?: boolean
+  /**
+   * 尺寸适配模式
+   */
+  fillMode?: MfxFillMode
+  /**
+   * 打印调试信息
+   */
+  debug?: boolean
+  /**
+   * 加载完毕后直接播放，默认为false
+   */
+  playAfterLoad?: boolean
+}
+
+export interface MfxPlayInfo {
+  width: number
+  height: number
+  duration: number // 秒
+  frameRate: number
+  frames: number
 }

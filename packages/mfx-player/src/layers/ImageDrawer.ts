@@ -1,13 +1,16 @@
 import {ThisWebGLContext, drawTexture, m4} from '../base'
-import Texture from '../base/webgl/Texture'
 import {FrameInfo, LayerImageProps} from '../types'
 import AbstractDrawer from './AbstractDrawer'
+import Texture from '../base/webgl/Texture'
 
-const loadImageData = async (url: string) => {
+const loadImageData = async (url: string): Promise<Blob | undefined> => {
   return new Promise<any>(resolve => {
     fetch(url)
       .then(response => {
         return response.blob()
+      })
+      .catch(err => {
+        console.log(err)
       })
       .then(blob => {
         resolve(blob)
@@ -18,53 +21,79 @@ const loadImageData = async (url: string) => {
 export default class ImageDrawer extends AbstractDrawer<LayerImageProps> {
   private texture?: Texture
 
-  get url() {
-    return this.props.content || ''
+  get url(): Blob | string {
+    return this.store.getKeyInfo(this.props.name)?.value || this.props.content || ''
   }
+  cacheUrl: string | Blob = ''
 
   async init(gl: ThisWebGLContext) {
-    this.store.addKeyInfo(this.props)
+    const url = this.url
+    if (!url) return
 
-    const imageData = await loadImageData(this.url)
+    let imageData: Blob | undefined = undefined
+    if (typeof url === 'string') {
+      imageData = await loadImageData(url)
+    } else if (url instanceof Blob) {
+      imageData = url
+    }
+
     if (imageData) {
-      createImageBitmap(imageData).then(imageBitmap => {
-        const width = this.width
-        const height = this.height
-        const canvas = new OffscreenCanvas(width, height)
-        const ctx = canvas.getContext('2d')
-        if (ctx) {
-          ctx.clearRect(0, 0, canvas.width, canvas.height)
-          ctx.drawImage(imageBitmap, 0, 0)
-
+      createImageBitmap(imageData)
+        .then(imageBitmap => {
+          const imageWidth = imageBitmap.width
+          const imageHeight = imageBitmap.height
+          const width = this.width
+          const height = this.height
+          let canvas: OffscreenCanvas | null = new OffscreenCanvas(width, height)
+          let ctx: OffscreenCanvasRenderingContext2D | null = canvas.getContext('2d')
+          if (this.props.fillMode === 1) {
+            // 长边对齐
+            const isLead = this.width / this.height < imageWidth / imageHeight
+            const drawWidth = !isLead ? this.width : this.height * (imageWidth / imageHeight)
+            const drawHeight = isLead ? this.height : this.width / (imageWidth / imageHeight)
+            const drawX = -(drawWidth - this.width) / 2
+            const drawY = -(drawHeight - this.height) / 2
+            ctx?.drawImage(imageBitmap, drawX, drawY, drawWidth, drawHeight)
+          } else if (this.props.fillMode === 2) {
+            // 平铺填充
+            ctx?.drawImage(imageBitmap, 0, 0, this.width, this.height)
+          } else {
+            // 短边对齐
+            const isLead = this.width / this.height < imageWidth / imageHeight
+            const drawWidth = isLead ? this.width : this.height * (imageWidth / imageHeight)
+            const drawHeight = !isLead ? this.height : this.width / (imageWidth / imageHeight)
+            const drawX = (this.width - drawWidth) / 2
+            const drawY = (this.height - drawHeight) / 2
+            ctx?.drawImage(imageBitmap, drawX, drawY, drawWidth, drawHeight)
+          }
           this.texture = new Texture(gl)
-          this.texture.texImage2D(canvas)
-        }
-      })
+          this.texture.texImage2D(canvas as any)
+
+          imageBitmap.close()
+          ctx = null
+          canvas = null
+          this.cacheUrl = url
+          this.setMatrixCache()
+        })
+        .catch(err => {
+          console.error('createImageBitmap', String(err), url)
+        })
     }
   }
 
-  async draw(gl: ThisWebGLContext, matrix: m4.Mat4, frameInfo: FrameInfo) {
+  draw(gl: ThisWebGLContext, matrix: m4.Mat4, frameInfo: FrameInfo) {
     if (!this.texture) return
-
-    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false)
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
 
     gl.activeTexture(gl.TEXTURE0)
     this.texture.bind()
     gl.uniformMatrix4fv(gl.uniforms.matrix, false, matrix)
 
-    const width = this.width
-    const height = this.height
-    drawTexture(this.getAttribBuffer(gl), width, height)
-
-    gl.bindTexture(gl.TEXTURE_2D, null)
-
-    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true)
-    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
+    drawTexture(this.getAttribBuffer(gl), this.width, this.height)
   }
 
-  destroy(gl?: ThisWebGLContext | undefined) {
-    super.destroy(gl)
+  destroy() {
+    super.destroy()
+
     this.texture?.destroy()
     this.texture = undefined
   }

@@ -7,5 +7,7 @@ export type ThisWebGLContext = WebGL2RenderingContext & {
     matrix: WebGLUniformLocation
     opacity: WebGLUniformLocation
     isAlpha: WebGLUniformLocation
+    blendMode: WebGLUniformLocation
+    maskMode: WebGLUniformLocation
   }
 }

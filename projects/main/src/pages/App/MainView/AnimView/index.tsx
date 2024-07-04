@@ -7,7 +7,7 @@ const AnimView = memo(function AnimView() {
   const handlerRef = useRef<PlayerHandler>(null)
 
   useEffect(() => {
-    import('./mock_ship.json').then(data => {
+    import('./mock_时间调整.json').then(data => {
       handlerRef.current?.play(data.default as any)
     })
   }, [])

@@ -1,9 +1,10 @@
-import {KeyItemInfo, KeyValue, PlayOptions, PlayProps} from '../../types'
+import {MfxKeyInfo, MfxKeyValue, MfxPlayInfo, PlayerOptions, MfxPlayProps} from '../../types'
 
 // 执行线程函数参数映射
 export class InvokeParameterMap {
-  instance: {id: number; canvas: OffscreenCanvas; opts?: PlayOptions} = null as any
-  load: {id: number; resolveId: number; props: PlayProps; keys?: KeyValue | KeyValue[]} = null as any
+  instance: {id: number; canvas: OffscreenCanvas; opts?: PlayerOptions} = null as any
+  load: {id: number; resolveId: number; props: MfxPlayProps; keys?: MfxKeyValue | MfxKeyValue[]} = null as any
+  setKeys: {id: number; keys: MfxKeyValue | MfxKeyValue[]} = null as any
   play: {id: number} = null as any
   replay: {id: number} = null as any
   pause: {id: number} = null as any
@@ -13,7 +14,7 @@ export class InvokeParameterMap {
 
 // 线程消息的参数映射
 export class CallbackParameterMap {
-  'loaded': {resolveId: number; keyInfos?: KeyItemInfo[]} = null as any
+  'loaded': {resolveId: number; keys?: MfxKeyInfo[]; info?: MfxPlayInfo} = null as any
   'play' = undefined
   'frame': number = null as any
   'pause' = undefined
