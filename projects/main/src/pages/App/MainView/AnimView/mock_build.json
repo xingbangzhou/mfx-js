@@ -13,7 +13,7 @@
             {
                 "id": 18,
                 "type": "image",
-                "content": "http://localhost:5002/前景.png",
+                "content": "前景.png",
                 "name": "前景.png",
                 "fillMode": 0,
                 "transform": {
@@ -388,7 +388,7 @@
             {
                 "id": 17,
                 "type": "image",
-                "content": "http://localhost:5002/主楼.png",
+                "content": "主楼.png",
                 "name": "主楼.png",
                 "fillMode": 0,
                 "transform": {
@@ -444,7 +444,7 @@
             {
                 "id": 19,
                 "type": "image",
-                "content": "http://localhost:5002/后景.png",
+                "content": "后景.png",
                 "name": "后景.png",
                 "fillMode": 0,
                 "transform": {
@@ -556,7 +556,7 @@
             {
                 "id": 16,
                 "type": "image",
-                "content": "http://localhost:5002/bg.png",
+                "content": "bg.png",
                 "name": "bg.png",
                 "fillMode": 0,
                 "transform": {
@@ -619,7 +619,7 @@
                 {
                     "id": 149,
                     "type": "image",
-                    "content": "http://localhost:5002/网格2.png",
+                    "content": "网格2.png",
                     "name": "网格2.png",
                     "fillMode": 0,
                     "transform": {
@@ -684,7 +684,7 @@
         {
             "id": 253,
             "type": "video",
-            "content": "http://localhost:5002/粒子_bmp.mp4",
+            "content": "粒子_bmp.mp4",
             "name": "粒子_bmp",
             "bgColor": [
                 0,
@@ -885,7 +885,7 @@
                 {
                     "id": 88,
                     "type": "video",
-                    "content": "http://localhost:5002/preview.mp4",
+                    "content": "preview.mp4",
                     "name": "preview.mp4",
                     "transform": {
                         "anchorPoint": [
@@ -947,7 +947,7 @@
                 {
                     "id": 79,
                     "type": "video",
-                    "content": "http://localhost:5002/temp_change_264_mid.mp4",
+                    "content": "temp_change_264_mid.mp4",
                     "name": "temp_change_264_mid.mp4",
                     "transform": {
                         "anchorPoint": [
@@ -1223,7 +1223,7 @@
         {
             "id": 220,
             "type": "video",
-            "content": "http://localhost:5002/烟花_bmp.mp4",
+            "content": "烟花_bmp.mp4",
             "name": "烟花_bmp",
             "bgColor": [
                 0,
@@ -1236,51 +1236,15 @@
             "frameRate": 30
         }
     ],
-    "imgSource": [
-        {
-            "srcPath": "/Users/ynot16/Downloads/LED大楼demo文件夹/(素材)/前景.png",
-            "desPath": "/Users/ynot16/Downloads/LED大楼demo文件夹/temp/前景.png",
-            "path": "前景.png"
-        },
-        {
-            "srcPath": "/Users/ynot16/Downloads/LED大楼demo文件夹/(素材)/网格2.png",
-            "desPath": "/Users/ynot16/Downloads/LED大楼demo文件夹/temp/网格2.png",
-            "path": "网格2.png"
-        },
-        {
-            "srcPath": "/Users/ynot16/Downloads/LED大楼demo文件夹/(素材)/主楼.png",
-            "desPath": "/Users/ynot16/Downloads/LED大楼demo文件夹/temp/主楼.png",
-            "path": "主楼.png"
-        },
-        {
-            "srcPath": "/Users/ynot16/Downloads/LED大楼demo文件夹/(素材)/后景.png",
-            "desPath": "/Users/ynot16/Downloads/LED大楼demo文件夹/temp/后景.png",
-            "path": "后景.png"
-        },
-        {
-            "srcPath": "/Users/ynot16/Downloads/LED大楼demo文件夹/(素材)/bg.png",
-            "desPath": "/Users/ynot16/Downloads/LED大楼demo文件夹/temp/bg.png",
-            "path": "bg.png"
-        }
-    ],
-    "videoSource": [
-        {
-            "content": "粒子_bmp.mp4",
-            "name": "粒子_bmp"
-        },
-        {
-            "srcPath": "/Users/ynot16/Downloads/LED大楼demo文件夹/(素材)/preview.mp4",
-            "content": "preview.mp4",
-            "name": "preview.mp4"
-        },
-        {
-            "srcPath": "/Users/ynot16/Downloads/LED大楼demo文件夹/(素材)/temp_change_264_mid.mp4",
-            "content": "temp_change_264_mid.mp4",
-            "name": "temp_change_264_mid.mp4"
-        },
-        {
-            "content": "烟花_bmp.mp4",
-            "name": "烟花_bmp"
-        }
-    ]
+    "sourceMap": {
+        "16": "http://localhost:5002/bg.png",
+        "17": "http://localhost:5002/主楼.png",
+        "18": "http://localhost:5002/前景.png",
+        "19": "http://localhost:5002/后景.png",
+        "79": "http://localhost:5002/temp_change_264_mid.mp4",
+        "88": "http://localhost:5002/preview.mp4",
+        "149": "http://localhost:5002/网格2.png",
+        "220": "http://localhost:5002/烟花_bmp.mp4",
+        "253": "http://localhost:5002/粒子_bmp.mp4"
+    }
 }

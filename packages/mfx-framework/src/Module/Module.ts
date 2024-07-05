@@ -1,13 +1,13 @@
-import {MxDestructor} from '../types'
-import MxModuleContext from '../ModuleContext'
+import {MfxDestructor} from '../types'
+import MfxModuleContext from '../ModuleContext'
 
-export default class MxModule {
-  constructor(ctx: MxModuleContext, destructor: MxDestructor) {
+export default class MfxModule {
+  constructor(ctx: MfxModuleContext, destructor: MfxDestructor) {
     this.ctx = ctx
     destructor.push(() => this.unload())
   }
 
-  readonly ctx: MxModuleContext
+  readonly ctx: MfxModuleContext
 
   get id() {
     return this.ctx.moduleId

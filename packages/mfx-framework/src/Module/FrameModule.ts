@@ -1,22 +1,22 @@
-import MxModuleContext from '../ModuleContext'
-import {MxDestructor} from '../types'
-import MxExModule from './ExModule'
+import MfxModuleContext from '../ModuleContext'
+import {MfxDestructor} from '../types'
+import MfxExModule from './ExModule'
 
-class MxFrameChannel {
+class MfxFrameChannel {
   constructor() {
     window.addEventListener('message', this.onMessage)
   }
 
-  private _modules?: MxFrameModule[]
+  private _modules?: MfxFrameModule[]
 
-  attach(frameModule: MxFrameModule) {
+  attach(frameModule: MfxFrameModule) {
     if (!this._modules) this._modules = [frameModule]
     else if (!this._modules.includes(frameModule)) {
       this._modules.push(frameModule)
     }
   }
 
-  detach(frameModule: MxFrameModule) {
+  detach(frameModule: MfxFrameModule) {
     this._modules = this._modules?.filter(el => el !== frameModule)
   }
 
@@ -33,15 +33,15 @@ class MxFrameChannel {
         frameModule.onCommand(cmd, ...args)
       }
     } catch (error) {
-      frameModule.ctx.logger.error('MxFrameChannel', 'onMesssage, error: ', error)
+      frameModule.ctx.logger.error('MfxFrameChannel', 'onMesssage, error: ', error)
     }
   }
 }
 
-const channel = new MxFrameChannel()
+const channel = new MfxFrameChannel()
 
-export default class MxFrameModule extends MxExModule {
-  constructor(ctx: MxModuleContext, destructor: MxDestructor, container: HTMLIFrameElement) {
+export default class MfxFrameModule extends MfxExModule {
+  constructor(ctx: MfxModuleContext, destructor: MfxDestructor, container: HTMLIFrameElement) {
     super(ctx, destructor)
 
     this._container = container

@@ -1,8 +1,8 @@
-export interface MxLauncherOption {
+export interface MfxLauncherOption {
   debug?: boolean
 }
 
-export class MxDestructor {
+export class MfxDestructor {
   private _cleanFns?: Array<() => void>
 
   push(fn: () => void) {

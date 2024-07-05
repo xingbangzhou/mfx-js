@@ -1,49 +1,49 @@
 import {
-  MxEventListener,
-  MxLinkHandler,
-  MxSlotHandler,
-  MxContextHandler,
-  MxService,
-  MxModuleContextFuncs,
+  MfxEventListener,
+  MfxLinkHandler,
+  MfxSlotHandler,
+  MfxContextHandler,
+  MfxService,
+  MfxModuleContextFuncs,
 } from '@mfx-js/core/types'
 import InvokePool from './InvokePool'
 
 enum SdkCommand {
-  Ready = 'mx-sdk:ready',
-  Link = 'mx-sdk:link',
-  Unlink = 'mx-sdk:unlink',
-  ConnectSignal = 'mx-sdk:connect_signal',
-  DisconnectSignal = 'mx-sdk:disconnect_signal',
-  Invoke = 'mx-sdk:invoke',
-  AddEventListener = 'mx-sdk:add_event_listener',
-  RemoveEventListener = 'mx-sdk:remove_event_listener',
-  PostEvent = 'mx-sdk:post_event',
-  Log = 'mx-sdk:log',
-  CtxInvoke = 'mx-sdk:ctx_invoke',
-  CtxOnEvent = 'mx-sdk:ctx_on_event',
-  CtxOffEvent = 'mx-sdk:ctx_off_event',
-  CtxEmitEvent = 'mx-sdk:ctx_emit_event',
+  Ready = 'mfx-sdk:ready',
+  Link = 'mfx-sdk:link',
+  Unlink = 'mfx-sdk:unlink',
+  ConnectSignal = 'mfx-sdk:connect_signal',
+  DisconnectSignal = 'mfx-sdk:disconnect_signal',
+  Invoke = 'mfx-sdk:invoke',
+  AddEventListener = 'mfx-sdk:add_event_listener',
+  RemoveEventListener = 'mfx-sdk:remove_event_listener',
+  PostEvent = 'mfx-sdk:post_event',
+  Log = 'mfx-sdk:log',
+  CtxInvoke = 'mfx-sdk:ctx_invoke',
+  CtxOnEvent = 'mfx-sdk:ctx_on_event',
+  CtxOffEvent = 'mfx-sdk:ctx_off_event',
+  CtxEmitEvent = 'mfx-sdk:ctx_emit_event',
 }
 
 enum FrameworkCommand {
-  Ready = 'mx-framework:ready',
-  LinkStatus = 'mx-framework:link_status',
-  InvokeResult = 'mx-framework:invole_result',
-  Signal = 'mx-framework:signal',
-  Event = 'mx-framework:event',
-  CtxEvent = 'mx-framework:ctx_event',
+  Ready = 'mfx-framework:ready',
+  LinkStatus = 'mfx-framework:link_status',
+  InvokeResult = 'mfx-framework:invole_result',
+  Signal = 'mfx-framework:signal',
+  Event = 'mfx-framework:event',
+  CtxEvent = 'mfx-framework:ctx_event',
 }
 
-export default abstract class MxExContext implements MxModuleContextFuncs {
+export default abstract class MfxExContext implements MfxModuleContextFuncs {
   constructor() {}
 
   private _fwReady = false
   private _ensureFns?: Array<() => void>
 
-  private _clazzLinks: Record<string, MxLinkHandler[]> = {}
-  private _clazzSlots: [string, string, MxSlotHandler[]][] = []
-  private _eventListeners: Record<string, MxEventListener[]> = {}
-  private _ctxEventListeners: Record<string, MxEventListener[]> = {}
+  private _clazzLinks: Record<string, MfxLinkHandler[]> = {}
+  private _clazzSlots: [string, string, MfxSlotHandler[]][] = []
+  private _eventListeners: Record<string, MfxEventListener[]> = {}
+  private _ctxEventListeners: Record<string, MfxEventListener[]> = {}
   private _invokePool = new InvokePool()
 
   async ensure() {
@@ -57,17 +57,17 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     })
   }
 
-  register(service: MxService): void {
+  register(service: MfxService): void {
     service
-    console.error("[MxExContext]: don't realize registerService")
+    console.error("[MfxExContext]: don't realize registerService")
   }
 
-  unregister(service: MxService): void {
+  unregister(service: MfxService): void {
     service
-    console.error("[MxExContext]: don't realize unregisterService")
+    console.error("[MfxExContext]: don't realize unregisterService")
   }
 
-  link(clazz: string, linker: MxLinkHandler) {
+  link(clazz: string, linker: MfxLinkHandler) {
     const links = this._clazzLinks[clazz]
     if (links?.length) {
       links.includes(linker) || links.push(linker)
@@ -78,7 +78,7 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     this.command(SdkCommand.Link, clazz)
   }
 
-  unlink(clazz: string, linker: MxLinkHandler) {
+  unlink(clazz: string, linker: MfxLinkHandler) {
     const links = this._clazzLinks[clazz]
     if (!links) return
     const idx = links.indexOf(linker)
@@ -96,7 +96,7 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     return result
   }
 
-  connectSignal(clazz: string, signal: string, slot: MxSlotHandler) {
+  connectSignal(clazz: string, signal: string, slot: MfxSlotHandler) {
     const slots = this._clazzSlots.find(el => el[0] === clazz && el[1] === signal)?.[2]
     if (slots?.length) {
       slots.push(slot)
@@ -107,8 +107,8 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     this.command(SdkCommand.ConnectSignal, clazz, signal)
   }
 
-  disconnectSignal(clazz: string, signal: string, slot: MxSlotHandler) {
-    const clazzSlots: [string, string, MxSlotHandler[]][] = []
+  disconnectSignal(clazz: string, signal: string, slot: MfxSlotHandler) {
+    const clazzSlots: [string, string, MfxSlotHandler[]][] = []
 
     for (let i = 0, l = this._clazzSlots.length; i < l; i++) {
       const si = this._clazzSlots[i]
@@ -129,7 +129,7 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     this._clazzSlots = clazzSlots
   }
 
-  addEventListener(event: string, listener: MxEventListener) {
+  addEventListener(event: string, listener: MfxEventListener) {
     const listeners = this._eventListeners[event]
     if (listeners?.length) {
       listeners.push(listener)
@@ -140,7 +140,7 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     this.command(SdkCommand.AddEventListener, event)
   }
 
-  removeEventListener(event: string, listener: MxEventListener) {
+  removeEventListener(event: string, listener: MfxEventListener) {
     const listeners = this._eventListeners[event]
     if (!listeners) return
     const idx = listeners.indexOf(listener)
@@ -161,10 +161,10 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     this.command(SdkCommand.Log, name, ...args)
   }
 
-  ctxSetHandler(name: string, fn?: MxContextHandler) {
+  ctxSetHandler(name: string, fn?: MfxContextHandler) {
     name
     fn
-    console.error("[MxExContext]: don't realize ctxSetHandler")
+    console.error("[MfxExContext]: don't realize ctxSetHandler")
   }
 
   async ctxInvoke(name: string, ...args: any[]) {
@@ -176,7 +176,7 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     return await this.invoke0(SdkCommand.CtxInvoke, name, ...args)
   }
 
-  ctxOnEvent(event: string, listener: MxEventListener) {
+  ctxOnEvent(event: string, listener: MfxEventListener) {
     const listeners = this._ctxEventListeners[event]
     if (listeners?.length) {
       listeners.push(listener)
@@ -187,7 +187,7 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     this.command(SdkCommand.CtxOnEvent, event)
   }
 
-  ctxOffEvent(event: string, listener: MxEventListener) {
+  ctxOffEvent(event: string, listener: MfxEventListener) {
     const listeners = this._ctxEventListeners[event]
     if (!listeners) return
     const idx = listeners.indexOf(listener)
@@ -248,7 +248,7 @@ export default abstract class MxExContext implements MxModuleContextFuncs {
     if (this._fwReady) return
     this._fwReady = true
 
-    this.log('MxSDK', 'MxExContext.onFwReady is runned')
+    this.log('MfxSDK', 'MfxExContext.onFwReady is runned')
 
     // handle ensures
     this._ensureFns?.forEach(el => el())

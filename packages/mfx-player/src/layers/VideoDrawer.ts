@@ -31,12 +31,14 @@ export default class VideoDrawer extends AbstractDrawer<LayerVideoProps> {
   private syncDeltaNum?: {frameId: number; num: number}
 
   get url() {
-    return this.store.getKeyInfo(this.props.name)?.value || this.props.content || ''
+    return this.store.getKeyInfo(this.props.name)?.value || this.store.getSource(this.props.id) || ''
   }
   cacheUrl: string | Blob = ''
 
   async init(gl: ThisWebGLContext) {
     const url = this.url
+    this.cacheUrl = url
+
     if (url) {
       this.texture = new Texture(gl)
       const frames = this.outFrame - this.inFrame
@@ -47,7 +49,6 @@ export default class VideoDrawer extends AbstractDrawer<LayerVideoProps> {
       this.store.addSync(this)
       this.setMatrixCache()
     }
-    this.cacheUrl = url
   }
 
   checkSync(frameId: number) {

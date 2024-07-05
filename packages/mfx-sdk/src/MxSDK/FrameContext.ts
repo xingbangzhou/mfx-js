@@ -1,6 +1,6 @@
-import MxExContext from './ExContext'
+import MfxExContext from './ExContext'
 
-export default class MxFrameContext extends MxExContext {
+export default class MfxFrameContext extends MfxExContext {
   constructor() {
     super()
 
@@ -9,14 +9,14 @@ export default class MxFrameContext extends MxExContext {
     this.imReady()
   }
 
-  private static instance_?: MxFrameContext
+  private static instance_?: MfxFrameContext
 
   static instance() {
     if (!this.instance_) {
-      MxFrameContext.instance_ = new MxFrameContext()
+      MfxFrameContext.instance_ = new MfxFrameContext()
     }
 
-    return MxFrameContext.instance_ as MxFrameContext
+    return MfxFrameContext.instance_ as MfxFrameContext
   }
 
   protected postMessage(cmd: string, ...args: any[]) {
@@ -34,7 +34,7 @@ export default class MxFrameContext extends MxExContext {
         this.onCommand(cmd, ...args)
       }
     } catch (error) {
-      console.error('MxFrameContext', 'onMessage, error: ', error)
+      console.error('MfxFrameContext', 'onMessage, error: ', error)
     }
   }
 }

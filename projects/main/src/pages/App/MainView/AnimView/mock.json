@@ -456,7 +456,7 @@
             {
                 "id": 8201,
                 "type": "image",
-                "content": "http://localhost:5002/avatar.png",
+                "content": "avatar.png",
                 "name": "testpic",
                 "fillMode": 0,
                 "transform": {
@@ -534,7 +534,7 @@
             {
                 "id": 8199,
                 "type": "image",
-                "content": "http://localhost:5002/a9a19f6699b64c942931cdfdf52c15e3598d0e1271ec54-TdcBeD_fw1200.png",
+                "content": "a9a19f6699b64c942931cdfdf52c15e3598d0e1271ec54-TdcBeD_fw1200.png",
                 "name": "a9a19f6699b64c942931cdfdf52c15e3598d0e1271ec54-TdcBeD_fw1200.png",
                 "fillMode": 0,
                 "transform": {
@@ -590,7 +590,7 @@
             {
                 "id": 8226,
                 "type": "video",
-                "content": "http://localhost:5002/temp_change_264_mid_1.mp4",
+                "content": "temp_change_264_mid_1.mp4",
                 "name": "temp_change_264_mid_1.mp4",
                 "transform": {
                     "anchorPoint": [
@@ -1324,7 +1324,7 @@
                 {
                     "id": 8224,
                     "type": "image",
-                    "content": "http://localhost:5002/avatar.png",
+                    "content": "avatar.png",
                     "name": "avatar.png",
                     "fillMode": 0,
                     "transform": {
@@ -1640,7 +1640,7 @@
         {
             "id": 5294,
             "type": "video",
-            "content": "http://localhost:5002/6_bmp.mp4",
+            "content": "6_bmp.mp4",
             "name": "6_bmp",
             "bgColor": [
                 0,

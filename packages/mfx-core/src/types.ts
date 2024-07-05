@@ -1,48 +1,48 @@
-export interface MxLinkHandler {
+export interface MfxLinkHandler {
   (on: boolean, cl: string): void
 }
 
-export interface MxInvokeHandler {
+export interface MfxInvokeHandler {
   (...args: any[]): any
 }
 
-export interface MxSlotHandler {
+export interface MfxSlotHandler {
   (...args: any[]): void
 }
 
-export interface MxEventListener {
+export interface MfxEventListener {
   (...args: any[]): void
 }
 
-export interface MxContextHandler {
+export interface MfxContextHandler {
   (...args: any[]): Promise<any>
 }
 
-export interface MxService {
+export interface MfxService {
   // 服务ID
   readonly clazz: string
   // 导出接口
   invoke(name: string, ...args: any[]): Promise<any>
   // 监听信号
-  connectSignal(signal: string, slot: MxSlotHandler): unknown
+  connectSignal(signal: string, slot: MfxSlotHandler): unknown
   // 取消监听信号
-  disconnectSignal(signal: string, slot: MxSlotHandler): unknown
+  disconnectSignal(signal: string, slot: MfxSlotHandler): unknown
 }
 
-export interface MxModuleContextFuncs {
+export interface MfxModuleContextFuncs {
   /**
    * 服务注册与反注册
    * @param service 服务类对象
    */
-  register(service: MxService): void
-  unregister(service: MxService): void
+  register(service: MfxService): void
+  unregister(service: MfxService): void
   /**
    * 服务监听与反监听
    * @param clazz 服务名
    * @param linker 处理函数
    */
-  link(clazz: string, linker: MxLinkHandler): void
-  unlink(clazz: string, linker: MxLinkHandler): void
+  link(clazz: string, linker: MfxLinkHandler): void
+  unlink(clazz: string, linker: MfxLinkHandler): void
   /**
    * 服务调用
    * @param clazz 服务名
@@ -56,23 +56,23 @@ export interface MxModuleContextFuncs {
    * @param signal 信号
    * @param slot 处理函数
    */
-  connectSignal(clazz: string, signal: string, slot: MxSlotHandler): void
-  disconnectSignal(clazz: string, signal: string, slot: MxSlotHandler): void
+  connectSignal(clazz: string, signal: string, slot: MfxSlotHandler): void
+  disconnectSignal(clazz: string, signal: string, slot: MfxSlotHandler): void
   // 全局事件
-  addEventListener(event: string, listener: MxEventListener): void
-  removeEventListener(event: string, listener: MxEventListener): void
+  addEventListener(event: string, listener: MfxEventListener): void
+  removeEventListener(event: string, listener: MfxEventListener): void
   postEvent(event: string, ...args: any[]): void
   // 日志函数
   log(name: string, ...args: any[]): void
   /** 模块上下文扩展 */
   // 设置上下文接口
-  ctxSetHandler(name: string, extender: MxContextHandler): void
+  ctxSetHandler(name: string, extender: MfxContextHandler): void
   // 调用上下文接口
   ctxInvoke(name: string, ...args: any[]): Promise<any>
   // 监听上下文事件
-  ctxOnEvent(event: string, listener: MxEventListener): void
+  ctxOnEvent(event: string, listener: MfxEventListener): void
   // 取监上下文事件
-  ctxOffEvent(event: string, listener: MxEventListener): void
+  ctxOffEvent(event: string, listener: MfxEventListener): void
   // 发出上下文事件
   ctxEmitEvent(event: string, ...args: any[]): void
 }

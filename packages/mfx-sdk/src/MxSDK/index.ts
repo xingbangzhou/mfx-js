@@ -1,2 +1,2 @@
-export {default} from './MxSDK'
-export {default as MxExContext} from './ExContext'
+export {default} from './MfxSDK'
+export {default as MfxExContext} from './ExContext'

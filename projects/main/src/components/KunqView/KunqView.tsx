@@ -1,10 +1,10 @@
-import {MxFramework, MxModule} from '@mfx-js/framework'
+import {MfxFramework, MfxModule} from '@mfx-js/framework'
 import {uniformUrl} from 'src/utils/urlFns'
 import {loadMicroApp, MicroApp} from 'qiankun'
 import {CSSProperties, memo, useEffect, useMemo, useRef} from 'react'
 
 interface KunqViewProps {
-  mxFw: MxFramework
+  mfxFw: MfxFramework
   name?: string
   url?: string
   className?: string
@@ -13,10 +13,10 @@ interface KunqViewProps {
 }
 
 const KunqView = memo(function KunqView(props: KunqViewProps) {
-  const {mxFw, name, url, className, style, ...other} = props
+  const {mfxFw, name, url, className, style, ...other} = props
   const rootRef = useRef<HTMLDivElement>(null)
   const microApp = useRef<MicroApp>()
-  const mxModule = useRef<MxModule>()
+  const mfxModule = useRef<MfxModule>()
 
   const entry = useMemo(() => {
     if (!url) return undefined
@@ -27,14 +27,14 @@ const KunqView = memo(function KunqView(props: KunqViewProps) {
     if (rootRef.current && entry) {
       const mId = name || entry
 
-      mxModule.current = mxFw.loadModule(mId)
+      mfxModule.current = mfxFw.loadModule(mId)
       microApp.current = loadMicroApp(
         {
           name: mId,
           entry: entry,
           container: rootRef.current,
           props: {
-            ctx: mxModule.current?.ctx,
+            ctx: mfxModule.current?.ctx,
           },
         },
         {
@@ -49,7 +49,7 @@ const KunqView = memo(function KunqView(props: KunqViewProps) {
     return () => {
       microApp.current?.unmount()
       microApp.current?.unmountPromise.then(() => {
-        mxModule.current && mxFw.unloadModule(mxModule.current.id)
+        mfxModule.current && mfxFw.unloadModule(mfxModule.current.id)
       })
       microApp.current = undefined
     }

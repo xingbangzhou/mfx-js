@@ -1,2 +1,2 @@
-export {default} from './MxSDK'
-export * from './MxSDK'
+export {default} from './MfxSDK'
+export * from './MfxSDK'

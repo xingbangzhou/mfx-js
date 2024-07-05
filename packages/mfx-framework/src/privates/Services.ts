@@ -1,27 +1,27 @@
-import MxFrameworkContext from './FrameworkContext'
-import {MxLinkHandler, MxSlotHandler, MxService} from '@mfx-js/core/types'
-import MxModuleContext from '../ModuleContext'
+import MfxFrameworkContext from './FrameworkContext'
+import {MfxLinkHandler, MfxSlotHandler, MfxService} from '@mfx-js/core/types'
+import MfxModuleContext from '../ModuleContext'
 import EventEmitter from '@mfx-js/core/EventEmitter'
 
-interface MxRegistration {
-  ctx: MxModuleContext
-  service: MxService
+interface MfxRegistration {
+  ctx: MfxModuleContext
+  service: MfxService
 }
 
-export default class MxServices {
-  constructor(fwCtx: MxFrameworkContext) {
+export default class MfxServices {
+  constructor(fwCtx: MfxFrameworkContext) {
     fwCtx
   }
 
   private _emitter = new EventEmitter()
-  private _regns?: Record<string, MxRegistration>
-  private _slots?: Record<string, [string, MxSlotHandler][]>
+  private _regns?: Record<string, MfxRegistration>
+  private _slots?: Record<string, [string, MfxSlotHandler][]>
 
   getService(clazz: string) {
     return this._regns?.[clazz]?.service
   }
 
-  register(ctx: MxModuleContext, service: MxService) {
+  register(ctx: MfxModuleContext, service: MfxService) {
     const clazz = service.clazz
 
     if (this._regns?.[clazz]) {
@@ -42,7 +42,7 @@ export default class MxServices {
     return true
   }
 
-  unregister(ctx: MxModuleContext, service: MxService) {
+  unregister(ctx: MfxModuleContext, service: MfxService) {
     const clazz = service.clazz
     const regn = this._regns?.[clazz]
     if (regn?.ctx !== ctx || regn?.service !== service) return
@@ -57,7 +57,7 @@ export default class MxServices {
     this._emitter.emit(clazz, false, clazz)
   }
 
-  unregisterAll(ctx: MxModuleContext) {
+  unregisterAll(ctx: MfxModuleContext) {
     const regns = {...this._regns}
 
     for (const clazz in regns) {
@@ -68,11 +68,11 @@ export default class MxServices {
     }
   }
 
-  link(clazz: string, connn: MxLinkHandler) {
+  link(clazz: string, connn: MfxLinkHandler) {
     return this._emitter.on(clazz, connn)
   }
 
-  unlink(clazz: string, connn: MxLinkHandler) {
+  unlink(clazz: string, connn: MfxLinkHandler) {
     this._emitter.off(clazz, connn)
   }
 
@@ -87,7 +87,7 @@ export default class MxServices {
     return result
   }
 
-  connectSignal(clazz: string, signal: string, slot: MxSlotHandler) {
+  connectSignal(clazz: string, signal: string, slot: MfxSlotHandler) {
     if (!this._slots) this._slots = {}
     const ss = this._slots[clazz] || []
     if (!ss.find(el => el[0] === signal && el[1] === slot)) {
@@ -103,7 +103,7 @@ export default class MxServices {
     return true
   }
 
-  disconnectSignal(clazz: string, signal: string, slot: MxSlotHandler) {
+  disconnectSignal(clazz: string, signal: string, slot: MfxSlotHandler) {
     const ss = this._slots?.[clazz]
     if (!ss) return
 

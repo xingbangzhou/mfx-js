@@ -1,22 +1,22 @@
-import MxModule, {MxExModule} from '../Module'
-import MxFrameworkContext from './FrameworkContext'
-import {MxDestructor} from '../types'
-import MxModuleContext from '../ModuleContext'
-import MxFrameModule from '../Module/FrameModule'
+import MfxModule, {MfxExModule} from '../Module'
+import MfxFrameworkContext from './FrameworkContext'
+import {MfxDestructor} from '../types'
+import MfxModuleContext from '../ModuleContext'
+import MfxFrameModule from '../Module/FrameModule'
 
-class MxModuleHolder<T extends MxModule> {
+class MfxModuleHolder<T extends MfxModule> {
   constructor(
-    className: {new (ctx: MxModuleContext, destructor: MxDestructor, ...args: any[]): T},
-    fwCtx: MxFrameworkContext,
+    className: {new (ctx: MfxModuleContext, destructor: MfxDestructor, ...args: any[]): T},
+    fwCtx: MfxFrameworkContext,
     id: string,
     ...args: any[]
   ) {
-    this._module = new className(new MxModuleContext(id, fwCtx, this._destructor), this._destructor, ...args)
+    this._module = new className(new MfxModuleContext(id, fwCtx, this._destructor), this._destructor, ...args)
   }
 
-  private _module: MxModule
+  private _module: MfxModule
   private _invalid = false
-  private _destructor = new MxDestructor()
+  private _destructor = new MfxDestructor()
 
   get module() {
     return this._module
@@ -29,13 +29,13 @@ class MxModuleHolder<T extends MxModule> {
   }
 }
 
-export default class MxModules {
-  constructor(fwCtx: MxFrameworkContext) {
+export default class MfxModules {
+  constructor(fwCtx: MfxFrameworkContext) {
     this.fwCtx = fwCtx
   }
 
-  private fwCtx: MxFrameworkContext
-  private holders: Record<string, MxModuleHolder<MxModule>> = {}
+  private fwCtx: MfxFrameworkContext
+  private holders: Record<string, MfxModuleHolder<MfxModule>> = {}
 
   getModule(id: string) {
     return this.holders[id]?.module
@@ -43,11 +43,11 @@ export default class MxModules {
 
   load(id: string) {
     if (!id) return
-    return this.load0(MxModule, id)
+    return this.load0(MfxModule, id)
   }
 
-  loadEx<T extends MxExModule>(
-    className: {new (ctx: MxModuleContext, destructor: MxDestructor, ...args: any[]): T},
+  loadEx<T extends MfxExModule>(
+    className: {new (ctx: MfxModuleContext, destructor: MfxDestructor, ...args: any[]): T},
     id: string,
     ...args: any[]
   ) {
@@ -57,7 +57,7 @@ export default class MxModules {
 
   loadFrame(id: string, container: HTMLIFrameElement) {
     if (!id) return
-    return this.load0(MxFrameModule, id, container)
+    return this.load0(MfxFrameModule, id, container)
   }
 
   unload(id: string) {
@@ -68,14 +68,14 @@ export default class MxModules {
     delete this.holders[id]
   }
 
-  private load0<T extends MxModule>(
-    className: {new (ctx: MxModuleContext, destructor: MxDestructor, ...args: any[]): T},
+  private load0<T extends MfxModule>(
+    className: {new (ctx: MfxModuleContext, destructor: MfxDestructor, ...args: any[]): T},
     id: string,
     ...args: any[]
   ) {
-    let holder: MxModuleHolder<T> | undefined = undefined
+    let holder: MfxModuleHolder<T> | undefined = undefined
     if (!this.holders[id]) {
-      holder = new MxModuleHolder(className, this.fwCtx, id, ...args)
+      holder = new MfxModuleHolder(className, this.fwCtx, id, ...args)
       this.holders[id] = holder
     }
     return holder?.module

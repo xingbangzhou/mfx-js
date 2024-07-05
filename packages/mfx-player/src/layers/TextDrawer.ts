@@ -65,17 +65,21 @@ export default class TextDrawer extends AbstractDrawer<LayerTextProps> {
   private texture?: Texture
 
   get text() {
-    return this.props.textDocAttr.text || ''
+    return this.store.getKeyInfo(this.props.name)?.value || this.props.textDocAttr.text || ''
   }
+  cacheText = ''
 
   async init(gl: ThisWebGLContext) {
+    const text = this.text
+    this.cacheText = text
+
     const canvas = new OffscreenCanvas(0, 0)
     let ctx = canvas.getContext('2d')
     if (ctx && this.props.textDocAttr) {
       const textDocAttr = this.props.textDocAttr
       // 横向画字
       if (textDocAttr.orientation) {
-        drawVertiText(ctx, this.text, textDocAttr)
+        drawVertiText(ctx, text, textDocAttr)
         // 此处记住锚点偏移
         if (textDocAttr.textAligment !== undefined) {
           const align = alignMap[textDocAttr.textAligment]
@@ -89,7 +93,7 @@ export default class TextDrawer extends AbstractDrawer<LayerTextProps> {
         }
       } else {
         // 水平画字
-        drawHorizText(ctx, this.text, textDocAttr)
+        drawHorizText(ctx, text, textDocAttr)
         if (textDocAttr.textAligment !== undefined) {
           const align = alignMap[textDocAttr.textAligment]
           if (align === 'left') {

@@ -1,35 +1,35 @@
-import MxModule from './Module'
-import MxModuleContext from '../ModuleContext'
-import {MxDestructor} from '../types'
+import MfxModule from './Module'
+import MfxModuleContext from '../ModuleContext'
+import {MfxDestructor} from '../types'
 
 enum SdkCommand {
-  Ready = 'mx-sdk:ready',
-  Link = 'mx-sdk:link',
-  Unlink = 'mx-sdk:unlink',
-  ConnectSignal = 'mx-sdk:connect_signal',
-  DisconnectSignal = 'mx-sdk:disconnect_signal',
-  Invoke = 'mx-sdk:invoke',
-  AddEventListener = 'mx-sdk:add_event_listener',
-  RemoveEventListener = 'mx-sdk:remove_event_listener',
-  PostEvent = 'mx-sdk:post_event',
-  Log = 'mx-sdk:log',
-  CtxInvoke = 'mx-sdk:ctx_invoke',
-  CtxOnEvent = 'mx-sdk:ctx_on_event',
-  CtxOffEvent = 'mx-sdk:ctx_off_event',
-  CtxEmitEvent = 'mx-sdk:ctx_emit_event',
+  Ready = 'mfx-sdk:ready',
+  Link = 'mfx-sdk:link',
+  Unlink = 'mfx-sdk:unlink',
+  ConnectSignal = 'mfx-sdk:connect_signal',
+  DisconnectSignal = 'mfx-sdk:disconnect_signal',
+  Invoke = 'mfx-sdk:invoke',
+  AddEventListener = 'mfx-sdk:add_event_listener',
+  RemoveEventListener = 'mfx-sdk:remove_event_listener',
+  PostEvent = 'mfx-sdk:post_event',
+  Log = 'mfx-sdk:log',
+  CtxInvoke = 'mfx-sdk:ctx_invoke',
+  CtxOnEvent = 'mfx-sdk:ctx_on_event',
+  CtxOffEvent = 'mfx-sdk:ctx_off_event',
+  CtxEmitEvent = 'mfx-sdk:ctx_emit_event',
 }
 
 enum FrameworkCommand {
-  Ready = 'mx-framework:ready',
-  LinkStatus = 'mx-framework:link_status',
-  InvokeResult = 'mx-framework:invole_result',
-  Signal = 'mx-framework:signal',
-  Event = 'mx-framework:event',
-  CtxEvent = 'mx-framework:ctx_event',
+  Ready = 'mfx-framework:ready',
+  LinkStatus = 'mfx-framework:link_status',
+  InvokeResult = 'mfx-framework:invole_result',
+  Signal = 'mfx-framework:signal',
+  Event = 'mfx-framework:event',
+  CtxEvent = 'mfx-framework:ctx_event',
 }
 
-export default abstract class MxExModule extends MxModule {
-  constructor(ctx: MxModuleContext, destructor: MxDestructor) {
+export default abstract class MfxExModule extends MfxModule {
+  constructor(ctx: MfxModuleContext, destructor: MfxDestructor) {
     super(ctx, destructor)
   }
 
@@ -40,7 +40,7 @@ export default abstract class MxExModule extends MxModule {
   }
 
   onCommand(cmd: SdkCommand, ...args: any[]) {
-    this.ctx.logger.log('MxExModule', 'onCommand: ', cmd, ...args)
+    this.ctx.logger.log('MfxExModule', 'onCommand: ', cmd, ...args)
 
     switch (cmd) {
       case SdkCommand.Ready:
@@ -148,7 +148,7 @@ export default abstract class MxExModule extends MxModule {
   }
 
   private handleEvent = (...args: any[]) => {
-    this.ctx.logger.log('MxExModule', 'onEvent: ', ...args)
+    this.ctx.logger.log('MfxExModule', 'onEvent: ', ...args)
 
     this.postMessage(FrameworkCommand.Event, ...args)
   }
@@ -159,7 +159,7 @@ export default abstract class MxExModule extends MxModule {
   }
 
   private handleCtxEvent = (...args: any[]) => {
-    this.ctx.logger.log('MxExModule', 'handleCtxEvent: ', ...args)
+    this.ctx.logger.log('MfxExModule', 'handleCtxEvent: ', ...args)
 
     this.postMessage(FrameworkCommand.CtxEvent, ...args)
   }

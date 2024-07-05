@@ -1,26 +1,17 @@
-import {MxModuleContext} from '.'
-import MxModule, {MxExModule} from './Module'
-import MxFrameworkContext from './privates/FrameworkContext'
-import {MxDestructor} from './types'
+import {MfxModuleContext} from '.'
+import MfxModule, {MfxExModule} from './Module'
+import MfxFrameworkContext from './privates/FrameworkContext'
+import {MfxDestructor} from './types'
 
-const ctx = self as any
+export default class MfxFramework extends MfxModule {
+  constructor(fwCtx: MfxFrameworkContext) {
+    const destructor = new MfxDestructor()
+    super(new MfxModuleContext('', fwCtx, destructor), destructor)
 
-export default class MxFramework extends MxModule {
-  constructor(fwCtx: MxFrameworkContext) {
-    const destructor = new MxDestructor()
-    super(new MxModuleContext('', fwCtx, destructor), destructor)
     this._fwCtx = fwCtx
   }
 
-  private _inited = false
-  private _fwCtx: MxFrameworkContext
-
-  init() {
-    if (this._inited) return
-    this._inited = true
-    ctx['_MxFramework_'] = true
-    this.ctx.logger.log('MxFramework', 'init()')
-  }
+  private _fwCtx: MfxFrameworkContext
 
   getModule(id: string) {
     const {_fwCtx} = this
@@ -29,20 +20,20 @@ export default class MxFramework extends MxModule {
   }
 
   loadModule(id: string) {
-    this.ctx.logger.log('MxFramework', 'loadModule: ', id)
+    this.ctx.logger.log('MfxFramework', 'loadModule: ', id)
     const {_fwCtx} = this
 
-    const mxModule = _fwCtx.modules.load(id)
+    const mfxModule = _fwCtx.modules.load(id)
 
-    return mxModule
+    return mfxModule
   }
 
-  loadExModule<T extends MxExModule>(
-    className: {new (ctx: MxModuleContext, destructor: MxDestructor, ...args: any[]): T},
+  loadExModule<T extends MfxExModule>(
+    className: {new (ctx: MfxModuleContext, destructor: MfxDestructor, ...args: any[]): T},
     id: string,
     ...args: any[]
   ) {
-    this.ctx.logger.log('MxFramework', 'loadExModule: ', id, ...args)
+    this.ctx.logger.log('MfxFramework', 'loadExModule: ', id, ...args)
     const {_fwCtx} = this
 
     const exModule = _fwCtx.modules.loadEx(className, id, ...args)
@@ -51,7 +42,7 @@ export default class MxFramework extends MxModule {
   }
 
   loadFrameModule(id: string, container: HTMLIFrameElement) {
-    this.ctx.logger.log('MxFramework', 'loadFrameModule: ', id)
+    this.ctx.logger.log('MfxFramework', 'loadFrameModule: ', id)
     const {_fwCtx} = this
 
     const frameModule = _fwCtx.modules.loadFrame(id, container)
@@ -60,7 +51,7 @@ export default class MxFramework extends MxModule {
   }
 
   unloadModule(id: string) {
-    this.ctx.logger.log('MxFramework', 'unloadModule: ', id)
+    this.ctx.logger.log('MfxFramework', 'unloadModule: ', id)
     const {_fwCtx} = this
 
     _fwCtx.modules.unload(id)

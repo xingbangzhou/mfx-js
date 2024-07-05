@@ -254,6 +254,7 @@ export interface MfxPlayProps {
     layers: LayerProps[]
   }
   comps: LayerProps[]
+  sourceMap?: Record<number, string | Blob>
 }
 
 export interface PlayerOptions {

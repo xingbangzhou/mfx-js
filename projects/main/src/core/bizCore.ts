@@ -1,6 +1,6 @@
-import {MxFrameworkLauncher} from '@mfx-js/framework'
+import {MfxFrameworkLauncher} from '@mfx-js/framework'
 
-class BizCore extends MxFrameworkLauncher {
+class BizCore extends MfxFrameworkLauncher {
   constructor() {
     super()
   }
@@ -10,8 +10,6 @@ class BizCore extends MxFrameworkLauncher {
   init() {
     if (this._inited) return
     this._inited = true
-
-    this.framework.init()
   }
 
   get ctx() {

@@ -15,12 +15,11 @@ export default class Store {
   private _frameId = -1
 
   private mapKeyInfos?: Record<string, MfxKeyInfo & {fromUser?: boolean}>
-  private sourceMap: Record<number, Blob> = {}
 
-  setProps(value: MfxPlayProps) {
-    this._props = value
-    this._frameRate = value.frameRate || 30
-    this._frames = Math.round((value.duration || 0) * value.frameRate)
+  setProps(props: MfxPlayProps) {
+    this._props = props
+    this._frameRate = props.frameRate || 30
+    this._frames = Math.round((props.duration || 0) * props.frameRate)
     this._frameTime = +(1000 / this._frameRate).toFixed(4).slice(0, -1)
     this._frameTimestamp = this._frameTime * 1000
   }
@@ -70,7 +69,8 @@ export default class Store {
   }
 
   getSource(id: number) {
-    return this.sourceMap[id] || null
+    const props = this._props
+    return props?.sourceMap?.[id]
   }
 
   getCompLayer(id: number) {
@@ -146,8 +146,6 @@ export default class Store {
     this.mapKeyInfos = undefined
     this._props = undefined
     this.frameId = -1
-
-    this.sourceMap = {}
   }
 
   /**

@@ -1,30 +1,30 @@
-import {MxLauncherOption} from '../types'
-import MxFramework from '../Framework'
-import MxEvents from './Events'
-import MxModules from './Modules'
-import MxServices from './Services'
+import {MfxLauncherOption} from '../types'
+import MfxFramework from '../Framework'
+import MfxEvents from './Events'
+import MfxModules from './Modules'
+import MfxServices from './Services'
 
-export default class MxFrameworkContext {
-  constructor(options?: MxLauncherOption) {
+export default class MfxFrameworkContext {
+  constructor(options?: MfxLauncherOption) {
     this.options = options
 
-    this.events = new MxEvents()
-    this.modules = new MxModules(this)
-    this.services = new MxServices(this)
-    this.framework = new MxFramework(this)
+    this.events = new MfxEvents()
+    this.modules = new MfxModules(this)
+    this.services = new MfxServices(this)
+    this.framework = new MfxFramework(this)
 
     this.init()
   }
 
-  readonly options?: MxLauncherOption
+  readonly options?: MfxLauncherOption
 
-  readonly events: MxEvents
+  readonly events: MfxEvents
 
-  readonly modules: MxModules
+  readonly modules: MfxModules
 
-  readonly services: MxServices
+  readonly services: MfxServices
 
-  readonly framework: MxFramework
+  readonly framework: MfxFramework
 
   get logger() {
     return this.framework.ctx.logger

@@ -1,15 +1,15 @@
 import EventEmitter, {EventObject} from './EventEmitter'
 import {addHiddenProp, hasProp} from './shims'
-import {MxInvokeHandler, MxService, MxSlotHandler} from './types'
+import {MfxInvokeHandler, MfxService, MfxSlotHandler} from './types'
 
 const storedInvokableSymbol = Symbol('invokable')
 
-export class EventSignal<Type extends MxSlotHandler> extends EventObject<Type> {}
+export class EventSignal<Type extends MfxSlotHandler> extends EventObject<Type> {}
 
 /**
  * 以事件为导向的服务类
  */
-export default class EventService implements MxService {
+export default class EventService implements MfxService {
   constructor(clazz?: string) {
     this._clazz = clazz
   }
@@ -17,7 +17,7 @@ export default class EventService implements MxService {
   protected _clazz: string | undefined
   protected _emitter = new EventEmitter()
 
-  private _invokes?: Record<string, MxInvokeHandler>
+  private _invokes?: Record<string, MfxInvokeHandler>
 
   /**
    * 服务ID
@@ -42,14 +42,14 @@ export default class EventService implements MxService {
   /**
    * 监听信号
    */
-  connectSignal(signal: string, slot: MxSlotHandler) {
+  connectSignal(signal: string, slot: MfxSlotHandler) {
     if (!signal) return
     return this._emitter.on(signal, slot)
   }
   /**
    * 取消监听信号
    */
-  disconnectSignal(signal: string, slot: MxSlotHandler) {
+  disconnectSignal(signal: string, slot: MfxSlotHandler) {
     this._emitter.off(signal, slot)
   }
 
@@ -58,7 +58,7 @@ export default class EventService implements MxService {
    * @param name 方法名
    * @param func 方法对象
    */
-  protected invokable(name: string, func: MxInvokeHandler) {
+  protected invokable(name: string, func: MfxInvokeHandler) {
     if (!this._invokes) this._invokes = {}
     this._invokes[name] = func
   }
@@ -67,7 +67,7 @@ export default class EventService implements MxService {
    * @param signal 信号名|信号事件对象
    * @param args 数据列表
    */
-  protected emitSignal<Type extends MxSlotHandler>(signal: string | EventSignal<Type>, ...args: Parameters<Type>) {
+  protected emitSignal<Type extends MfxSlotHandler>(signal: string | EventSignal<Type>, ...args: Parameters<Type>) {
     let signalName = ''
     if (signal instanceof EventSignal) {
       signalName = signal.name

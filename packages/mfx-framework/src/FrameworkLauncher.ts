@@ -1,12 +1,12 @@
-import MxFrameworkContext from './privates/FrameworkContext'
-import {MxLauncherOption} from './types'
+import MfxFrameworkContext from './privates/FrameworkContext'
+import {MfxLauncherOption} from './types'
 
-export default class MxFrameworkLauncher {
-  constructor(options?: MxLauncherOption) {
-    this._fwCtx = new MxFrameworkContext(options)
+export default class MfxFrameworkLauncher {
+  constructor(options?: MfxLauncherOption) {
+    this._fwCtx = new MfxFrameworkContext(options)
   }
 
-  private _fwCtx: MxFrameworkContext
+  private _fwCtx: MfxFrameworkContext
 
   get framework() {
     return this._fwCtx.framework
