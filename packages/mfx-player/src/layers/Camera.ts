@@ -1,4 +1,4 @@
-import {identity, inverse, lookAt, multiply, perspective, Vec3} from '../base/m4'
+import {identity, inverse, lookAt, Mat4, multiply, perspective, Vec3} from '../base/m4'
 import {Property, Transform3D} from '../base/transforms'
 import {LayerCameraProps} from '../types'
 
@@ -18,7 +18,7 @@ export default class Camera {
   readonly height: number
 
   private _frameId = -1
-  private _matrix = identity()
+  private _matrix?: Mat4
 
   getMatrix(frameId: number) {
     if (!this.zoomProp) return undefined

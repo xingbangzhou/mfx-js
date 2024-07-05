@@ -1,4 +1,3 @@
-import Store from '../Store'
 import {drawTexture, m4, rgba, ThisWebGLContext} from '../base'
 import {Property} from '../base/transforms'
 import Texture from '../base/webgl/Texture'

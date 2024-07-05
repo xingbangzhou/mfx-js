@@ -30,7 +30,6 @@ export enum MfxFillMode {
 }
 
 export interface FrameInfo {
-  frames: number
   frameId: number
   width: number
   height: number
