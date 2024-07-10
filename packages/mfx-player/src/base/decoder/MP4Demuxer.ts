@@ -1,4 +1,8 @@
-import MP4Box, {ISOFile, DataStream} from './mp4box.all'
+// import MP4Box, {ISOFile, DataStream} from './mp4box.all'
+
+const mp4box = require('./mp4box.all')
+const MP4Box = mp4box.default
+const DataStream = mp4box.DataStream
 
 export interface MP4Config {
   codec: string
@@ -14,11 +18,11 @@ export interface DemuxerHandles {
 }
 
 class MP4FileSink {
-  constructor(file: ISOFile) {
+  constructor(file: any) {
     this.file = file
   }
 
-  private file: ISOFile
+  private file: any
   private _offset = 0
 
   write(chunk: any) {
@@ -65,7 +69,7 @@ export default class MP4Demuxer {
   }
 
   private handles: DemuxerHandles | null = null
-  private _file: ISOFile
+  private _file: any
   private _biteStream: ReadableStream<Uint8Array> | null = null
 
   destroy() {

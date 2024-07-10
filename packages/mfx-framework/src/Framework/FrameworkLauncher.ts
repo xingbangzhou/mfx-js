@@ -1,5 +1,5 @@
-import MfxFrameworkContext from './privates/FrameworkContext'
-import {MfxLauncherOption} from './types'
+import MfxFrameworkContext from './FrameworkContext'
+import {MfxLauncherOption} from '../types'
 
 export default class MfxFrameworkLauncher {
   constructor(options?: MfxLauncherOption) {

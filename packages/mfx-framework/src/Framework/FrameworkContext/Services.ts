@@ -1,6 +1,6 @@
-import MfxFrameworkContext from './FrameworkContext'
+import MfxFrameworkContext from '.'
 import {MfxLinkHandler, MfxSlotHandler, MfxService} from '@mfx-js/core/types'
-import MfxModuleContext from '../ModuleContext'
+import MfxModuleContext from '../../Module/ModuleContext'
 import EventEmitter from '@mfx-js/core/EventEmitter'
 
 interface MfxRegistration {

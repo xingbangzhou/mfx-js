@@ -1,5 +1,5 @@
-import {MfxDestructor} from '../types'
-import MfxModuleContext from '../ModuleContext'
+import MfxDestructor from '../Destructor'
+import MfxModuleContext from './ModuleContext'
 
 export default class MfxModule {
   constructor(ctx: MfxModuleContext, destructor: MfxDestructor) {

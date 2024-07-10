@@ -1,5 +1,5 @@
-import {LayerImageProps, LayerTextProps, LayerVideoProps, MfxKeyInfo, MfxPlayProps, MfxKeyValue} from './types'
-import AbstractDrawer from './layers/AbstractDrawer'
+import {LayerImageProps, LayerTextProps, LayerVideoProps, MfxKeyInfo, MfxPlayProps, MfxKeyValue} from '../types'
+import AbstractDrawer from '../layers/AbstractDrawer'
 
 export default class Store {
   constructor() {}

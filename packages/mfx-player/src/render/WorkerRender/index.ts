@@ -31,7 +31,7 @@ const mapRenderObjs: Record<number, WorkerRender> = {}
 function worker() {
   if (_worker) return _worker
 
-  _worker = new Worker(new URL('./render.worker.ts', import.meta.url))
+  _worker = new Worker(new URL('./render.worker', import.meta.url))
   _worker.onmessage = onWorkerCallback
 
   return _worker

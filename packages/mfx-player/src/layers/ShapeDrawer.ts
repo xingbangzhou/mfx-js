@@ -1,6 +1,6 @@
 import {drawTexture, Framebuffer, ThisWebGLContext} from '../base'
 import {m4} from '../base'
-import Store from '../Store'
+import Store from '../render/Store'
 import {FrameInfo, LayerEllipseProps, LayerPathProps, LayerRectProps, LayerShapeProps, LayerType} from '../types'
 import AbstractDrawer from './AbstractDrawer'
 import EllipseDrawer from './EllipseDrawer'

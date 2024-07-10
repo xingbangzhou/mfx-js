@@ -21,9 +21,8 @@
     "isolatedModules": false,
     "sourceMap": true,
     "jsx": "preserve",
-    "suppressImplicitAnyIndexErrors": true,
-    "importsNotUsedAsValues": "preserve",
+    "verbatimModuleSyntax": false,
     "ignoreDeprecations": "5.0"
   },
-  "exclude": ["**/.*/", "dist", "**/dist", "**/node_modules", "docs/export", "mfx-config.js"]
+  "exclude": ["**/.*/", "dist", "**/dist/*", "**/node_modules", "docs/export", "mfx-config.js"]
 }

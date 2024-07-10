@@ -1,4 +1,4 @@
-import Store from '../Store'
+import Store from '../render/Store'
 import {ThisWebGLContext, degToRad, m4} from '../base'
 import {Transform3D} from '../base/transforms'
 import AttribBuffer from '../base/webgl/AttribBuffer'

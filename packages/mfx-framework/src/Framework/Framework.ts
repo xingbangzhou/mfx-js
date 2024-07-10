@@ -1,7 +1,7 @@
-import {MfxModuleContext} from '.'
-import MfxModule, {MfxExModule} from './Module'
-import MfxFrameworkContext from './privates/FrameworkContext'
-import {MfxDestructor} from './types'
+import MfxModule, {MfxExModule} from '../Module'
+import MfxFrameworkContext from './FrameworkContext'
+import MfxDestructor from '../Destructor'
+import {MfxModuleContext} from '../Module'
 
 export default class MfxFramework extends MfxModule {
   constructor(fwCtx: MfxFrameworkContext) {

@@ -1,8 +1,8 @@
-import MfxModule, {MfxExModule} from '../Module'
-import MfxFrameworkContext from './FrameworkContext'
-import {MfxDestructor} from '../types'
-import MfxModuleContext from '../ModuleContext'
-import MfxFrameModule from '../Module/FrameModule'
+import MfxModule, {MfxExModule} from '../../Module'
+import MfxFrameworkContext from '.'
+import MfxDestructor from '../../Destructor'
+import MfxModuleContext from '../../Module/ModuleContext'
+import MfxFrameModule from '../../Module/FrameModule'
 
 class MfxModuleHolder<T extends MfxModule> {
   constructor(

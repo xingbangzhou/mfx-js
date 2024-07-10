@@ -1,4 +1,4 @@
-import Store from '../Store'
+import Store from '../render/Store'
 import {drawSimpleTexture, Framebuffer, m4, ThisWebGLContext} from '../base'
 import {
   FrameInfo,

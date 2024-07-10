@@ -1,6 +1,6 @@
-import EventEmitter, {EventObject} from './EventEmitter'
-import {addHiddenProp, hasProp} from './shims'
-import {MfxInvokeHandler, MfxService, MfxSlotHandler} from './types'
+import EventEmitter, {EventObject} from '../EventEmitter'
+import {addHiddenProp, hasProp} from '../shims'
+import {MfxInvokeHandler, MfxService, MfxSlotHandler} from '../types'
 
 const storedInvokableSymbol = Symbol('invokable')
 

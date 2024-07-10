@@ -1,4 +1,4 @@
-import Store from '../Store'
+import Store from '../render/Store'
 import {ThisWebGLContext} from '../base'
 import {LayerEllipseProps} from '../types'
 import ElementDrawer from './ElementDrawer'

@@ -3,7 +3,7 @@ import {drawSimpleTexture, Framebuffer, getFillCoord, m4, Program} from '../../b
 import AttribBuffer from '../../base/webgl/AttribBuffer'
 import {ThisWebGLContext} from '../../base/webgl/types'
 import Layer, {createLayer} from '../../layers/Layer'
-import Store from '../../Store'
+import Store from '../Store'
 import {
   MfxKeyValue,
   LayerProps,

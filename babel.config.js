@@ -1,5 +1,5 @@
 module.exports = function (api) {
-  const useESModules = api.env(['legacy', 'modern', 'stable', 'rollup'])
+  const useESModules = api.env(['modern', 'stable'])
 
   const presets = [
     [
@@ -30,8 +30,6 @@ module.exports = function (api) {
       },
     ],
   ]
-
-  console.log('fffffffffff', require('@babel/runtime/package.json').version)
 
   if (process.env.NODE_ENV === 'production') {
   }

@@ -1,7 +1,7 @@
 import {ThisWebGLContext, drawVideo, getFillCoord, m4, FillCoord} from '../base'
 import MP4Decoder, {compareMcs, DecoderStatus} from '../base/decoder/MP4Decoder'
 import Texture from '../base/webgl/Texture'
-import Store from '../Store'
+import Store from '../render/Store'
 import {FrameInfo, LayerVideoProps} from '../types'
 import AbstractDrawer from './AbstractDrawer'
 

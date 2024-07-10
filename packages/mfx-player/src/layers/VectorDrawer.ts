@@ -1,4 +1,4 @@
-import Store from '../Store'
+import Store from '../render/Store'
 import {Framebuffer, ThisWebGLContext, drawTexture} from '../base'
 import {m4} from '../base'
 import {FrameInfo, LayerCameraProps, LayerType, LayerVectorProps} from '../types'

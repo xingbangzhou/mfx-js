@@ -1,5 +1,5 @@
 import {ThisWebGLContext} from '../base'
-import Store from '../Store'
+import Store from '../render/Store'
 import {LayerRectProps} from '../types'
 import ElementDrawer from './ElementDrawer'
 

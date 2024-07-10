@@ -7,9 +7,9 @@ import {
   MfxModuleContextFuncs,
 } from '@mfx-js/core/types'
 import Logger from '@mfx-js/core/Logger'
-import MfxFrameworkContext from './privates/FrameworkContext'
+import MfxFrameworkContext from '../Framework/FrameworkContext'
 import EventEmitter from '@mfx-js/core/EventEmitter'
-import {MfxDestructor} from './types'
+import MfxDestructor from '../Destructor'
 
 export default class MfxModuleContext implements MfxModuleContextFuncs {
   constructor(moduleId: string, fwCtx: MfxFrameworkContext, destructor: MfxDestructor) {

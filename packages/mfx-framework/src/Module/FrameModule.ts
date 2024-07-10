@@ -1,5 +1,5 @@
-import MfxModuleContext from '../ModuleContext'
-import {MfxDestructor} from '../types'
+import MfxModuleContext from './ModuleContext'
+import MfxDestructor from '../Destructor'
 import MfxExModule from './ExModule'
 
 class MfxFrameChannel {

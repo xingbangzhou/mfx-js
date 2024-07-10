@@ -1,12 +1,12 @@
 {
   "name": "@mfx-js/core",
   "version": "1.2.0",
-  "main": "index.js",
+  "main": "./src/index.js",
   "types": "index.d.ts",
   "license": "MIT",
   "keywords": [
-    "mfx",
-    "typescript"
+    "typescript",
+    "mfx"
   ],
   "repository": {
     "type": "git",
@@ -17,11 +17,10 @@
     "xingbangzhou"
   ],
   "scripts": {
-    "build": "pnpm prebuild && pnpm build:node && pnpm build:modern && pnpm build:stable && pnpm build:legacy && pnpm build:types && pnpm build:copy-files",
+    "build": "pnpm prebuild && pnpm build:node && pnpm build:modern && pnpm build:stable && pnpm build:types && pnpm build:copy-files",
     "build:node": "node ../../scripts/build.mjs node",
     "build:modern": "node ../../scripts/build.mjs modern",
     "build:stable": "node ../../scripts/build.mjs stable",
-    "build:legacy": "node ../../scripts/build.mjs legacy",
     "build:types": "node ../../scripts/buildTypes.mjs",
     "build:copy-files": "node ../../scripts/copyFiles.mjs",
     "prebuild": "rimraf dist tsconfig.build.tsbuildinfo",

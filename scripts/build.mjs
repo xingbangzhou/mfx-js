@@ -1,5 +1,5 @@
 import childProcess from 'child_process'
-import chalk from 'chalk'
+import glob from 'fast-glob'
 import path from 'path'
 import {promisify} from 'util'
 import yargs from 'yargs'
@@ -8,8 +8,6 @@ import {getWorkspaceRoot} from './utils.mjs'
 const exec = promisify(childProcess.exec)
 
 const validBundles = [
-  // legacy build using ES6 modules
-  'legacy',
   // modern build with a rolling target using ES6 modules
   'modern',
   // build for node using commonJS modules
@@ -18,8 +16,8 @@ const validBundles = [
   'stable',
 ]
 
-async function run(args) {
-  const {bundle, largeFiles, outDir: relativeOutDir, verbose} = args
+async function run(argv) {
+  const {bundle, largeFiles, outDir: relativeOutDir, verbose} = argv
 
   if (validBundles.indexOf(bundle) === -1) {
     throw new TypeError(`Unrecognized bundle '${bundle}'. Did you mean one of "${validBundles.join('", "')}"?`)
@@ -30,19 +28,22 @@ async function run(args) {
     BABEL_ENV: bundle,
     BUILD_VERBOSE: verbose,
   }
-
   const babelConfigPath = path.resolve(getWorkspaceRoot(), 'babel.config.js')
   const srcDir = path.resolve('./src')
   const extensions = ['.js', '.ts', '.tsx']
-  const ignore = ['**/*.d.ts', '**/*.test.js', '**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx']
+  const ignore = ['**/*.test.js', '**/*.test.ts', '**/*.test.tsx', '**/*.spec.ts', '**/*.spec.tsx', '**/*.d.ts']
+
+  const topLevelNonIndexFiles = glob.sync(`*{${extensions.join(',')}}`, {cwd: srcDir, ignore}).filter(file => {
+    return path.basename(file, path.extname(file)) !== 'index'
+  })
+  const topLevelPathImportsCanBePackages = topLevelNonIndexFiles.length === 0
 
   const outDir = path.resolve(
     relativeOutDir,
     {
-      node: './node',
+      node: topLevelPathImportsCanBePackages ? './node' : './',
       modern: './modern',
-      stable: './',
-      legacy: './legacy',
+      stable: topLevelPathImportsCanBePackages ? './' : './esm',
     }[bundle],
   )
 
@@ -70,7 +71,7 @@ async function run(args) {
 
   const {stderr, stdout} = await exec(command, {env: {...process.env, ...env}})
   if (stderr) {
-    console.log(chalk.yellowBright.bold(`'${command}' failed with \n${stderr}`))
+    throw new Error(`'${command}' failed with \n${stderr}`)
   }
 
   if (verbose) {

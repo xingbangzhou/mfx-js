@@ -1,4 +1,4 @@
-import {MfxLauncherOption} from '../types'
+import {MfxLauncherOption} from '../../types'
 import MfxFramework from '../Framework'
 import MfxEvents from './Events'
 import MfxModules from './Modules'

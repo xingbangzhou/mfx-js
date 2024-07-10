@@ -1,6 +1,6 @@
 import MfxModule from './Module'
-import MfxModuleContext from '../ModuleContext'
-import {MfxDestructor} from '../types'
+import MfxModuleContext from './ModuleContext'
+import MfxDestructor from '../Destructor'
 
 enum SdkCommand {
   Ready = 'mfx-sdk:ready',

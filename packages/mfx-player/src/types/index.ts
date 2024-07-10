@@ -1,4 +1,4 @@
-import {Framebuffer} from './base/webgl'
+import {Framebuffer} from '../base/webgl'
 
 export enum LayerType {
   Image = 'image',
