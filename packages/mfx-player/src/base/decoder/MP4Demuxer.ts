@@ -1,8 +1,7 @@
 // import MP4Box, {ISOFile, DataStream} from './mp4box.all'
 
-const mp4box = require('./mp4box.all')
-const MP4Box = mp4box.default
-const DataStream = mp4box.DataStream
+const MP4Box = require('./mp4box.all')
+const DataStream = MP4Box.DataStream
 
 export interface MP4Config {
   codec: string
@@ -25,7 +24,7 @@ class MP4FileSink {
   private file: any
   private _offset = 0
 
-  write(chunk: any) {
+  write(chunk: Uint8Array) {
     const buffer = new ArrayBuffer(chunk.byteLength)
     new Uint8Array(buffer).set(chunk)
     ;(buffer as any).fileStart = this._offset

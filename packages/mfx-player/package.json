@@ -1,6 +1,6 @@
 {
   "name": "@mfx-js/player",
-  "version": "1.0.0",
+  "version": "1.0.0-beta",
   "main": "index.js",
   "types": "index.d.ts",
   "license": "MIT",
