@@ -311,13 +311,13 @@ importers:
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.3.3)(react@18.3.1)
       '@mfx-js/core':
         specifier: workspace:^
-        version: link:../../packages/mfx-core
+        version: link:../../packages/mfx-core/dist
       '@mfx-js/framework':
         specifier: workspace:^
-        version: link:../../packages/mfx-framework
+        version: link:../../packages/mfx-framework/dist
       '@mfx-js/player':
         specifier: workspace:^
-        version: link:../../packages/mfx-player
+        version: link:../../packages/mfx-player/dist
       '@mui/icons-material':
         specifier: ^5.14.8
         version: 5.15.19(@mui/material@5.15.19)(@types/react@18.3.3)(react@18.3.1)
@@ -333,9 +333,6 @@ importers:
       clsx:
         specifier: ^1.1.1
         version: 1.2.1
-      gl-matrix:
-        specifier: ^3.4.3
-        version: 3.4.3
       mobx:
         specifier: ^6.12.0
         version: 6.12.3
@@ -5314,10 +5311,6 @@ packages:
       split2: 3.2.2
       through2: 4.0.2
     dev: true
-
-  /gl-matrix@3.4.3:
-    resolution: {integrity: sha512-wcCp8vu8FT22BnvKVPjXa/ICBWRq/zjFfdofZy1WSpQZpphblv12/bOQLBC1rMM7SGOFS9ltVmKOHil5+Ml7gA==}
-    dev: false
 
   /glob-parent@5.1.2:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
