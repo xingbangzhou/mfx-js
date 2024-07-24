@@ -76,7 +76,11 @@ export default abstract class AbstractDrawer<Props extends LayerProps> {
   }
 
   getMatrix(frameId: number) {
-    return this._matrixCache[frameId]
+    let matrix = this._matrixCache[frameId]
+    if (!matrix) {
+      matrix = this.getFrameMatrix(frameId)
+    }
+    return matrix
   }
 
   // 0 ~ 1.0
@@ -128,29 +132,33 @@ export default abstract class AbstractDrawer<Props extends LayerProps> {
     // 位移
     const [x, y, z] = position
     let matrix = m4.translation(x - cx, cy - y, -z)
-
-    // 朝向
-    if (rotation[0] % 360) {
-      matrix = m4.xRotate(matrix, degToRad(rotation[0]))
+    // 轴旋转
+    const rx = rotation[0]
+    const ry = rotation[1]
+    const rz = rotation[2]
+    if (rx % 360) {
+      matrix = m4.multiply(matrix, m4.rotationX(degToRad(rx)))
     }
-    if (rotation[1] % 360) {
-      matrix = m4.yRotate(matrix, degToRad(360 - rotation[1]))
+    if (ry % 360) {
+      matrix = m4.multiply(matrix, m4.rotationY(degToRad(360 - ry)))
     }
-    if (rotation[2] % 360) {
-      matrix = m4.zRotate(matrix, degToRad(360 - rotation[2]))
+    if (rz % 360) {
+      matrix = m4.multiply(matrix, m4.rotationZ(degToRad(360 - rz)))
     }
-    if (orientation) {
-      if (orientation[0] % 360) {
-        matrix = m4.xRotate(matrix, degToRad(orientation[0]))
-      }
-      if (orientation[1] % 360) {
-        matrix = m4.yRotate(matrix, degToRad(360 - orientation[1]))
-      }
-      if (orientation[2] % 360) {
-        matrix = m4.zRotate(matrix, degToRad(360 - orientation[2]))
-      }
+    // 方向旋转
+    const ox = orientation[0]
+    const oy = orientation[1]
+    const oz = orientation[2]
+    if (ox % 360) {
+      matrix = m4.multiply(matrix, m4.rotationX(degToRad(ox)))
     }
-    // 旋转
+    if (oy % 360) {
+      matrix = m4.multiply(matrix, m4.rotationY(degToRad(360 - oy)))
+    }
+    if (oz % 360) {
+      matrix = m4.multiply(matrix, m4.rotationZ(degToRad(360 - oz)))
+    }
+    // 缩放
     if (scale) {
       const [sx, sy, sz] = scale
       if (sx % 100 || sy % 100 || sz % 100) {

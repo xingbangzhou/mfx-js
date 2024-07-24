@@ -384,7 +384,7 @@ class WorkerRenderProxy {
     const height = store.height
     const frames = store.frames
 
-    this._cameraMatrix = m4.centerCamera(width, height)
+    this._cameraMatrix = m4.perspectiveCamera(width, height)
 
     let layers = this._rootLayers
     let camera: Camera | undefined = undefined

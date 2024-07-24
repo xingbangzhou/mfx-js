@@ -1,4 +1,5 @@
 import {degToRad} from './algorithms'
+import {cross, normalize, subtract, Vec3} from './v3'
 
 // prettier-ignore
 export type Mat4 =
@@ -7,9 +8,6 @@ export type Mat4 =
   number, number, number, number,
   number, number, number, number]
 | Float32Array
-
-// prettier-ignore
-export type Vec3 = [number, number, number] | Float32Array
 
 // 创建默认矩阵
 export function identity(dst?: Mat4) {
@@ -118,7 +116,7 @@ export function multiply(a: Mat4, b: Mat4, dst?: Mat4) {
 }
 
 // 创建平移矩阵
-export function translation(tx: number, ty: number, tz: number, dst?: Mat4) {
+export function translation(x: number, y: number, z: number, dst?: Mat4) {
   dst = dst || new Float32Array(16)
 
   dst[0] = 1
@@ -133,62 +131,63 @@ export function translation(tx: number, ty: number, tz: number, dst?: Mat4) {
   dst[9] = 0
   dst[10] = 1
   dst[11] = 0
-  dst[12] = tx
-  dst[13] = ty
-  dst[14] = tz
+  dst[12] = x
+  dst[13] = y
+  dst[14] = z
   dst[15] = 1
 
   return dst
 }
 
 // 平移
-export function translate(m: Mat4, tx: number, ty: number, tz: number, dst?: Mat4) {
-  // This is the optimized version of
-  return multiply(m, translation(tx, ty, tz), dst)
-  // dst = dst || new Float32Array(16)
+export function translate(m: Mat4, x: number, y: number, z: number, dst?: Mat4) {
+  dst = dst || new Float32Array(16)
 
-  // const m00 = m[0]
-  // const m01 = m[1]
-  // const m02 = m[2]
-  // const m03 = m[3]
-  // const m10 = m[1 * 4 + 0]
-  // const m11 = m[1 * 4 + 1]
-  // const m12 = m[1 * 4 + 2]
-  // const m13 = m[1 * 4 + 3]
-  // const m20 = m[2 * 4 + 0]
-  // const m21 = m[2 * 4 + 1]
-  // const m22 = m[2 * 4 + 2]
-  // const m23 = m[2 * 4 + 3]
-  // const m30 = m[3 * 4 + 0]
-  // const m31 = m[3 * 4 + 1]
-  // const m32 = m[3 * 4 + 2]
-  // const m33 = m[3 * 4 + 3]
+  const v0 = x
+  const v1 = y
+  const v2 = z
+  const m00 = m[0]
+  const m01 = m[1]
+  const m02 = m[2]
+  const m03 = m[3]
+  const m10 = m[1 * 4 + 0]
+  const m11 = m[1 * 4 + 1]
+  const m12 = m[1 * 4 + 2]
+  const m13 = m[1 * 4 + 3]
+  const m20 = m[2 * 4 + 0]
+  const m21 = m[2 * 4 + 1]
+  const m22 = m[2 * 4 + 2]
+  const m23 = m[2 * 4 + 3]
+  const m30 = m[3 * 4 + 0]
+  const m31 = m[3 * 4 + 1]
+  const m32 = m[3 * 4 + 2]
+  const m33 = m[3 * 4 + 3]
 
-  // if (m !== dst) {
-  //   dst[0] = m00
-  //   dst[1] = m01
-  //   dst[2] = m02
-  //   dst[3] = m03
-  //   dst[4] = m10
-  //   dst[5] = m11
-  //   dst[6] = m12
-  //   dst[7] = m13
-  //   dst[8] = m20
-  //   dst[9] = m21
-  //   dst[10] = m22
-  //   dst[11] = m23
-  // }
+  if (m !== dst) {
+    dst[0] = m00
+    dst[1] = m01
+    dst[2] = m02
+    dst[3] = m03
+    dst[4] = m10
+    dst[5] = m11
+    dst[6] = m12
+    dst[7] = m13
+    dst[8] = m20
+    dst[9] = m21
+    dst[10] = m22
+    dst[11] = m23
+  }
 
-  // dst[12] = m00 * tx + m10 * ty + m20 * tz + m30
-  // dst[13] = m01 * tx + m11 * ty + m21 * tz + m31
-  // dst[14] = m02 * tx + m12 * ty + m22 * tz + m32
-  // dst[15] = m03 * tx + m13 * ty + m23 * tz + m33
+  dst[12] = m00 * v0 + m10 * v1 + m20 * v2 + m30
+  dst[13] = m01 * v0 + m11 * v1 + m21 * v2 + m31
+  dst[14] = m02 * v0 + m12 * v1 + m22 * v2 + m32
+  dst[15] = m03 * v0 + m13 * v1 + m23 * v2 + m33
 
-  // return dst
+  return dst
 }
 
 // X轴旋转
-export function xRotation(angleInRadians: number, dst?: Mat4) {
+export function rotationX(angleInRadians: number, dst?: Mat4) {
   dst = dst || new Float32Array(16)
   const c = Math.cos(angleInRadians)
   const s = Math.sin(angleInRadians)
@@ -213,9 +212,7 @@ export function xRotation(angleInRadians: number, dst?: Mat4) {
   return dst
 }
 
-export function xRotate(m: Mat4, angleInRadians: number, dst?: Mat4) {
-  // this is the optimized version of
-  // return multiply(m, xRotation(angleInRadians), dst)
+export function rotateX(m: Mat4, angleInRadians: number, dst?: Mat4) {
   dst = dst || new Float32Array(16)
 
   const m10 = m[4]
@@ -252,10 +249,34 @@ export function xRotate(m: Mat4, angleInRadians: number, dst?: Mat4) {
   return dst
 }
 
+export function rotationY(angleInRadians: number, dst?: Mat4) {
+  dst = dst || new Float32Array(16)
+
+  const c = Math.cos(angleInRadians)
+  const s = Math.sin(angleInRadians)
+
+  dst[0] = c
+  dst[1] = 0
+  dst[2] = -s
+  dst[3] = 0
+  dst[4] = 0
+  dst[5] = 1
+  dst[6] = 0
+  dst[7] = 0
+  dst[8] = s
+  dst[9] = 0
+  dst[10] = c
+  dst[11] = 0
+  dst[12] = 0
+  dst[13] = 0
+  dst[14] = 0
+  dst[15] = 1
+
+  return dst
+}
+
 // Y轴旋转
-export function yRotate(m: Mat4, angleInRadians: number, dst?: Mat4) {
-  // this is the optimized version of
-  // return multiply(m, yRotation(angleInRadians), dst);
+export function rotateY(m: Mat4, angleInRadians: number, dst?: Mat4) {
   dst = dst || new Float32Array(16)
 
   const m00 = m[0 * 4 + 0]
@@ -292,10 +313,34 @@ export function yRotate(m: Mat4, angleInRadians: number, dst?: Mat4) {
   return dst
 }
 
+export function rotationZ(angleInRadians: number, dst?: Mat4) {
+  dst = dst || new Float32Array(16)
+
+  const c = Math.cos(angleInRadians)
+  const s = Math.sin(angleInRadians)
+
+  dst[0] = c
+  dst[1] = s
+  dst[2] = 0
+  dst[3] = 0
+  dst[4] = -s
+  dst[5] = c
+  dst[6] = 0
+  dst[7] = 0
+  dst[8] = 0
+  dst[9] = 0
+  dst[10] = 1
+  dst[11] = 0
+  dst[12] = 0
+  dst[13] = 0
+  dst[14] = 0
+  dst[15] = 1
+
+  return dst
+}
+
 // Z轴旋转
-export function zRotate(m: Mat4, angleInRadians: number, dst?: Mat4) {
-  // This is the optimized version of
-  // return multiply(m, zRotation(angleInRadians), dst);
+export function rotateZ(m: Mat4, angleInRadians: number, dst?: Mat4) {
   dst = dst || new Float32Array(16)
 
   const m00 = m[0 * 4 + 0]
@@ -332,10 +377,108 @@ export function zRotate(m: Mat4, angleInRadians: number, dst?: Mat4) {
   return dst
 }
 
+export function axisRotation(axis: Vec3, angleInRadians: number, dst?: Mat4) {
+  dst = dst || new Float32Array(16)
+
+  let x = axis[0]
+  let y = axis[1]
+  let z = axis[2]
+  const n = Math.sqrt(x * x + y * y + z * z)
+  x /= n
+  y /= n
+  z /= n
+  const xx = x * x
+  const yy = y * y
+  const zz = z * z
+  const c = Math.cos(angleInRadians)
+  const s = Math.sin(angleInRadians)
+  const oneMinusCosine = 1 - c
+
+  dst[0] = xx + (1 - xx) * c
+  dst[1] = x * y * oneMinusCosine + z * s
+  dst[2] = x * z * oneMinusCosine - y * s
+  dst[3] = 0
+  dst[4] = x * y * oneMinusCosine - z * s
+  dst[5] = yy + (1 - yy) * c
+  dst[6] = y * z * oneMinusCosine + x * s
+  dst[7] = 0
+  dst[8] = x * z * oneMinusCosine + y * s
+  dst[9] = y * z * oneMinusCosine - x * s
+  dst[10] = zz + (1 - zz) * c
+  dst[11] = 0
+  dst[12] = 0
+  dst[13] = 0
+  dst[14] = 0
+  dst[15] = 1
+
+  return dst
+}
+
+export function axisRotate(m: Mat4, axis: Vec3, angleInRadians: number, dst?: Mat4) {
+  dst = dst || new Float32Array(16)
+
+  let x = axis[0]
+  let y = axis[1]
+  let z = axis[2]
+  const n = Math.sqrt(x * x + y * y + z * z)
+  x /= n
+  y /= n
+  z /= n
+  const xx = x * x
+  const yy = y * y
+  const zz = z * z
+  const c = Math.cos(angleInRadians)
+  const s = Math.sin(angleInRadians)
+  const oneMinusCosine = 1 - c
+
+  const r00 = xx + (1 - xx) * c
+  const r01 = x * y * oneMinusCosine + z * s
+  const r02 = x * z * oneMinusCosine - y * s
+  const r10 = x * y * oneMinusCosine - z * s
+  const r11 = yy + (1 - yy) * c
+  const r12 = y * z * oneMinusCosine + x * s
+  const r20 = x * z * oneMinusCosine + y * s
+  const r21 = y * z * oneMinusCosine - x * s
+  const r22 = zz + (1 - zz) * c
+
+  const m00 = m[0]
+  const m01 = m[1]
+  const m02 = m[2]
+  const m03 = m[3]
+  const m10 = m[4]
+  const m11 = m[5]
+  const m12 = m[6]
+  const m13 = m[7]
+  const m20 = m[8]
+  const m21 = m[9]
+  const m22 = m[10]
+  const m23 = m[11]
+
+  dst[0] = r00 * m00 + r01 * m10 + r02 * m20
+  dst[1] = r00 * m01 + r01 * m11 + r02 * m21
+  dst[2] = r00 * m02 + r01 * m12 + r02 * m22
+  dst[3] = r00 * m03 + r01 * m13 + r02 * m23
+  dst[4] = r10 * m00 + r11 * m10 + r12 * m20
+  dst[5] = r10 * m01 + r11 * m11 + r12 * m21
+  dst[6] = r10 * m02 + r11 * m12 + r12 * m22
+  dst[7] = r10 * m03 + r11 * m13 + r12 * m23
+  dst[8] = r20 * m00 + r21 * m10 + r22 * m20
+  dst[9] = r20 * m01 + r21 * m11 + r22 * m21
+  dst[10] = r20 * m02 + r21 * m12 + r22 * m22
+  dst[11] = r20 * m03 + r21 * m13 + r22 * m23
+
+  if (m !== dst) {
+    dst[12] = m[12]
+    dst[13] = m[13]
+    dst[14] = m[14]
+    dst[15] = m[15]
+  }
+
+  return dst
+}
+
 // 缩放
 export function scale(m: Mat4, sx: number, sy: number, sz: number, dst?: Mat4) {
-  // This is the optimized version of
-  // return multiply(m, scaling(sx, sy, sz), dst);
   dst = dst || new Float32Array(16)
 
   dst[0] = sx * m[0 * 4 + 0]
@@ -361,39 +504,37 @@ export function scale(m: Mat4, sx: number, sy: number, sz: number, dst?: Mat4) {
   return dst
 }
 
-export function normalize(v: Vec3, dst?: Vec3) {
-  dst = dst || new Float32Array(3)
-  const length = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2])
-  // make sure we don't divide by 0.
-  if (length > 0.00001) {
-    dst[0] = v[0] / length
-    dst[1] = v[1] / length
-    dst[2] = v[2] / length
-  }
-  return dst
-}
-
-export function subtractVectors(a: Vec3, b: Vec3, dst?: Vec3) {
-  dst = dst || new Float32Array(3)
-  dst[0] = a[0] - b[0]
-  dst[1] = a[1] - b[1]
-  dst[2] = a[2] - b[2]
-  return dst
-}
-
-export function cross(a: Vec3, b: Vec3, dst?: Vec3) {
-  dst = dst || new Float32Array(3)
-  dst[0] = a[1] * b[2] - a[2] * b[1]
-  dst[1] = a[2] * b[0] - a[0] * b[2]
-  dst[2] = a[0] * b[1] - a[1] * b[0]
-  return dst
-}
-
 export function lookAt(cameraPosition: Vec3, target: Vec3, up: Vec3, dst?: Mat4) {
   dst = dst || new Float32Array(16)
-  const zAxis = normalize(subtractVectors(cameraPosition, target))
+  const zAxis = normalize(subtract(cameraPosition, target))
   const xAxis = normalize(cross(up, zAxis))
   const yAxis = normalize(cross(zAxis, xAxis))
+
+  dst[0] = xAxis[0]
+  dst[1] = xAxis[1]
+  dst[2] = xAxis[2]
+  dst[3] = 0
+  dst[4] = yAxis[0]
+  dst[5] = yAxis[1]
+  dst[6] = yAxis[2]
+  dst[7] = 0
+  dst[8] = zAxis[0]
+  dst[9] = zAxis[1]
+  dst[10] = zAxis[2]
+  dst[11] = 0
+  dst[12] = cameraPosition[0]
+  dst[13] = cameraPosition[1]
+  dst[14] = cameraPosition[2]
+  dst[15] = 1
+
+  return dst
+}
+
+export function axisLookAt(cameraPosition: Vec3, xAxis: Vec3, yAxis: Vec3, zAxis: Vec3, dst?: Mat4) {
+  dst = dst || new Float32Array(16)
+  xAxis = normalize(xAxis)
+  yAxis = normalize(yAxis)
+  zAxis = normalize(zAxis)
 
   dst[0] = xAxis[0]
   dst[1] = xAxis[1]
@@ -486,91 +627,48 @@ export function inverse(m: Mat4, dst?: Mat4) {
   return dst
 }
 
-export function axisRotate(m: Mat4, axis: Vec3, angleInRadians: number, dst?: Mat4) {
-  // This is the optimized version of
-  // return multiply(m, axisRotation(axis, angleInRadians), dst);
-  dst = dst || new Float32Array(16)
-
-  let x = axis[0]
-  let y = axis[1]
-  let z = axis[2]
-  const n = Math.sqrt(x * x + y * y + z * z)
-  x /= n
-  y /= n
-  z /= n
-  const xx = x * x
-  const yy = y * y
-  const zz = z * z
-  const c = Math.cos(angleInRadians)
-  const s = Math.sin(angleInRadians)
-  const oneMinusCosine = 1 - c
-
-  const r00 = xx + (1 - xx) * c
-  const r01 = x * y * oneMinusCosine + z * s
-  const r02 = x * z * oneMinusCosine - y * s
-  const r10 = x * y * oneMinusCosine - z * s
-  const r11 = yy + (1 - yy) * c
-  const r12 = y * z * oneMinusCosine + x * s
-  const r20 = x * z * oneMinusCosine + y * s
-  const r21 = y * z * oneMinusCosine - x * s
-  const r22 = zz + (1 - zz) * c
-
-  const m00 = m[0]
-  const m01 = m[1]
-  const m02 = m[2]
-  const m03 = m[3]
-  const m10 = m[4]
-  const m11 = m[5]
-  const m12 = m[6]
-  const m13 = m[7]
-  const m20 = m[8]
-  const m21 = m[9]
-  const m22 = m[10]
-  const m23 = m[11]
-
-  dst[0] = r00 * m00 + r01 * m10 + r02 * m20
-  dst[1] = r00 * m01 + r01 * m11 + r02 * m21
-  dst[2] = r00 * m02 + r01 * m12 + r02 * m22
-  dst[3] = r00 * m03 + r01 * m13 + r02 * m23
-  dst[4] = r10 * m00 + r11 * m10 + r12 * m20
-  dst[5] = r10 * m01 + r11 * m11 + r12 * m21
-  dst[6] = r10 * m02 + r11 * m12 + r12 * m22
-  dst[7] = r10 * m03 + r11 * m13 + r12 * m23
-  dst[8] = r20 * m00 + r21 * m10 + r22 * m20
-  dst[9] = r20 * m01 + r21 * m11 + r22 * m21
-  dst[10] = r20 * m02 + r21 * m12 + r22 * m22
-  dst[11] = r20 * m03 + r21 * m13 + r22 * m23
-
-  if (m !== dst) {
-    dst[12] = m[12]
-    dst[13] = m[13]
-    dst[14] = m[14]
-    dst[15] = m[15]
-  }
-
-  return dst
-}
-
 // 中心相机坐标系 (摄像机+透视矩阵)
-export function centerCamera(width: number, height: number, fieldOfViewDeg = 40) {
+export function perspectiveCamera(width: number, height: number, fieldOfViewDeg = 40, p?: Vec3, t?: Vec3, up?: Vec3) {
   // 透视矩阵
   const fieldOfViewRadians = degToRad(fieldOfViewDeg)
   const aspect = width / height
   const zNear = 1
   const zFar = 20000
-  const projectionMatrix = perspective(fieldOfViewRadians, aspect, zNear, zFar)
+  const perspectiveMatrix = perspective(fieldOfViewRadians, aspect, zNear, zFar)
 
   // 相机坐标矩阵
   const zFlat = (height / Math.tan(fieldOfViewRadians * 0.5)) * 0.5
-  const cameraPosition: Vec3 = [0, 0, zFlat]
-  const target: Vec3 = [0, 0, 0]
-  const up: Vec3 = [0, 1, 0]
-  const cameraMatrix = lookAt(cameraPosition, target, up)
+  const cameraPosition: Vec3 = p || [0, 0, zFlat]
+  const target: Vec3 = t || [0, 0, 0]
+  up = up || [0, 1, 0]
+  let cameraMatrix = lookAt(cameraPosition, target, up)
   // 当前视图矩阵
-  const viewMatrix = inverse(cameraMatrix)
-  const viewProjectionMatrix = multiply(projectionMatrix, viewMatrix)
+  cameraMatrix = inverse(cameraMatrix)
+  cameraMatrix = multiply(perspectiveMatrix, cameraMatrix)
 
-  return viewProjectionMatrix
+  return cameraMatrix
+}
+
+/**
+ * Transforms the vec3 with a mat4.
+ * 4th vector component is implicitly '1'
+ *
+ * @param {vec3} out the receiving vector
+ * @param {ReadonlyVec3} a the vector to transform
+ * @param {ReadonlyMat4} m matrix to transform with
+ * @returns {vec3} out
+ */
+export function transformMat4(m: Mat4, a: Vec3, out?: Vec3) {
+  out = out || new Float32Array(3)
+  const x = a[0],
+    y = a[1],
+    z = a[2]
+  let w = m[3] * x + m[7] * y + m[11] * z + m[15]
+  w = w || 1.0
+  out[0] = (m[0] * x + m[4] * y + m[8] * z + m[12]) / w
+  out[1] = (m[1] * x + m[5] * y + m[9] * z + m[13]) / w
+  out[2] = (m[2] * x + m[6] * y + m[10] * z + m[14]) / w
+  return out
 }
 
 export function str$m4(m: Mat4) {

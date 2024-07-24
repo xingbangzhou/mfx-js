@@ -10,7 +10,7 @@ export default class VectorDrawer extends AbstractDrawer<LayerVectorProps> {
   constructor(props: LayerVectorProps, store: Store, parentWidth: number, parentHeight: number) {
     super(props, store, parentWidth, parentHeight)
 
-    this._cameraMatrix = m4.centerCamera(this.width, this.height)
+    this._cameraMatrix = m4.perspectiveCamera(this.width, this.height)
   }
 
   private _subLayers?: Layer[]

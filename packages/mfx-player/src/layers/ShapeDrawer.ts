@@ -12,7 +12,7 @@ export default class ShapeDrawer extends AbstractDrawer<LayerShapeProps> {
   constructor(props: LayerShapeProps, store: Store, parentWidth: number, parentHeight: number) {
     super(props, store, parentWidth, parentHeight)
 
-    this._cameraMatrix = m4.centerCamera(this.width, this.height)
+    this._cameraMatrix = m4.perspectiveCamera(this.width, this.height)
   }
 
   private _subLayers?: Layer[]

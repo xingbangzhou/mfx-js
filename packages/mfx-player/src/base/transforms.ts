@@ -1,5 +1,5 @@
 import {TransformProps} from '../types'
-import {Vec3} from './m4'
+import {Vec3} from './v3'
 
 export class Property<T = number[] | number> {
   constructor(data: {inFrame: number; value: T}[]) {
@@ -120,8 +120,7 @@ export class Transform3D {
   }
 
   getOrientation(frameId: number) {
-    const value = this.orientation?.getValue(frameId) as Vec3 | undefined
-    if (!value) return undefined
+    const value = (this.orientation?.getValue(frameId) || [0, 0, 0]) as Vec3
 
     const x = value[0] || 0
     const y = value[1] || 0
