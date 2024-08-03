@@ -1,0 +1,10 @@
+{
+  "extends": "@mfx-js/tsconfig",
+  "compilerOptions": {
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"]
+    },
+  }
+}

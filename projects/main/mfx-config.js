@@ -15,6 +15,8 @@ module.exports = ({mode, env, progress, analyze}) => ({
     '@mfx-js/framework': path.resolve(rootPath, '../../packages/mfx-framework/src'),
     '@mfx-js/player': path.resolve(rootPath, '../../packages/mfx-player/src'),
     '@mfx-js/player/*': path.resolve(rootPath, '../../packages/mfx-player/src/*'),
+    '@mfx-js/three': path.resolve(rootPath, '../../packages/mfx-three/src'),
+    '@mfx-js/three/*': path.resolve(rootPath, '../../packages/mfx-three/src/*'),
   },
 
   chainExtender: wpChain => {

@@ -10,6 +10,8 @@
       "@mfx-js/framework": ["../../packages/mfx-framework/src"],
       "@mfx-js/player": ["../../packages/mfx-player/src"],
       "@mfx-js/player/*": ["../../packages/mfx-player/src/*"],
+      "@mfx-js/three": ["../../packages/mfx-player/src"],
+      "@mfx-js/three/*": ["../../packages/mfx-player/src/*"],
     },
   },
   "exclude": ["mfx-config.js"]

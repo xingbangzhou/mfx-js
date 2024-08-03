@@ -271,14 +271,38 @@ importers:
         specifier: workspace:^
         version: link:../mfx-tsconfig
 
+  packages/mfx-core/dist: {}
+
+  packages/mfx-core/dist/EventEmitter: {}
+
+  packages/mfx-core/dist/EventService: {}
+
+  packages/mfx-core/dist/Logger: {}
+
+  packages/mfx-core/dist/codecs: {}
+
+  packages/mfx-core/dist/shims: {}
+
   packages/mfx-framework:
     devDependencies:
       '@mfx-js/core':
         specifier: workspace:^
-        version: link:../mfx-core
+        version: link:../mfx-core/dist
       '@mfx-js/tsconfig':
         specifier: workspace:^
         version: link:../mfx-tsconfig
+
+  packages/mfx-framework/dist:
+    dependencies:
+      '@mfx-js/core':
+        specifier: '>=1.2.0'
+        version: link:../../mfx-core/dist
+
+  packages/mfx-framework/dist/Destructor: {}
+
+  packages/mfx-framework/dist/Framework: {}
+
+  packages/mfx-framework/dist/Module: {}
 
   packages/mfx-player:
     devDependencies:
@@ -286,11 +310,31 @@ importers:
         specifier: workspace:^
         version: link:../mfx-tsconfig
 
+  packages/mfx-player/dist: {}
+
+  packages/mfx-player/dist/base: {}
+
+  packages/mfx-player/dist/types: {}
+
   packages/mfx-sdk:
     devDependencies:
       '@mfx-js/core':
         specifier: workspace:^
-        version: link:../mfx-core
+        version: link:../mfx-core/dist
+      '@mfx-js/tsconfig':
+        specifier: workspace:^
+        version: link:../mfx-tsconfig
+
+  packages/mfx-sdk/dist:
+    dependencies:
+      '@mfx-js/core':
+        specifier: '>=1.2.0'
+        version: link:../../mfx-core/dist
+
+  packages/mfx-sdk/dist/MfxSDK: {}
+
+  packages/mfx-three:
+    devDependencies:
       '@mfx-js/tsconfig':
         specifier: workspace:^
         version: link:../mfx-tsconfig
@@ -318,6 +362,9 @@ importers:
       '@mfx-js/player':
         specifier: workspace:^
         version: link:../../packages/mfx-player/dist
+      '@mfx-js/three':
+        specifier: workspace:^
+        version: link:../../packages/mfx-three
       '@mui/icons-material':
         specifier: ^5.14.8
         version: 5.15.19(@mui/material@5.15.19)(@types/react@18.3.3)(react@18.3.1)

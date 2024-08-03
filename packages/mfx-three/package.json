@@ -1,0 +1,36 @@
+{
+  "name": "@mfx-js/three",
+  "version": "1.0.0-beta",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "license": "MIT",
+  "keywords": [
+    "typescript",
+    "mfx",
+    "three"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xingbangzhou/mfx-js.git",
+    "directory": "packages/mfx-player"
+  },
+  "maintainers": [
+    "xingbangzhou"
+  ],
+  "scripts": {
+    "build": "pnpm prebuild && pnpm build:node && pnpm build:modern && pnpm build:stable && pnpm build:types && pnpm build:copy-files",
+    "build:node": "node ../../scripts/build.mjs node",
+    "build:modern": "node ../../scripts/build.mjs modern",
+    "build:stable": "node ../../scripts/build.mjs stable",
+    "build:types": "node ../../scripts/buildTypes.mjs",
+    "build:copy-files": "node ../../scripts/copyFiles.mjs",
+    "prebuild": "rimraf dist tsconfig.build.tsbuildinfo",
+    "release": "pnpm build && pnpm publish dist --access public --no-git-checks"
+  },
+  "devDependencies": {
+    "@mfx-js/tsconfig": "workspace:^"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

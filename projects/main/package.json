@@ -16,6 +16,7 @@
     "@mfx-js/core": "workspace:^",
     "@mfx-js/framework": "workspace:^",
     "@mfx-js/player": "workspace:^",
+    "@mfx-js/three": "workspace:^",
     "@mui/icons-material": "^5.14.8",
     "@mui/material": "^5.14.8",
     "@mui/system": "^5.14.8",
